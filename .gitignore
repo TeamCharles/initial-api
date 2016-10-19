@@ -238,3 +238,5 @@ bangazon.db
 wwwroot/lib/bower_components
 wwwroot/lib/node_modules
 wwwroot/.sass-cache
+
+.vscode
