@@ -1,4 +1,4 @@
-# Building the First Version of the Bangazon Site
+# Bangazon Orientation API
 
 ## Table of Contents
 
@@ -9,70 +9,136 @@
 
 ## Prerequisites
 
-* [ERD Development](http://www.draw.io)
-* [ASP.NET MVC](https://docs.asp.net/en/latest/mvc/overview.html)
-* [View templates/layouts](https://docs.asp.net/en/latest/mvc/views/overview.html)
-* [Models](https://docs.asp.net/en/latest/mvc/models/index.html)
-* [Controllers](https://docs.asp.net/en/latest/mvc/controllers/index.html)
-* [Migrations](https://docs.asp.net/en/latest/data/ef-mvc/complex-data-model.html?highlight=migration#add-a-migration)
-* [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS)
+* .NET Core [installed](https://www.microsoft.com/net/core#macos).
+* [Visual Studio Code](https://code.visualstudio.com/), or [Visual Studio Community Edition](https://www.visualstudio.com/vs/community/) installed for existing Windows users.
+* For Code users, [install the C# extension](#installing-c-extension-for-code).
+* Yeoman, and the ASP.NET generator, [installed](#installing-yeoman-and-the-aspnet-generator)
 
 ## What You Will Be Learning
 
-### Data Relationships
+### ERD
 
-Launching off the work you did in the first version of the Bangazon Platform API, you will be adding more relationships to your data model.
+Entity Relationship Diagrams are visual representations of your database structure, and relationships between data. You will build an ERD that represents the first version of your database.
 
-### CORS
+### project.json
 
-You will understand how to implement and modify a CORS policy for your application to restrict access to specific clients that would like access to your data.
+With the release of .NET Core, the .NET platform now more closely adheres to conventions that have been adopted by the OSS community. Once of those conventions is storing project-related settings and configuration in JSON format instead of XML format.
 
-### Producing an MVC Server-Generated Site
+You will understand the structure of the [`project.json`](https://docs.microsoft.com/en-us/dotnet/articles/core/tools/project-json) file, and how to use it to install dependencies for your project, along with the `dotnet restore` command.
 
-You will be building a basic Angular client that will consume the resources that you have defined in your Bangazon Platform API.
 
-## Requirements
+### Annotations, Routing and DI
 
-You will be building an ASP.NET MVC application that will be the first, stable version of the Bangazon Platform product site.
-
-### CORS
-
-Modify the CORS policy in your application that allows all of your teammates' computers to access your API. Each team member must be able to verify that they can request resource from each computer.
+ASP.NET makes heavy use of [annotations](https://docs.asp.net/en/latest/data/ef-mvc/complex-data-model.html?highlight=annotation), [routing](https://docs.asp.net/en/latest/mvc/controllers/routing.html) and [dependency injection](https://docs.asp.net/en/latest/mvc/controllers/dependency-injection.html) to abstract away much of the heavy lifting that is required to build an API. By using these Magical Abstractions, far less coding and configuration is needed from an API developer.
 
 ### Models
 
-1. Add a new model named `ProductType`. Add a foreign key to `ProductType` in the `Product` model. It must be non-nullable, which means that you will likely need to provide a default value for your migration to work. The only fields needed are the primary key, and `Label`.
-1. Add a model named `PaymentType`.
-1. A `Customer` can have many payment types.
-1. The `Order` model must have a foreign key field to the `PaymentType` model, but it can be nullable. However, before an order can be completed, there must be a value for the `PaymentType` field.
+You will define models, which are abstractions to the actual database. The model defines a table, validations on the columns in the table, and also the relationship between tables.
 
-### Generated Application
+### Migrations
 
-Make sure you produce a [layout](https://docs.asp.net/en/latest/mvc/views/layout.html) for the application so that the structure of each page is consistent.
+You will be using [migrations](https://docs.asp.net/en/latest/data/ef-mvc/migrations.html#migrations) in Entity Framework to handle changes and updates to your database.
 
-1. In navigation bar, have a select element that allows you to pick which customer is active.
-1. List of all product types.
-1. Provide a view to show all products that are of a particular product type.
-1. List all products, with the name text as a hyperlink to the detail view.
-1. Provide a product detail view.
-1. List payment types for current customer.
-1. On the product detail view, have an `Add to Order` button that, when clicked, either creates a new order for a customer that doesn't have an active one, or adds to an existing open order.
-1. In the navigation bar, have an affordance that shows the current customer how many items are in their order.
-1. If the user clicks on their order in the navigation bar, take them to the order detail view, which lists products, their prices, and current total for order.
-1. On the order detail view, have a button labeled `Complete Order`.
-1. When a customer starts to complete an order, show them a list of payment types that are assigned to them. When they select one to add to the order, then the order is complete.
+### Controllers
+
+You will learn about what role a controller has in an API, how it uses models and validates a request against the model, and an introduction to LINQ to get data from your database.
+
+## Requirements
+
+1. Use the Yeoman generator to build a basic Web API project.
+1. Define models and controllers for the following resources.
+    1. Customer
+    1. Order
+    1. Product
+    1. LineItem
+1. Ensure that you have annotations on your models to verify the data.
+1. Ensure that you have the correct relationships established between your models using [navigation properties](https://docs.asp.net/en/latest/data/ef-mvc/complex-data-model.html?highlight=annotation#the-courses-and-officeassignment-navigation-properties).
 
 
 ## Resources
 
-### CORS Policies
+### Installing C# Extension for Code
 
-Read about enabling and modifying [CORS policies](https://docs.asp.net/en/latest/security/cors.html) in .NET Core
+You install this extension by pressing `F1` to open the VS Code palette. Type `ext install` to see the list of extensions. Select the C# extension.
 
-### Razor Templates
+### Installing Yeoman and the ASPNET Generator
 
-ASP.NET MVC views are generated by the [Razor view engine](https://docs.asp.net/en/latest/mvc/overview.html#razor-view-engine). You will find them *very* similar to Handlebar templates that you used in the client side course of NSS.
+Both of these are `npm` packages, and global installations at that, so run this command in your terminal.
 
-### Form Helpers
+```
+npm install -g yo generator-aspnet
+```
 
-Since this site, at a minimum, will have a couple forms (one for product detail and one for order detail), read about how .NET makes it easier to build [dynamic forms](https://docs.asp.net/en/latest/mvc/views/working-with-forms.html).
+### Starter Configuration
+
+> project.json
+
+```json
+{
+  "dependencies": {
+    "Microsoft.NETCore.App": {
+      "version": "1.0.0",
+      "type": "platform"
+    },
+    "Microsoft.AspNetCore.Mvc": "1.0.0",
+    "Microsoft.AspNetCore.Server.IISIntegration": "1.0.0",
+    "Microsoft.AspNetCore.Server.Kestrel": "1.0.0",
+    "Microsoft.Extensions.Configuration.EnvironmentVariables": "1.0.0",
+    "Microsoft.Extensions.Configuration.FileExtensions": "1.0.0",
+    "Microsoft.Extensions.Configuration.Json": "1.0.0",
+    "Microsoft.Extensions.Configuration.CommandLine": "1.0.0",
+    "Microsoft.Extensions.Logging": "1.0.0",
+    "Microsoft.Extensions.Logging.Console": "1.0.0",
+    "Microsoft.Extensions.Logging.Debug": "1.0.0",
+    "Microsoft.EntityFrameworkCore.Sqlite": "1.0.0",
+    "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0",
+    "Microsoft.EntityFrameworkCore.Design": {
+      "version": "1.0.0-preview2-final",
+      "type": "build"
+    }
+  },
+
+  "tools": {
+    "Microsoft.AspNetCore.Server.IISIntegration.Tools": "1.0.0-preview2-final",
+    "Microsoft.EntityFrameworkCore.Tools": "1.0.0-preview2-final"
+  },
+
+  "frameworks": {
+    "netcoreapp1.0": {
+      "imports": [
+        "dotnet5.6",
+        "portable-net45+win8"
+      ]
+    }
+  },
+
+  "buildOptions": {
+    "emitEntryPoint": true,
+    "preserveCompilationContext": true
+  },
+
+  "runtimeOptions": {
+    "configProperties": {
+      "System.GC.Server": true
+    }
+  },
+
+  "publishOptions": {
+    "include": [
+      "wwwroot",
+      "Views",
+      "Areas/**/Views",
+      "appsettings.json",
+      "web.config"
+    ]
+  },
+
+  "scripts": {
+    "postpublish": [ "dotnet publish-iis --publish-folder %publish:OutputPath% --framework %publish:FullTargetFramework%" ]
+  },
+
+  "tooling": {
+    "defaultNamespace": "lol"
+  }
+}
+```
