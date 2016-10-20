@@ -22,6 +22,9 @@ namespace Bangazon.Models
     [Required]
     public string LastName { get; set; }
 
-    public ICollection<PaymentType> PaymentTypes;
+    [Required]
+    public string StreetAddress { get; set; }
+    
+    public ICollection<Product> Products;
   }
 }

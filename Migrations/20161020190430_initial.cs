@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace bangazonAPI.Migrations
+namespace initialsite.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -16,26 +16,12 @@ namespace bangazonAPI.Migrations
                         .Annotation("Autoincrement", true),
                     DateCreated = table.Column<DateTime>(nullable: false, defaultValueSql: "strftime('%Y-%m-%d %H:%M:%S')"),
                     FirstName = table.Column<string>(nullable: false),
-                    LastName = table.Column<string>(nullable: false)
+                    LastName = table.Column<string>(nullable: false),
+                    StreetAddress = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Customer", x => x.CustomerId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Product",
-                columns: table => new
-                {
-                    ProductId = table.Column<int>(nullable: false)
-                        .Annotation("Autoincrement", true),
-                    DateCreated = table.Column<DateTime>(nullable: false, defaultValueSql: "strftime('%Y-%m-%d %H:%M:%S')"),
-                    Description = table.Column<string>(maxLength: 255, nullable: false),
-                    Price = table.Column<double>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Product", x => x.ProductId);
                 });
 
             migrationBuilder.CreateTable(
@@ -54,6 +40,29 @@ namespace bangazonAPI.Migrations
                     table.PrimaryKey("PK_PaymentType", x => x.PaymentTypeId);
                     table.ForeignKey(
                         name: "FK_PaymentType_Customer_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customer",
+                        principalColumn: "CustomerId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Product",
+                columns: table => new
+                {
+                    ProductId = table.Column<int>(nullable: false)
+                        .Annotation("Autoincrement", true),
+                    CustomerId = table.Column<int>(nullable: false),
+                    DateCreated = table.Column<DateTime>(nullable: false),
+                    Description = table.Column<string>(maxLength: 255, nullable: false),
+                    Price = table.Column<double>(nullable: false),
+                    Title = table.Column<string>(maxLength: 55, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Product", x => x.ProductId);
+                    table.ForeignKey(
+                        name: "FK_Product_Customer_CustomerId",
                         column: x => x.CustomerId,
                         principalTable: "Customer",
                         principalColumn: "CustomerId",
@@ -137,6 +146,11 @@ namespace bangazonAPI.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_PaymentType_CustomerId",
                 table: "PaymentType",
+                column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Product_CustomerId",
+                table: "Product",
                 column: "CustomerId");
         }
 

@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
 
 namespace Bangazon.Models
 {
@@ -13,7 +11,6 @@ namespace Bangazon.Models
 
     [Required]
     [DataType(DataType.Date)]
-    [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
     public DateTime DateCreated {get;set;}
 
     [Required]
@@ -21,7 +18,16 @@ namespace Bangazon.Models
     public string Description { get; set; }
 
     [Required]
+    [StringLength(55)]
+    public string Title { get; set; }
+
+    [Required]
     public double Price { get; set; }
+
+    [Required]
+    public int CustomerId { get; set; }
+    public Customer Customer { get; set; }
+    
     public ICollection<LineItem> LineItems;
   }
 }

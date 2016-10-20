@@ -233,10 +233,6 @@ _Pvt_Extensions
 # FAKE - F# Make
 .fake/
 
-bangazon.db
-
-wwwroot/lib/bower_components
-wwwroot/lib/node_modules
-wwwroot/.sass-cache
-
 .vscode
+*.db
+wwwroot/lib

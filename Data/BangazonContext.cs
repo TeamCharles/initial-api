@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Bangazon.Models;
 
-namespace Bangazon.Data
+namespace BangazonWeb.Data
 {
     public class BangazonContext : DbContext
     {
@@ -17,10 +17,6 @@ namespace Bangazon.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Product>()
-                .Property(b => b.DateCreated)
-                .HasDefaultValueSql("strftime('%Y-%m-%d %H:%M:%S')");
-
             modelBuilder.Entity<Customer>()
                 .Property(b => b.DateCreated)
                 .HasDefaultValueSql("strftime('%Y-%m-%d %H:%M:%S')");
