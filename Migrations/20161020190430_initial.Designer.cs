@@ -3,13 +3,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Bangazon.Data;
+using BangazonWeb.Data;
 
-namespace bangazonAPI.Migrations
+namespace initialsite.Migrations
 {
     [DbContext(typeof(BangazonContext))]
-    [Migration("20161017145918_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20161020190430_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -29,6 +29,9 @@ namespace bangazonAPI.Migrations
                         .IsRequired();
 
                     b.Property<string>("LastName")
+                        .IsRequired();
+
+                    b.Property<string>("StreetAddress")
                         .IsRequired();
 
                     b.HasKey("CustomerId");
@@ -109,9 +112,9 @@ namespace bangazonAPI.Migrations
                     b.Property<int>("ProductId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("DateCreated")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasDefaultValueSql("strftime('%Y-%m-%d %H:%M:%S')");
+                    b.Property<int>("CustomerId");
+
+                    b.Property<DateTime>("DateCreated");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -119,7 +122,13 @@ namespace bangazonAPI.Migrations
 
                     b.Property<double>("Price");
 
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 55);
+
                     b.HasKey("ProductId");
+
+                    b.HasIndex("CustomerId");
 
                     b.ToTable("Product");
                 });
@@ -150,6 +159,14 @@ namespace bangazonAPI.Migrations
                 });
 
             modelBuilder.Entity("Bangazon.Models.PaymentType", b =>
+                {
+                    b.HasOne("Bangazon.Models.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Bangazon.Models.Product", b =>
                 {
                     b.HasOne("Bangazon.Models.Customer", "Customer")
                         .WithMany()
