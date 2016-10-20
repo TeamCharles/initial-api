@@ -1,6 +1,10 @@
 ## Status
 **READY/IN DEVELOPMENT/HOLD**
 
+## Documentation
+
+[ ] I have fully documented features in this PR. Please put an `X` in the box to confirm.
+
 ## Migrations
 YES | NO
 
@@ -30,7 +34,7 @@ Outline the steps to test or reproduce the PR here.
 ```sh
 git pull --prune
 git checkout <feature_branch>
-bundle; script/server
+dotnet run
 ```
 
 1. 
