@@ -21,6 +21,7 @@ namespace Bangazon.Models
     public DateTime? DateCompleted {get;set;}
 
     // Foreign key reference to the Species table
+    [Required]
     public int CustomerId {get;set;}
     public Customer Customer {get;set;}
 
