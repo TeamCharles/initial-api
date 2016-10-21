@@ -4,15 +4,15 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace initialsite.Migrations
 {
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Customer",
+                name: "User",
                 columns: table => new
                 {
-                    CustomerId = table.Column<int>(nullable: false)
+                    UserId = table.Column<int>(nullable: false)
                         .Annotation("Autoincrement", true),
                     DateCreated = table.Column<DateTime>(nullable: false, defaultValueSql: "strftime('%Y-%m-%d %H:%M:%S')"),
                     FirstName = table.Column<string>(nullable: false),
@@ -21,7 +21,7 @@ namespace initialsite.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Customer", x => x.CustomerId);
+                    table.PrimaryKey("PK_User", x => x.UserId);
                 });
 
             migrationBuilder.CreateTable(
@@ -33,17 +33,18 @@ namespace initialsite.Migrations
                     AccountNumber = table.Column<string>(maxLength: 20, nullable: false),
                     CustomerId = table.Column<int>(nullable: false),
                     DateCreated = table.Column<DateTime>(nullable: false, defaultValueSql: "strftime('%Y-%m-%d %H:%M:%S')"),
-                    Description = table.Column<string>(maxLength: 12, nullable: false)
+                    Description = table.Column<string>(maxLength: 12, nullable: false),
+                    UserId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PaymentType", x => x.PaymentTypeId);
                     table.ForeignKey(
-                        name: "FK_PaymentType_Customer_CustomerId",
-                        column: x => x.CustomerId,
-                        principalTable: "Customer",
-                        principalColumn: "CustomerId",
-                        onDelete: ReferentialAction.Cascade);
+                        name: "FK_PaymentType_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -52,20 +53,22 @@ namespace initialsite.Migrations
                 {
                     ProductId = table.Column<int>(nullable: false)
                         .Annotation("Autoincrement", true),
-                    CustomerId = table.Column<int>(nullable: false),
                     DateCreated = table.Column<DateTime>(nullable: false),
                     Description = table.Column<string>(maxLength: 255, nullable: false),
+                    IsActive = table.Column<bool>(nullable: false),
+                    Name = table.Column<string>(maxLength: 55, nullable: false),
                     Price = table.Column<double>(nullable: false),
-                    Title = table.Column<string>(maxLength: 55, nullable: false)
+                    ProductTypeId = table.Column<int>(nullable: false),
+                    UserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Product", x => x.ProductId);
                     table.ForeignKey(
-                        name: "FK_Product_Customer_CustomerId",
-                        column: x => x.CustomerId,
-                        principalTable: "Customer",
-                        principalColumn: "CustomerId",
+                        name: "FK_Product_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -75,26 +78,26 @@ namespace initialsite.Migrations
                 {
                     OrderId = table.Column<int>(nullable: false)
                         .Annotation("Autoincrement", true),
-                    CustomerId = table.Column<int>(nullable: false),
                     DateCompleted = table.Column<DateTime>(nullable: true),
                     DateCreated = table.Column<DateTime>(nullable: false, defaultValueSql: "strftime('%Y-%m-%d %H:%M:%S')"),
-                    PaymentTypeId = table.Column<int>(nullable: true)
+                    PaymentTypeId = table.Column<int>(nullable: true),
+                    UserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Order", x => x.OrderId);
-                    table.ForeignKey(
-                        name: "FK_Order_Customer_CustomerId",
-                        column: x => x.CustomerId,
-                        principalTable: "Customer",
-                        principalColumn: "CustomerId",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Order_PaymentType_PaymentTypeId",
                         column: x => x.PaymentTypeId,
                         principalTable: "PaymentType",
                         principalColumn: "PaymentTypeId",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Order_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -134,24 +137,24 @@ namespace initialsite.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Order_CustomerId",
-                table: "Order",
-                column: "CustomerId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Order_PaymentTypeId",
                 table: "Order",
                 column: "PaymentTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PaymentType_CustomerId",
-                table: "PaymentType",
-                column: "CustomerId");
+                name: "IX_Order_UserId",
+                table: "Order",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Product_CustomerId",
+                name: "IX_PaymentType_UserId",
+                table: "PaymentType",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Product_UserId",
                 table: "Product",
-                column: "CustomerId");
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -169,7 +172,7 @@ namespace initialsite.Migrations
                 name: "PaymentType");
 
             migrationBuilder.DropTable(
-                name: "Customer");
+                name: "User");
         }
     }
 }

@@ -15,29 +15,6 @@ namespace initialsite.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431");
 
-            modelBuilder.Entity("Bangazon.Models.Customer", b =>
-                {
-                    b.Property<int>("CustomerId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("DateCreated")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasDefaultValueSql("strftime('%Y-%m-%d %H:%M:%S')");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired();
-
-                    b.Property<string>("LastName")
-                        .IsRequired();
-
-                    b.Property<string>("StreetAddress")
-                        .IsRequired();
-
-                    b.HasKey("CustomerId");
-
-                    b.ToTable("Customer");
-                });
-
             modelBuilder.Entity("Bangazon.Models.LineItem", b =>
                 {
                     b.Property<int>("LineItemId")
@@ -61,8 +38,6 @@ namespace initialsite.Migrations
                     b.Property<int>("OrderId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("CustomerId");
-
                     b.Property<DateTime?>("DateCompleted");
 
                     b.Property<DateTime>("DateCreated")
@@ -71,11 +46,13 @@ namespace initialsite.Migrations
 
                     b.Property<int?>("PaymentTypeId");
 
+                    b.Property<int>("UserId");
+
                     b.HasKey("OrderId");
 
-                    b.HasIndex("CustomerId");
-
                     b.HasIndex("PaymentTypeId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Order");
                 });
@@ -99,9 +76,11 @@ namespace initialsite.Migrations
                         .IsRequired()
                         .HasAnnotation("MaxLength", 12);
 
+                    b.Property<int?>("UserId");
+
                     b.HasKey("PaymentTypeId");
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("PaymentType");
                 });
@@ -111,25 +90,53 @@ namespace initialsite.Migrations
                     b.Property<int>("ProductId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("CustomerId");
-
                     b.Property<DateTime>("DateCreated");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasAnnotation("MaxLength", 255);
 
-                    b.Property<double>("Price");
+                    b.Property<bool?>("IsActive")
+                        .IsRequired();
 
-                    b.Property<string>("Title")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasAnnotation("MaxLength", 55);
 
+                    b.Property<double>("Price");
+
+                    b.Property<int>("ProductTypeId");
+
+                    b.Property<int>("UserId");
+
                     b.HasKey("ProductId");
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Product");
+                });
+
+            modelBuilder.Entity("Bangazon.Models.User", b =>
+                {
+                    b.Property<int>("UserId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("DateCreated")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasDefaultValueSql("strftime('%Y-%m-%d %H:%M:%S')");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired();
+
+                    b.Property<string>("LastName")
+                        .IsRequired();
+
+                    b.Property<string>("StreetAddress")
+                        .IsRequired();
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("User");
                 });
 
             modelBuilder.Entity("Bangazon.Models.LineItem", b =>
@@ -147,29 +154,28 @@ namespace initialsite.Migrations
 
             modelBuilder.Entity("Bangazon.Models.Order", b =>
                 {
-                    b.HasOne("Bangazon.Models.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("Bangazon.Models.PaymentType", "PaymentType")
                         .WithMany()
                         .HasForeignKey("PaymentTypeId");
+
+                    b.HasOne("Bangazon.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Bangazon.Models.PaymentType", b =>
                 {
-                    b.HasOne("Bangazon.Models.Customer", "Customer")
+                    b.HasOne("Bangazon.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Bangazon.Models.Product", b =>
                 {
-                    b.HasOne("Bangazon.Models.Customer", "Customer")
+                    b.HasOne("Bangazon.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("CustomerId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
         }
