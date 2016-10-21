@@ -20,9 +20,8 @@ namespace Bangazon.Models
     [DataType(DataType.Date)]
     public DateTime? DateCompleted {get;set;}
 
-    [Required]
-    public int CustomerId {get;set;}
-    public Customer Customer {get;set;}
+    public int UserId {get;set;}
+    public User User {get;set;}
 
     public int? PaymentTypeId {get;set;}
     public PaymentType PaymentType {get;set;} 
