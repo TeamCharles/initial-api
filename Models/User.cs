@@ -6,10 +6,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Bangazon.Models
 {
-  public class Customer
+  public class User
   {
     [Key]
-    public int CustomerId {get;set;}
+    public int UserId {get;set;}
 
     [Required]
     [DataType(DataType.Date)]
