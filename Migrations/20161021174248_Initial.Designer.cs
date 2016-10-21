@@ -8,7 +8,7 @@ using BangazonWeb.Data;
 namespace initialsite.Migrations
 {
     [DbContext(typeof(BangazonContext))]
-    [Migration("20161021161212_Initial")]
+    [Migration("20161021174248_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -122,6 +122,9 @@ namespace initialsite.Migrations
                     b.Property<int>("UserId")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("City")
+                        .IsRequired();
+
                     b.Property<DateTime>("DateCreated")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasDefaultValueSql("strftime('%Y-%m-%d %H:%M:%S')");
@@ -132,8 +135,13 @@ namespace initialsite.Migrations
                     b.Property<string>("LastName")
                         .IsRequired();
 
+                    b.Property<string>("State")
+                        .IsRequired();
+
                     b.Property<string>("StreetAddress")
                         .IsRequired();
+
+                    b.Property<int>("ZipCode");
 
                     b.HasKey("UserId");
 

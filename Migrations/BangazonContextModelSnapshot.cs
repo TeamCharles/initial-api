@@ -121,6 +121,9 @@ namespace initialsite.Migrations
                     b.Property<int>("UserId")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("City")
+                        .IsRequired();
+
                     b.Property<DateTime>("DateCreated")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasDefaultValueSql("strftime('%Y-%m-%d %H:%M:%S')");
@@ -131,8 +134,13 @@ namespace initialsite.Migrations
                     b.Property<string>("LastName")
                         .IsRequired();
 
+                    b.Property<string>("State")
+                        .IsRequired();
+
                     b.Property<string>("StreetAddress")
                         .IsRequired();
+
+                    b.Property<int>("ZipCode");
 
                     b.HasKey("UserId");
 

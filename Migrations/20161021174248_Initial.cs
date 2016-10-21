@@ -14,10 +14,13 @@ namespace initialsite.Migrations
                 {
                     UserId = table.Column<int>(nullable: false)
                         .Annotation("Autoincrement", true),
+                    City = table.Column<string>(nullable: false),
                     DateCreated = table.Column<DateTime>(nullable: false, defaultValueSql: "strftime('%Y-%m-%d %H:%M:%S')"),
                     FirstName = table.Column<string>(nullable: false),
                     LastName = table.Column<string>(nullable: false),
-                    StreetAddress = table.Column<string>(nullable: false)
+                    State = table.Column<string>(nullable: false),
+                    StreetAddress = table.Column<string>(nullable: false),
+                    ZipCode = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
