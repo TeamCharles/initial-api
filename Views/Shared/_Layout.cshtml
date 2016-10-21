@@ -1,3 +1,19 @@
+ @model IEnumerable<Bangazon.Models.Product>
+
+@{
+                ViewBag.Customers = new string[]
+           {
+                "Garrett Vangilder",
+                "Dayne Wright",
+                "Matt Kraatz",
+                "Anulfo Ordaz",
+                "Matt Hamil"
+           };
+           ViewData["Title"] = "Welcome to Bangazon!";
+           System.Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + ViewData);
+           System.Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + ViewBag);
+
+}
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,21 +42,31 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Bangazon!</a>
+                <a asp-area="" asp-controller="Products" asp-action="Index" class="navbar-brand">Bangazon!</a>
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Product Types</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">Sell Something</a></li>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a asp-area="" asp-controller="User" asp-action="New">Create an Account</a></li>
+                    <li><a asp-area="" asp-controller="Order" asp-action="Index"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"><a asp-controller="Orders" asp-action="Index"></a></span></a></li>
+                <li class="dropdown">
+                <a  class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Users <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        @foreach(var customer in ViewBag.Customers)
+                            {   
+                                <li><a asp-area="" asp-controller="Customers" asp-action="Index">@customer</a></li>
+                            }
+                    </ul>
+                </li>
                 </ul>
             </div>
+
         </div>
     </div>
     <div class="container body-content">
         @RenderBody()
         <hr />
-        <footer>
-            <p>&copy; 2016 - BangazonWeb</p>
+        <footer class="footer navbar-fixed-bottom text-center">
+            <p>&copy; @DateTime.Now.Year - BangazonWeb</p>
         </footer>
     </div>
 
