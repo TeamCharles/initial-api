@@ -20,11 +20,9 @@ namespace Bangazon.Models
     [DataType(DataType.Date)]
     public DateTime? DateCompleted {get;set;}
 
-    // Foreign key reference to the Species table
-    public int CustomerId {get;set;}
-    public Customer Customer {get;set;}
+    public int UserId {get;set;}
+    public User User {get;set;}
 
-    // Foreign key reference to the Habitat table
     public int? PaymentTypeId {get;set;}
     public PaymentType PaymentType {get;set;} 
 

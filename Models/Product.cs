@@ -31,11 +31,11 @@ namespace Bangazon.Models
     public ProductType ProductType { get; set; }
 
     [Required]
+    public bool IsActive { get; set; }
+
+    [Required]
     public int UserId { get; set; }
     public User User { get; set; }
-    
-    [Required]
-    public bool IsActive { get; set; }
 
     public ICollection<LineItem> LineItems;
   }
