@@ -11,7 +11,7 @@ namespace BangazonWeb.Controllers
 {
     /**
      * CLASS: ProductTypes
-     * PURPOSE: Creates routes for main index file and seller product type view
+     * PURPOSE: Creates routes for main index view (buy method) and seller view (sell method)
      * AUTHOR: Dayne Wright
      * METHODS:
      *   Task<IActionResult> Buy() - Shows all product types and counts that do not belong to the logged in user
@@ -29,7 +29,7 @@ namespace BangazonWeb.Controllers
         }
 
         public List<ProductType> Buy()
-        {
+        { 
             return context.ProductType.ToList();
             //return View(await context.ProductType.ToListAsync()); 
         }
