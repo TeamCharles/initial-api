@@ -34,8 +34,7 @@ namespace Bangazon.Models
     [Required]
     public int ZipCode {get; set;}
     
-    [Required]
     public ICollection<Product> Products;
-    
+
   }
 }
