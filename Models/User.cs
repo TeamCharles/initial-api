@@ -24,7 +24,17 @@ namespace Bangazon.Models
 
     [Required]
     public string StreetAddress { get; set; }
+
+    [Required]
+    public string City {get; set;}
+
+    [Required]
+    public string State {get; set;}
+
+    [Required]
+    public int ZipCode {get; set;}
     
     public ICollection<Product> Products;
+
   }
 }
