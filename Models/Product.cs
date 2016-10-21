@@ -14,19 +14,26 @@ namespace Bangazon.Models
     public DateTime DateCreated {get;set;}
 
     [Required]
+    public int ProductTypeId {get;set;}
+    // public ProductType ProductType {get; set;}
+
+    [Required]
     [StringLength(255)]
     public string Description { get; set; }
 
     [Required]
     [StringLength(55)]
-    public string Title { get; set; }
+    public string Name { get; set; }
 
     [Required]
     public double Price { get; set; }
 
     [Required]
-    public int CustomerId { get; set; }
-    public Customer Customer { get; set; }
+    public bool? IsActive { get; set; }
+
+    [Required]
+    public int UserId { get; set; }
+    public User User { get; set; }
     
     public ICollection<LineItem> LineItems;
   }

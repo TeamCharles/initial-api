@@ -31,7 +31,7 @@ namespace BangazonWeb.Controllers
             }
 
             var product = await context.Product
-                    .Include(s => s.Customer)
+                    .Include(s => s.User)
                     .SingleOrDefaultAsync(m => m.ProductId == id);
 
             // If product not found, return 404
