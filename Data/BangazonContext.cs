@@ -37,6 +37,10 @@ namespace BangazonWeb.Data
             modelBuilder.Entity<ProductType>()
                 .Property(b => b.DateCreated)
                 .HasDefaultValueSql("strftime('%Y-%m-%d %H:%M:%S')");
+
+            modelBuilder.Entity<Product>()
+                .Property(b => b.DateCreated)
+                .HasDefaultValueSql("strftime('%Y-%m-%d %H:%M:%S')");
         }
     }
 
