@@ -22,7 +22,9 @@ namespace Bangazon.Models
     [Required]
     [StringLength(20)]
     public string AccountNumber { get; set; }
-    public int CustomerId {get;set;}
+    
+    [Required]
+    public int UserId {get;set;}
     public User User {get;set;}
   }
 }
