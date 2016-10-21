@@ -1,17 +1,19 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Bangazon.Models
 {
   public class Product
   {
     [Key]
-    public int ProductId {get;set;}
+    public int ProductId { get; set; }
 
     [Required]
     [DataType(DataType.Date)]
-    public DateTime DateCreated {get;set;}
+    [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+    public DateTime DateCreated { get; set; }
 
     [Required]
     [StringLength(255)]
@@ -19,15 +21,22 @@ namespace Bangazon.Models
 
     [Required]
     [StringLength(55)]
-    public string Title { get; set; }
+    public string Name { get; set; }
 
     [Required]
-    public double Price { get; set; }
+    public float Price { get; set; }
 
     [Required]
-    public int CustomerId { get; set; }
-    public Customer Customer { get; set; }
+    public int ProductTypeId { get; set; }
+    public ProductType ProductType { get; set; }
+
+    [Required]
+    public int UserId { get; set; }
+    public User User { get; set; }
     
+    [Required]
+    public bool IsActive { get; set; }
+
     public ICollection<LineItem> LineItems;
   }
 }
