@@ -25,21 +25,24 @@ namespace BangazonWeb.Data
                       LastName = "Alexander",
                       StreetAddress = "100 Infinity Way",
                       City = "St. Paul",
-                      State = "Minnesota"
+                      State = "Minnesota",
+                      ZipCode = 12345
                   },
                   new User { 
                       FirstName = "Steve",
                       LastName = "Brownlee",
                       StreetAddress = "92 Main Street",
                       City = "Nashville",
-                      State = "Tennessee"
+                      State = "Tennessee",
+                      ZipCode = 37212
                   },
                   new User { 
                       FirstName = "Tractor",
                       LastName = "Ryan",
                       StreetAddress = "1666 Catalina Blvd",
                       City = "Los Angeles",
-                      State = "California"
+                      State = "California",
+                      ZipCode = 55555
                   }
               };
 
