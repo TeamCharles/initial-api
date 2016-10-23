@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using BangazonWeb.Data;
 using Bangazon.Models;
 using Microsoft.AspNetCore.Http;
@@ -10,6 +7,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BangazonWeb.Controllers
 {
+    /**
+     * Class: UserController
+     * Purpose: Provide methods for adding a new user to the database
+     * Author: Matt Kraatz
+     * Methods:
+     *   BangazonContext context - store a reference to the database context
+     *   UserController(BangazonContext ctx) - constructor run at setup
+     *   IActionResult New() - returns new user creation form view
+     *   IActionResult New(User user) - posts a new user to the database via form
+     *   IActionResult Error() - returns Error page
+     *   bool UserExists(int id) - checks the database for potential duplicate users
+     */
     public class UserController : Controller
     {
         private BangazonContext context;
@@ -25,7 +34,8 @@ namespace BangazonWeb.Controllers
         }
 
         [HttpPost]
-        public IActionResult New([FromBody] User user)
+        [ValidateAntiForgeryToken]
+        public IActionResult New(User user)
         {
             if (!ModelState.IsValid)
             {
@@ -49,7 +59,7 @@ namespace BangazonWeb.Controllers
                 }
             }
 
-            return Redirect("/");
+            return RedirectToAction("Index", "Products");
         }
 
         public IActionResult Error()
