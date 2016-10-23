@@ -9,8 +9,6 @@
                 "Anulfo Ordaz",
                 "Matt Hamil"
            };
-           System.Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + ViewData);
-           System.Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + ViewBag);
 
 }
 <!DOCTYPE html>
@@ -52,7 +50,7 @@
                     <ul class="dropdown-menu">
                         @foreach(var customer in ViewBag.Customers)
                             {   
-                                <li><a asp-area="" asp-controller="Customers" asp-action="Index">@customer</a></li>
+                                <li><a asp-area="" asp-controller="Users" asp-action="SetActiveUser" >@customer</a></li>
                             }
                     </ul>
                 </li>
