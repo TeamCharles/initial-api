@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections.Generic;
 
 
 namespace Bangazon.Models
@@ -18,6 +19,7 @@ namespace Bangazon.Models
     [Required]
     [StringLength(20)]
     public string Label { get; set; }
-    
+    public ICollection<Product> Products;
+
   }
 }

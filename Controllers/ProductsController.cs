@@ -3,8 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Bangazon.Models;
 using BangazonWeb.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace BangazonWeb.Controllers
@@ -43,7 +45,42 @@ namespace BangazonWeb.Controllers
 
             return View(product);
         }
+        
+        [HttpGet]
+        public IActionResult Create()
+        {
+           ViewData["ProductTypeId"] = context.ProductType
+                .OrderBy(l => l.Label)
+                .AsEnumerable()
+                .Select(li => new SelectListItem { 
+                    Text = li.Label,
+                    Value = li.ProductTypeId.ToString()
+                    });
 
+            ViewData["UserId"] = context.User
+                .OrderBy(l => l.LastName)
+                .AsEnumerable()
+                .Select(li => new SelectListItem { 
+                    Text = $"{li.FirstName} {li.LastName}",
+                    Value = li.UserId.ToString()
+                });
+
+            return View(); 
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(Product product)
+        {
+            Console.WriteLine($"ModelState.IsValid={ModelState.IsValid}");
+            Console.WriteLine($"product={product}");
+            if (ModelState.IsValid)
+            {
+                context.Add(product);
+                await context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+            return View(product);
+        }
         public IActionResult Type([FromRoute]int id)
         {
             ViewData["Message"] = "Your contact page.";
