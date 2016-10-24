@@ -31,14 +31,14 @@ namespace BangazonWeb.Controllers
 
         public async Task<IActionResult> Buy()
         {
-            List<ProductType> ProductTypeList = await context.ProductType.ToListAsync();
+            List<ProductType> ProductTypeList = await context.ProductType.OrderBy(s => s.Label).ToListAsync();
             ProductTypeList.ForEach(CalculateTypeQuantities);
             return View(ProductTypeList);
         }
 
         public async Task<IActionResult> List([FromRoute]int? id)
         {
-            return View(await context.Product.Where(p => p.ProductTypeId == id).ToListAsync());
+            return View(await context.Product.OrderBy(s => s.Name).Where(p => p.ProductTypeId == id).ToListAsync());
         }
 
         public async Task<IActionResult> Sell()
