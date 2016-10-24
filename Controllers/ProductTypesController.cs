@@ -16,6 +16,7 @@ namespace BangazonWeb.Controllers
      * METHODS:
      *   Task<IActionResult> Buy() - Shows all product types and counts
      *   Task<IActionResult> Sell() - Shows all product types
+     *   Task<IActionResult> list() - Shows all products that match a specified ProductTypeId
      *   CalculateTypeQuantities(ProductType) - Queries the Product table to return a new ProductType object...
      *        ...new ProductType object contains a value for Quantity, based on number of Products with that Type
      **/
@@ -34,6 +35,12 @@ namespace BangazonWeb.Controllers
             ProductTypeList.ForEach(CalculateTypeQuantities);
             return View(ProductTypeList);
         }
+
+        public async Task<IActionResult> List([FromRoute]int? id)
+        {
+            return View(await context.Product.Where(p => p.ProductTypeId == id).ToListAsync());
+        }
+
         public async Task<IActionResult> Sell()
         {
             return View(await context.ProductType.ToListAsync()); 
