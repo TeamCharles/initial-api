@@ -15,6 +15,15 @@
         <div class="col-md-3">@Html.DisplayFor(modelItem => item.Description)</div>
         <div class="col-md-3">@Html.DisplayFor(modelItem => item.Price)</div>
         <div class="col-md-3">@Html.DisplayFor(modelItem => item.DateCreated)</div>
-        <div class="col-md-3"><a asp-controller="Products" asp-action="Detail" asp-route-id="@item.ProductId">Details</a></div>
+        <div class="col-md-3">
+            @if (item.UserId == 1)
+            {
+                <a asp-action="Delete" asp-route-id="@item.ProductId"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <a asp-controller="Products" asp-action="EditInfo" asp-route-id="@item.ProductId"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
+                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            }
+            <a asp-controller="Products" asp-action="Detail" asp-route-id="@item.ProductId">Details</a>
+        </div>
     </div>
 }
