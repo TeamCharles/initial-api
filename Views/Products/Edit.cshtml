@@ -1,0 +1,59 @@
+@model Bangazon.Models.Product
+
+
+@{
+    ViewData["Title"] = "Product Edit";
+}
+<form aso-action="Edit">
+    <div class="form-horizontal">
+        <h4>Edit</h4>
+        <hr>
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div>
+            <label class="col-md-2 control-label">Product Name</label>
+            <div class="col-md-10">
+            <input  class="form-control" placeholder="@Html.DisplayFor(model => model.Name)" />
+            <span asp-validation-for="Name" class="text-danger" />
+            </div>
+        </div>
+
+        <div>
+            <label class="col-md-2 control-label">Price</label>
+            <div class="col-md-10">
+            <input  class="form-control" placeholder="@Html.DisplayFor(model => model.Price)" />
+            <span asp-validation-for="Price" class="text-danger" />
+            </div>
+        </div>
+
+        <div>
+            <label class="col-md-2 control-label">Description</label>
+            <div class="col-md-10">
+            <input  class="form-control" placeholder="@Html.DisplayFor(model => model.Description)" />
+            <span asp-validation-for="Description" class="text-danger" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <span class="text-danger" />
+                @Html.DropDownList("ProductTypeId")
+                
+
+
+            </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Edit Item" class="btn btn-default" />
+            </div>
+        </div>
+
+    </div>
+</form>
+
+
+
+<div>
+    &lt;&lt; <a asp-action="Index">Back to List</a>
+</div>

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BangazonWeb.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace BangazonWeb.Controllers
@@ -25,6 +26,36 @@ namespace BangazonWeb.Controllers
 
         public async Task<IActionResult> Detail([FromRoute]int? id)
         {
+            // If no id was in the route, return 404
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var product = await context.Product
+                    .Include(s => s.User)
+                    .SingleOrDefaultAsync(m => m.ProductId == id);
+
+            // If product not found, return 404
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            return View(product);
+        }
+
+
+        public async Task<IActionResult> Edit([FromRoute]int? id)
+        {
+            ViewData["ProductTypeId"] = context.ProductType
+                .OrderBy(l => l.Label)
+                .AsEnumerable()
+                .Select(li => new SelectListItem { 
+                    Text = li.Label,
+                    Value = li.ProductTypeId.ToString()
+                    });
+                                        
             // If no id was in the route, return 404
             if (id == null)
             {
