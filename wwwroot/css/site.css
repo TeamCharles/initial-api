@@ -36,3 +36,8 @@ textarea {
     display: none
   }
 }
+
+footer {
+    currentColor: gray;
+    background: black
+}
