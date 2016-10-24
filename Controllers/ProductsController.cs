@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Bangazon.Models;
 using BangazonWeb.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -46,7 +47,7 @@ namespace BangazonWeb.Controllers
         }
 
 
-        public async Task<IActionResult> Edit([FromRoute]int? id)
+        public async Task<IActionResult> EditInformation([FromRoute]int? id)
         {
             ViewData["ProductTypeId"] = context.ProductType
                 .OrderBy(l => l.Label)
@@ -73,6 +74,27 @@ namespace BangazonWeb.Controllers
             }
 
             return View(product);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(Product product)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(product);
+            }
+
+            context.Product.Add(product);
+            try
+            {
+                context.SaveChanges();
+            }
+            catch (DbUpdateException)
+            {
+                throw;
+            }
+            
+            return RedirectToAction("Index", "Products");
         }
 
         public IActionResult Type([FromRoute]int id)

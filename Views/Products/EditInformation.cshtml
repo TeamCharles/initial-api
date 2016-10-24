@@ -4,48 +4,45 @@
 @{
     ViewData["Title"] = "Product Edit";
 }
-<form aso-action="Edit">
+<form asp-action="Edit">
     <div class="form-horizontal">
         <h4>Edit</h4>
         <hr>
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div>
-            <label class="col-md-2 control-label">Product Name</label>
+            <label asp-for="Name" class="col-md-2 control-label">Product Name</label>
             <div class="col-md-10">
-            <input  class="form-control" placeholder="@Html.DisplayFor(model => model.Name)" />
+            <input asp-for="Name" class="form-control" placeholder="@Html.DisplayFor(model => model.Name)" />
             <span asp-validation-for="Name" class="text-danger" />
             </div>
         </div>
 
         <div>
-            <label class="col-md-2 control-label">Price</label>
+            <label asp-for="Price" class="col-md-2 control-label">Price</label>
             <div class="col-md-10">
-            <input  class="form-control" placeholder="@Html.DisplayFor(model => model.Price)" />
+            <input asp-for="Price"  class="form-control" placeholder="@Html.DisplayFor(model => model.Price)" />
             <span asp-validation-for="Price" class="text-danger" />
             </div>
         </div>
 
         <div>
-            <label class="col-md-2 control-label">Description</label>
+            <label asp-for="Description" class="col-md-2 control-label">Description</label>
             <div class="col-md-10">
-            <input  class="form-control" placeholder="@Html.DisplayFor(model => model.Description)" />
+            <input asp-for="Description" class="form-control" placeholder="@Html.DisplayFor(model => model.Description)" />
             <span asp-validation-for="Description" class="text-danger" />
             </div>
         </div>
 
         <div class="form-group">
-            <label class="col-md-2 control-label"></label>
+            <label asp-validation-for="ProductTypeId" class="col-md-2 control-label"></label>
             <div class="col-md-10">
                 <span class="text-danger" />
                 @Html.DropDownList("ProductTypeId")
-                
-
-
             </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Edit Item" class="btn btn-default" />
+                <input asp-action="Edit" type="submit" value="Edit Item" class="btn btn-default" />
             </div>
         </div>
 
