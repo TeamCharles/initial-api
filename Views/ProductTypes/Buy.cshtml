@@ -1,0 +1,12 @@
+@model IEnumerable<Bangazon.Models.ProductType>
+@using Bangazon.Models;
+
+<h2>Product Types</h2>
+
+@foreach (ProductType type in Model)
+{
+  <div class="row">
+      <div class="col-md-3"><a asp-action="index" asp-route-id="@type.ProductTypeId">@Html.DisplayFor(model => type.Label)</a></div>
+      <div class="col-md-1">(@Html.DisplayFor(model => type.Quantity))</div>
+  </div>
+}
