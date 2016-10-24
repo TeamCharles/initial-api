@@ -62,7 +62,7 @@ namespace BangazonWeb
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Products}/{action=Index}/{id?}");
+                    template: "{controller=ProductTypes}/{action=Buy}");
             });
         }
     }
