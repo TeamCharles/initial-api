@@ -12,7 +12,7 @@ namespace BangazonWeb.Controllers
     /**
      * CLASS: ProductTypes
      * PURPOSE: Creates routes for main index view (buy method) and seller view (sell method)
-     * AUTHOR: Dayne Wright
+     * AUTHOR: Dayne Wright/Matt Kraatz
      * METHODS:
      *   Task<IActionResult> Buy() - Shows all product types and counts
      *   Task<IActionResult> Sell() - Shows all product types
