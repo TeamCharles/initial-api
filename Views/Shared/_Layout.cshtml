@@ -1,5 +1,3 @@
- @model IEnumerable<Bangazon.Models.Product>
-
 @{
                 ViewBag.Customers = new string[]
            {
@@ -9,17 +7,13 @@
                 "Anulfo Ordaz",
                 "Matt Hamil"
            };
-           ViewData["Title"] = "Dumb";
-           System.Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + ViewData);
-           System.Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + ViewBag);
-
 }
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - BangazonWeb</title>
+    <title>BangazonWeb</title>
 
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
@@ -53,7 +47,7 @@
                     <ul class="dropdown-menu">
                         @foreach(var customer in ViewBag.Customers)
                             {   
-                                <li><a asp-area="" asp-controller="Customers" asp-action="Index">@customer</a></li>
+                                <li><a asp-area="" asp-controller="Users" asp-action="SetActiveUser" >@customer</a></li>
                             }
                     </ul>
                 </li>
@@ -65,7 +59,8 @@
     <div class="container body-content">
         @RenderBody()
         <hr />
-        <footer class="footer navbar-fixed-bottom">
+        <footer class="footer navbar-fixed-bottom text-center">
+
             <p>&copy; @DateTime.Now.Year - BangazonWeb</p>
         </footer>
     </div>

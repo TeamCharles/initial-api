@@ -36,5 +36,7 @@ namespace Bangazon.Models
     
     public ICollection<Product> Products;
 
+    public ICollection<PaymentType> PaymentTypes;
+
   }
 }
