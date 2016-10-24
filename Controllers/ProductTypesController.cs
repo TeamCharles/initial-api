@@ -15,7 +15,9 @@ namespace BangazonWeb.Controllers
      * AUTHOR: Dayne Wright
      * METHODS:
      *   Task<IActionResult> Buy() - Shows all product types and counts
-     *   Task<IActionResult> Sell() - Shows all product types and amounts that the logged in user has for sale
+     *   Task<IActionResult> Sell() - Shows all product types
+     *   CalculateTypeQuantities(ProductType) - Queries the Product table to return a new ProductType object...
+     *        ...new ProductType object contains a value for Quantity, based on number of Products with that Type
      **/
     public class ProductTypesController : Controller
     {
