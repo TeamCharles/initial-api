@@ -39,7 +39,7 @@ namespace BangazonWeb.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return View(user);
             }
 
             context.User.Add(user);
