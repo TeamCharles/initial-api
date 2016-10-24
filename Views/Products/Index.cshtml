@@ -8,7 +8,7 @@
     <a asp-action="Create">Sell Something</a>
 </p>
 
-@foreach (var item in Model)
+@foreach (Product item in Model)
 {
     <div class="row">
         <div class="col-md-3">@Html.DisplayFor(modelItem => item.Description)</div>

@@ -4,7 +4,7 @@
     ViewData["Title"] = "Product Details";
 }
 
-<h2>@Html.DisplayFor(model => model.Title)</h2>
+<h2>@Html.DisplayFor(model => model.Name)</h2>
 
 <div class="row">
     <div class="col-md-3">@Html.DisplayFor(model => model.Description)</div>
@@ -14,7 +14,7 @@
 </div>
 
 <div>
-    Seller: @Html.DisplayFor(model => model.Customer.FirstName) @Html.DisplayFor(model => model.Customer.LastName)
+    Seller: @Html.DisplayFor(model => model.User.FirstName) @Html.DisplayFor(model => model.User.LastName)
 </div>
 
 <div>
