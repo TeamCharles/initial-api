@@ -69,13 +69,6 @@ namespace BangazonWeb.Controllers
 
         public async Task<IActionResult> EditInfo([FromRoute]int? id)
         {
-            ViewData["ProductTypeId"] = context.ProductType
-                .OrderBy(l => l.Label)
-                .AsEnumerable()
-                .Select(li => new SelectListItem { 
-                    Text = li.Label,
-                    Value = li.ProductTypeId.ToString()
-                    });
                                         
             // If no id was in the route, return 404
             if (id == null)
@@ -93,13 +86,13 @@ namespace BangazonWeb.Controllers
                 return NotFound();
             }
 
-            var model = new ProductDetail(context);
+            var model = new ProductEdit(context);
             model.CurrentProduct = product;
             return View(model);
         }
 
         [ValidateAntiForgeryToken]
-        public async Task <IActionResult> Edit([FromRoute]int id, Product product)
+        public async Task <IActionResult> Edit([FromRoute]int id, ProductEdit product)
         {
             Product originalProduct = await context.Product.SingleAsync(p => p.ProductId == id);
 
@@ -111,10 +104,10 @@ namespace BangazonWeb.Controllers
             
             
             originalProduct.ProductId = id;
-            originalProduct.Price = product.Price;
-            originalProduct.Description = product.Description;
-            originalProduct.Name = product.Name;
-            originalProduct.ProductTypeId = product.ProductTypeId;
+            originalProduct.Price = product.CurrentProduct.Price;
+            originalProduct.Description = product.CurrentProduct.Description;
+            originalProduct.Name = product.CurrentProduct.Name;
+            originalProduct.ProductTypeId = product.CurrentProduct.ProductTypeId;
             context.Entry(originalProduct).State = EntityState.Modified;
 
             context.Update(originalProduct);
