@@ -77,7 +77,8 @@ namespace BangazonWeb.Controllers
         }
 
         [HttpPutAttribute]
-        public  IActionResult Put([FromRoute]int id, Product product)
+        [ValidateAntiForgeryToken]
+        public  IActionResult Edit([FromRoute]int id, Product product)
         {
             if (!ModelState.IsValid)
             {

@@ -6,7 +6,7 @@
     ViewData["Title"] = "Product Edit";
 }
 
-<form asp-action="Edit" asp-route-id="@Model.ProductId">
+<form method="put" asp-action="Edit" asp-route-id="@Model.ProductId">
     <div class="form-horizontal">
         <h4>Edit</h4>
         <hr>
