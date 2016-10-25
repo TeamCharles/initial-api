@@ -49,7 +49,7 @@ namespace BangazonWeb.Controllers
             return View(await context.Product.ToListAsync());
         }
 
-        public async Task<IActionResult> Detail([FromRoute]int? id)
+        public async Task<IActionResult> Detail(int? id)
         {
             // If no id was in the route, return 404
             if (id == null)

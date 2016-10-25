@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Bangazon.Models;
+using System.Collections.Generic;
 
 namespace BangazonWeb.Data
 {
@@ -20,7 +21,7 @@ namespace BangazonWeb.Data
 
               var users = new User[]
               {
-                  new User { 
+                  new User {
                       FirstName = "Carson",
                       LastName = "Alexander",
                       StreetAddress = "100 Infinity Way",
@@ -28,7 +29,7 @@ namespace BangazonWeb.Data
                       State = "Minnesota",
                       ZipCode = 12345
                   },
-                  new User { 
+                  new User {
                       FirstName = "Steve",
                       LastName = "Brownlee",
                       StreetAddress = "92 Main Street",
@@ -36,7 +37,7 @@ namespace BangazonWeb.Data
                       State = "Tennessee",
                       ZipCode = 37212
                   },
-                  new User { 
+                  new User {
                       FirstName = "Tractor",
                       LastName = "Ryan",
                       StreetAddress = "1666 Catalina Blvd",
@@ -54,13 +55,13 @@ namespace BangazonWeb.Data
 
               var productTypes = new ProductType[]
               {
-                  new ProductType { 
+                  new ProductType {
                       Label = "Electronics"
                   },
-                  new ProductType { 
+                  new ProductType {
                       Label = "Appliances"
                   },
-                  new ProductType { 
+                  new ProductType {
                       Label = "Housewares"
                   },
               };
@@ -74,7 +75,7 @@ namespace BangazonWeb.Data
 
               var products = new Product[]
               {
-                  new Product { 
+                  new Product {
                       Description = "Colorful throw pillows to liven up your home",
                       ProductTypeId = productTypes.Single(s => s.Label == "Housewares").ProductTypeId,
                       Name = "Throw Pillow",
@@ -82,7 +83,7 @@ namespace BangazonWeb.Data
                       UserId = users.Single(s => s.FirstName == "Tractor").UserId,
                       IsActive = true
                   },
-                  new Product { 
+                  new Product {
                       Description = "A 2012 iPod Shuffle. Headphones are included. 16G capacity.",
                       ProductTypeId = productTypes.Single(s => s.Label == "Electronics").ProductTypeId,
                       Name = "iPod Shuffle",
@@ -90,7 +91,7 @@ namespace BangazonWeb.Data
                       UserId = users.Single(s => s.FirstName == "Steve").UserId,
                       IsActive = true
                   },
-                  new Product { 
+                  new Product {
                       Description = "Stainless steel refrigerator. Three years old. Minor scratches.",
                       ProductTypeId = productTypes.Single(s => s.Label == "Appliances").ProductTypeId,
                       Name = "Samsung refrigerator",
@@ -104,6 +105,45 @@ namespace BangazonWeb.Data
               {
                   context.Product.Add(i);
               }
+
+              // Creating a new Order for Carson Alexander
+              Order carsonOrder = new Order {
+                  UserId = 1,
+              };
+
+              Order otherOrder = new Order {
+                  UserId = 2,
+              };
+
+              context.Order.Add(carsonOrder);
+              context.SaveChanges();
+
+              context.Order.Add(otherOrder);
+              context.SaveChanges();
+
+              // Populating the Order with Line Items
+              LineItem[] carsonOrderLineItems = new LineItem[] {
+                  new LineItem(){ OrderId = 1, ProductId = 1 },
+                  new LineItem(){ OrderId = 1, ProductId = 2 },
+              };
+
+              foreach (LineItem item in carsonOrderLineItems)
+              {
+                  context.LineItem.Add(item);
+              }
+
+              context.SaveChanges();
+
+              // Populating the Other Order with Line Items
+              LineItem[] otherOrderLineItems = new LineItem[] {
+                  new LineItem(){ OrderId = 2, ProductId = 3 }
+              };
+
+              foreach (LineItem item in otherOrderLineItems)
+              {
+                  context.LineItem.Add(item);
+              }
+
               context.SaveChanges();
           }
        }
