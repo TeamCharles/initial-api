@@ -134,7 +134,7 @@ namespace BangazonWeb.Controllers
                      new { controller = "Products", action = "Detail", Id = originalProduct.ProductId } ) );
         }
 
-        public IActionResult Create()
+        public IActionResult New()
         {
            ViewData["ProductTypeId"] = context.ProductType
                 .OrderBy(l => l.Label)
@@ -159,7 +159,7 @@ namespace BangazonWeb.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Product product)
+        public async Task<IActionResult> New(Product product)
         {
             
             if (ModelState.IsValid)
