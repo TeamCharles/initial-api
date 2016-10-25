@@ -1,10 +1,12 @@
 @model Bangazon.Models.Product
 
 
+
 @{
     ViewData["Title"] = "Product Edit";
 }
-<form asp-action="Edit">
+
+<form asp-action="Edit" asp-route-id="@Model.ProductId">
     <div class="form-horizontal">
         <h4>Edit</h4>
         <hr>
@@ -37,17 +39,18 @@
             <label asp-validation-for="ProductTypeId" class="col-md-2 control-label"></label>
             <div class="col-md-10">
                 <span class="text-danger" />
-                @Html.DropDownList("ProductTypeId")
+                @Html.DropDownList("ProductTypeId","Product Type")
             </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input asp-action="Edit" type="submit" value="Edit Item" class="btn btn-default" />
+                <input asp-action="Edit" asp-route-id="@Model.ProductId" type="submit" value="Save Changes" class="btn btn-default" />
             </div>
         </div>
 
     </div>
-</form>
+    </div>
+</form >
 
 
 

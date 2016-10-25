@@ -47,7 +47,7 @@ namespace BangazonWeb.Controllers
         }
 
 
-        public async Task<IActionResult> EditInformation([FromRoute]int? id)
+        public async Task<IActionResult> EditInfo([FromRoute]int? id)
         {
             ViewData["ProductTypeId"] = context.ProductType
                 .OrderBy(l => l.Label)
@@ -76,15 +76,21 @@ namespace BangazonWeb.Controllers
             return View(product);
         }
 
-        [HttpPost]
-        public IActionResult Edit(Product product)
+        [HttpPutAttribute]
+        public  IActionResult Put([FromRoute]int id, Product product)
         {
             if (!ModelState.IsValid)
             {
                 return View(product);
             }
+            
+            if (id == null)
+            {
+                return BadRequest(product);
+            }
+         
+                context.Update(product);
 
-            context.Product.Add(product);
             try
             {
                 context.SaveChanges();
