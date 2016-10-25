@@ -17,12 +17,15 @@ namespace Bangazon.Models
     public DateTime DateCreated {get;set;}
 
     [Required]
+    [Display (Name = "First Name")]
     public string FirstName { get; set; }
 
     [Required]
+    [Display (Name = "Last Name")]
     public string LastName { get; set; }
 
     [Required]
+    [Display (Name = "Street Address")]
     public string StreetAddress { get; set; }
 
     [Required]
@@ -32,6 +35,7 @@ namespace Bangazon.Models
     public string State {get; set;}
 
     [Required]
+    [Display (Name = "Zip Code")]
     public int ZipCode {get; set;}
     
     public ICollection<Product> Products;
