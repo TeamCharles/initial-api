@@ -12,10 +12,11 @@ namespace BangazonWeb.Controllers
     /**
      * CLASS: ProductTypes
      * PURPOSE: Creates routes for main index view (buy method) and seller view (sell method)
-     * AUTHOR: Dayne Wright
+     * AUTHOR: Dayne Wright/Matt Kraatz
      * METHODS:
      *   Task<IActionResult> Buy() - Shows all product types and counts
      *   Task<IActionResult> Sell() - Shows all product types
+     *   Task<IActionResult> list() - Shows all products that match a specified ProductTypeId
      *   CalculateTypeQuantities(ProductType) - Queries the Product table to return a new ProductType object...
      *        ...new ProductType object contains a value for Quantity, based on number of Products with that Type
      **/
@@ -30,10 +31,16 @@ namespace BangazonWeb.Controllers
 
         public async Task<IActionResult> Buy()
         {
-            List<ProductType> ProductTypeList = await context.ProductType.ToListAsync();
+            List<ProductType> ProductTypeList = await context.ProductType.OrderBy(s => s.Label).ToListAsync();
             ProductTypeList.ForEach(CalculateTypeQuantities);
             return View(ProductTypeList);
         }
+
+        public async Task<IActionResult> List([FromRoute]int? id)
+        {
+            return View(await context.Product.OrderBy(s => s.Name).Where(p => p.ProductTypeId == id).ToListAsync());
+        }
+
         public async Task<IActionResult> Sell()
         {
             return View(await context.ProductType.ToListAsync()); 
