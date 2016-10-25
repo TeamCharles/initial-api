@@ -6,7 +6,7 @@
     ViewData["Title"] = "Product Edit";
 }
 
-<form method="put" asp-action="Edit" asp-route-id="@Model.ProductId">
+<form asp-action="Edit" asp-route-id="@Model.ProductId">
     <div class="form-horizontal">
         <h4>Edit</h4>
         <hr>
@@ -44,7 +44,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input asp-action="Edit" asp-route-id="@Model.ProductId" type="submit" value="Save Changes" class="btn btn-default" />
+                <input asp-controller="Products" asp-action="Edit" asp-route-id="@Model.ProductId" type="submit" value="Save Changes" class="btn btn-default" />
             </div>
         </div>
 

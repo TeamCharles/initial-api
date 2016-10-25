@@ -76,9 +76,8 @@ namespace BangazonWeb.Controllers
             return View(product);
         }
 
-        [HttpPutAttribute]
         [ValidateAntiForgeryToken]
-        public  IActionResult Edit([FromRoute]int id, Product product)
+        public async  Task <IActionResult> Edit([FromRoute]int id, Product product)
         {
             if (!ModelState.IsValid)
             {
@@ -89,9 +88,16 @@ namespace BangazonWeb.Controllers
             {
                 return BadRequest(product);
             }
-         
-                context.Update(product);
 
+            
+            Product originalProduct = context.Product.Single(p => p.ProductId == id);
+            originalProduct.ProductId = (int)id;
+            originalProduct.Description = product.Description;
+            originalProduct.Name = product.Name;
+            originalProduct.ProductTypeId = product.ProductTypeId;
+            context.Entry(originalProduct).State = EntityState.Modified;
+
+            context.Update(originalProduct);
             try
             {
                 context.SaveChanges();
