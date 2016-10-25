@@ -17,6 +17,14 @@ namespace Bangazon.Helpers {
     {
         public static int? ActiveUser { get; set; } = null;
     }
+    /**
+     * Class: Users
+     * Purpose: Gets all users to populate user selection dropdown
+     * Author: Dayne Wright
+     * Methods:
+     *   IEnumerable<SelectListItem> GetAllUsers(BangazonContext ctx) - Gets all users from the DB and formats as select options
+     *     ctx - The current DB context to run the query
+     */
     public static class Users 
     {
         public static IEnumerable<SelectListItem> GetAllUsers(BangazonContext ctx)
