@@ -100,6 +100,7 @@ namespace BangazonWeb.Controllers
             
             
             originalProduct.ProductId = id;
+            originalProduct.Price =product.Price;
             originalProduct.Description = product.Description;
             originalProduct.Name = product.Name;
             originalProduct.ProductTypeId = product.ProductTypeId;
