@@ -7,6 +7,7 @@ using BangazonWeb.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Bangazon.Helpers;
+using BangazonWeb.ViewModels;
 
 namespace BangazonWeb.Controllers
 {
@@ -16,7 +17,6 @@ namespace BangazonWeb.Controllers
      * AUTHOR: Dayne Wright/Matt Kraatz
      * METHODS:
      *   Task<IActionResult> Buy() - Shows all product types and counts
-     *   Task<IActionResult> Sell() - Shows all product types
      *   Task<IActionResult> list() - Shows all products that match a specified ProductTypeId
      *   CalculateTypeQuantities(ProductType) - Queries the Product table to return a new ProductType object...
      *        ...new ProductType object contains a value for Quantity, based on number of Products with that Type
@@ -32,22 +32,18 @@ namespace BangazonWeb.Controllers
 
         public async Task<IActionResult> Buy()
         {
-            ViewBag.Users = Users.GetAllUsers(context);
             List<ProductType> ProductTypeList = await context.ProductType.OrderBy(s => s.Label).ToListAsync();
             ProductTypeList.ForEach(CalculateTypeQuantities);
-            return View(ProductTypeList);
+            var model = new ProductTypeList(context);
+            model.ProductTypes = ProductTypeList;
+            return View(model);
         }
 
         public async Task<IActionResult> List([FromRoute]int? id)
         {
-            ViewBag.Users = Users.GetAllUsers(context);
-            return View(await context.Product.OrderBy(s => s.Name).Where(p => p.ProductTypeId == id).ToListAsync());
-        }
-
-        public async Task<IActionResult> Sell()
-        {
-            ViewBag.Users = Users.GetAllUsers(context);
-            return View(await context.ProductType.ToListAsync()); 
+            var model = new ProductList(context);
+            model.Products = await context.Product.OrderBy(s => s.Name).Where(p => p.ProductTypeId == id).ToListAsync();
+            return View(model);
         }
 
         public void CalculateTypeQuantities(ProductType productType)

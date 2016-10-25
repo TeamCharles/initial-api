@@ -1,15 +1,11 @@
-@model IEnumerable<Bangazon.Models.Product>
+@model BangazonWeb.ViewModels.ProductList
 @using Bangazon.Models;
-
-@{
-    ViewData["Title"] = "Product Listing";
-}
 
 <p>
     <a asp-action="Create">Sell Something</a>
 </p>
 
-@foreach (Product item in Model)
+@foreach (Product item in Model.Products)
 {
     <div class="row">
         <div class="col-md-3">@Html.DisplayFor(modelItem => item.Name)</div>
