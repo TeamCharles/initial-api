@@ -17,8 +17,8 @@ using Microsoft.EntityFrameworkCore;
  *   ProductsController() - retrieve data from context
  *   Task<IActionResult>Index() - returns a list of every product
  *   Task<IActionResult> Detail() - returns the information for an individual product
- *   Task<IActionResult> Create() - retrieve the types and users for the dropdowns
- *   Task<IActionResult> Create(Product Product) - post the new item to the database
+ *   Task<IActionResult> Create() - retrieve the types and users for the dropdowns and return the form view
+ *   Task<IActionResult> Create(Product Product) - post the new item to the database and redirects to the index view
  */
 namespace BangazonWeb.Controllers
 {
@@ -56,8 +56,6 @@ namespace BangazonWeb.Controllers
 
             return View(product);
         }
-        
-        [HttpGet]
         public IActionResult Create()
         {
            ViewData["ProductTypeId"] = context.ProductType
@@ -92,13 +90,6 @@ namespace BangazonWeb.Controllers
             }
             return View(product);
         }
-        public IActionResult Type([FromRoute]int id)
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
-        }
-
         public IActionResult Error()
         {
             return View();

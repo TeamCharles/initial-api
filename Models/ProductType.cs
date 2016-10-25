@@ -19,7 +19,5 @@ namespace Bangazon.Models
     [Required]
     [StringLength(20)]
     public string Label { get; set; }
-    public ICollection<Product> Products;
-
   }
 }
