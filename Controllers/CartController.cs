@@ -32,15 +32,16 @@ namespace BangazonWeb.Controllers
         public async Task<IActionResult> Index()
         {
             // TODO: This is a placeholder value. These two lines should be removed after the User Accounts dropdown works
-            User ActiveUser = context.User.Single(u => u.UserId == 1);
-            SessionHelper.ActiveUser = ActiveUser;
+            SessionHelper.ActiveUser = 1;
+
+            ViewBag.Users = Users.GetAllUsers(context);
 
             // For help with this LINQ query, refer to
             // https://stackoverflow.com/questions/373541/how-to-do-joins-in-linq-on-multiple-fields-in-single-join
             var activeProducts =
                 from product in context.Product
                 from lineItem in context.LineItem
-                    .Where(lineItem => lineItem.OrderId == context.Order.SingleOrDefault(o => o.DateCompleted == null && o.UserId == SessionHelper.ActiveUser.UserId).OrderId && lineItem.ProductId == product.ProductId)
+                    .Where(lineItem => lineItem.OrderId == context.Order.SingleOrDefault(o => o.DateCompleted == null && o.UserId == SessionHelper.ActiveUser).OrderId && lineItem.ProductId == product.ProductId)
                 select product;
 
             if (activeProducts == null)
@@ -50,7 +51,7 @@ namespace BangazonWeb.Controllers
             }
 
             float totalPrice = 0;
-            foreach (var product in activeProducts)
+            foreach (var product in activeProducts.ToList())
             {
                 totalPrice += product.Price;
             }
@@ -62,6 +63,7 @@ namespace BangazonWeb.Controllers
 
         public IActionResult Error()
         {
+            ViewBag.Users = Users.GetAllUsers(context);
             return View();
         }
     }
