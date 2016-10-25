@@ -42,6 +42,14 @@ namespace BangazonWeb.Controllers
                     .Where(lineItem => lineItem.OrderId == context.Order.SingleOrDefault(o => o.DateCompleted == null && o.UserId == SessionHelper.ActiveUser.UserId).OrderId && lineItem.ProductId == product.ProductId)
                 select product;
 
+            float totalPrice = 0;
+            foreach (var product in activeProducts)
+            {
+                totalPrice += product.Price;
+            }
+
+            ViewBag.totalPrice = totalPrice;
+
             if (activeProducts == null)
             {
                 // TODO: This should probably be returning something other than `View()`.
