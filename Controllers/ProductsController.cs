@@ -80,8 +80,8 @@ namespace BangazonWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Product product)
         {
-            Console.WriteLine($"ModelState.IsValid={ModelState.IsValid}");
-            Console.WriteLine($"product={product}");
+            // Console.WriteLine($"ModelState.IsValid={ModelState.IsValid}");
+            // Console.WriteLine($"product={product}");
             if (ModelState.IsValid)
             {
                 context.Add(product);
