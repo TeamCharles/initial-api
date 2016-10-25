@@ -26,6 +26,8 @@ namespace BangazonWeb.Controllers
 
             SessionHelper.ActiveUser = ActiveUser;
 
+
+            // https://stackoverflow.com/questions/373541/how-to-do-joins-in-linq-on-multiple-fields-in-single-join
             var activeProducts =
                 from product in context.Product
                 from lineItem in context.LineItem
