@@ -126,63 +126,30 @@ namespace BangazonWeb.Controllers
 
         public IActionResult Create()
         {
-           ViewData["ProductTypeId"] = context.ProductType
-                .OrderBy(l => l.Label)
-                .AsEnumerable()
-                .Select(li => new SelectListItem { 
-                    Text = li.Label,
-                    Value = li.ProductTypeId.ToString()
-                    });
-
-            ViewBag.Users = Users.GetAllUsers(context);
-
-            ViewData["UserId"] = context.User
-                .OrderBy(l => l.LastName)
-                .AsEnumerable()
-                .Select(li => new SelectListItem { 
-                    Text = $"{li.FirstName} {li.LastName}",
-                    Value = li.UserId.ToString()
-                });
-
-            return View(); 
+            var model = new ProductCreate(context);
+            return View(model); 
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Product product)
+        public async Task<IActionResult> Create(ProductCreate product)
         {
             
             if (ModelState.IsValid)
             {
-                context.Add(product);
+                context.Add(product.NewProduct);
                 await context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
 
-            ViewData["ProductTypeId"] = context.ProductType
-                .OrderBy(l => l.Label)
-                .AsEnumerable()
-                .Select(li => new SelectListItem { 
-                    Text = li.Label,
-                    Value = li.ProductTypeId.ToString()
-                    });
-
-            ViewData["UserId"] = context.User
-                .OrderBy(l => l.LastName)
-                .AsEnumerable()
-                .Select(li => new SelectListItem { 
-                    Text = $"{li.FirstName} {li.LastName}",
-                    Value = li.UserId.ToString()
-                });
-            
-            ViewBag.Users = Users.GetAllUsers(context);
-
-            return View(product);
+            var model = new ProductCreate(context);
+            model.NewProduct = product.NewProduct;
+            return View(model);
         }
         public IActionResult Error()
         {
-            ViewBag.Users = Users.GetAllUsers(context);
-            return View();
+            var model = new BaseViewModel(context);
+            return View(model);
         }
     }
 }
