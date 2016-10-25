@@ -4,6 +4,7 @@ using Bangazon.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Bangazon.Helpers;
 
 namespace BangazonWeb.Controllers
 {
@@ -30,6 +31,7 @@ namespace BangazonWeb.Controllers
 
         public IActionResult New()
         {
+          ViewBag.Users = Users.GetAllUsers(context);  
           return View();
         }
 
