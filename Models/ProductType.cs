@@ -19,5 +19,6 @@ namespace Bangazon.Models
     [StringLength(20)]
     public string Label { get; set; }
     
+    public int Quantity { get; set; }
   }
 }
