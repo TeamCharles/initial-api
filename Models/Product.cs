@@ -32,7 +32,6 @@ namespace Bangazon.Models
 
     [Required]
     public bool IsActive { get; set; }
-
     [Required]
     public int UserId { get; set; }
     public User User { get; set; }
