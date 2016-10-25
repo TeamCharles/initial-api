@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using BangazonWeb.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Bangazon.Helpers;
 
 namespace BangazonWeb.Controllers
 {
@@ -31,6 +32,7 @@ namespace BangazonWeb.Controllers
 
         public async Task<IActionResult> Buy()
         {
+            ViewBag.Users = Users.GetAllUsers(context);
             List<ProductType> ProductTypeList = await context.ProductType.OrderBy(s => s.Label).ToListAsync();
             ProductTypeList.ForEach(CalculateTypeQuantities);
             return View(ProductTypeList);
@@ -38,11 +40,13 @@ namespace BangazonWeb.Controllers
 
         public async Task<IActionResult> List([FromRoute]int? id)
         {
+            ViewBag.Users = Users.GetAllUsers(context);
             return View(await context.Product.OrderBy(s => s.Name).Where(p => p.ProductTypeId == id).ToListAsync());
         }
 
         public async Task<IActionResult> Sell()
         {
+            ViewBag.Users = Users.GetAllUsers(context);
             return View(await context.ProductType.ToListAsync()); 
         }
 
