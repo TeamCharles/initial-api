@@ -27,12 +27,14 @@ namespace BangazonWeb.Controllers
     /**
      * Class: ProductsController
      * Purpose: Currently allows for users to view and edit different products
-     * Author: Garrett
+     * Author: Garrett/Anulfo
      * Methods:
      *   Index() - shows index view of products
      *   Detail() - shows detailed view of individual product
      *   EditInfo() - allows users to fill form to change product information
      *   Edit() - executes the edit within the database
+     *   New() - allows for users to navigate to form
+     *   New(Product product) - updates database with new product information.
      */
     public class ProductsController : Controller
     {
