@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Bangazon.Helpers;
 using Bangazon.Models;
+using Microsoft.AspNetCore.Routing;
 
 namespace BangazonWeb.Controllers
 {
@@ -42,6 +43,12 @@ namespace BangazonWeb.Controllers
                     .Where(lineItem => lineItem.OrderId == context.Order.SingleOrDefault(o => o.DateCompleted == null && o.UserId == SessionHelper.ActiveUser.UserId).OrderId && lineItem.ProductId == product.ProductId)
                 select product;
 
+            if (activeProducts == null)
+            {
+                // Redirect to ProductTypes
+                return RedirectToAction("Index", "ProductTypes");
+            }
+
             float totalPrice = 0;
             foreach (var product in activeProducts)
             {
@@ -49,12 +56,6 @@ namespace BangazonWeb.Controllers
             }
 
             ViewBag.totalPrice = totalPrice;
-
-            if (activeProducts == null)
-            {
-                // TODO: This should probably be returning something other than `View()`.
-                return View();
-            }
 
             return View(activeProducts);
         }
