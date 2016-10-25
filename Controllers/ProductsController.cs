@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Bangazon.Helpers;
 using BangazonWeb.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,7 @@ namespace BangazonWeb.Controllers
 
         public async Task<IActionResult> Index()
         {
+            ViewBag.Users = Users.GetAllUsers(context);
             return View(await context.Product.ToListAsync());
         }
 
@@ -41,6 +43,7 @@ namespace BangazonWeb.Controllers
                 return NotFound();
             }
 
+            ViewBag.Users = Users.GetAllUsers(context);
             return View(product);
         }
 
@@ -48,12 +51,17 @@ namespace BangazonWeb.Controllers
         {
             ViewData["Message"] = "Your contact page.";
 
+            ViewBag.Users = Users.GetAllUsers(context);
             return View();
         }
 
         public IActionResult Error()
         {
+            ViewBag.Users = Users.GetAllUsers(context);
             return View();
         }
     }
 }
+
+
+

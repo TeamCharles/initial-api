@@ -1,5 +1,9 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Bangazon.Models;
+using BangazonWeb.Data;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Bangazon.Helpers {
     /**
@@ -11,6 +15,20 @@ namespace Bangazon.Helpers {
      */
     public static class SessionHelper
     {
-        public static User ActiveUser { get; set; } = null;
+        public static int? ActiveUser { get; set; } = null;
+    }
+    public static class Users 
+    {
+        public static IEnumerable<SelectListItem> GetAllUsers(BangazonContext ctx)
+        {
+            var users =  ctx.User.OrderBy(l => l.LastName)
+                        .AsEnumerable()
+                        .Select(li => new SelectListItem { 
+                            Text = $"{li.FirstName} {li.LastName}",
+                            Value = li.UserId.ToString(),
+                            Selected = (li.UserId == SessionHelper.ActiveUser)
+                        });
+            return users;
+        } 
     }
 }
