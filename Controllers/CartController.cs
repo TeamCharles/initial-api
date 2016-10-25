@@ -38,11 +38,11 @@ namespace BangazonWeb.Controllers
 
             // For help with this LINQ query, refer to
             // https://stackoverflow.com/questions/373541/how-to-do-joins-in-linq-on-multiple-fields-in-single-join
-            var activeProducts =
+            var activeProducts = await(
                 from product in context.Product
                 from lineItem in context.LineItem
                     .Where(lineItem => lineItem.OrderId == context.Order.SingleOrDefault(o => o.DateCompleted == null && o.UserId == SessionHelper.ActiveUser).OrderId && lineItem.ProductId == product.ProductId)
-                select product;
+                select product).ToListAsync();
 
             if (activeProducts == null)
             {
@@ -51,7 +51,7 @@ namespace BangazonWeb.Controllers
             }
 
             float totalPrice = 0;
-            foreach (var product in activeProducts.ToList())
+            foreach (var product in activeProducts)
             {
                 totalPrice += product.Price;
             }
