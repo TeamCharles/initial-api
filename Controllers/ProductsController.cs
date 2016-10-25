@@ -166,7 +166,8 @@ namespace BangazonWeb.Controllers
             {
                 context.Add(product);
                 await context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction( "Detail", new RouteValueDictionary( 
+                     new { controller = "Products", action = "Detail", Id = product.ProductId } ) );
             }
 
             ViewData["ProductTypeId"] = context.ProductType
@@ -188,6 +189,7 @@ namespace BangazonWeb.Controllers
             ViewBag.Users = Users.GetAllUsers(context);
 
             return View(product);
+
         }
         public IActionResult Error()
         {
