@@ -11,6 +11,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BangazonWeb.Controllers
 {
+    /**
+     * Class: ProductsController
+     * Purpose: Currently allows for users to view and edit different products
+     * Author: Garrett
+     * Methods:
+     *   Index() - shows index view of products
+     *   Detail() - shows detailed view of individual product
+     *   EditInfo() - allows users to fill form to change product information
+     *   Edit() - executes the edit within the database
+     */
     public class ProductsController : Controller
     {
         private BangazonContext context;
