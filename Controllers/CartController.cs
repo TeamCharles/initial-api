@@ -11,6 +11,14 @@ using Bangazon.Models;
 
 namespace BangazonWeb.Controllers
 {
+    /**
+     * Class: CartController
+     * Purpose: Controls logged in user's cart
+     * Author: Matt Hamil
+     * Methods:
+     *   Task<IActionResult> Index() - Queries for all products on user's active order and renders view
+     *   IActionResult Error() - Renders an error
+     */
     public class CartController : Controller
     {
         private BangazonContext context;
@@ -22,12 +30,11 @@ namespace BangazonWeb.Controllers
 
         public async Task<IActionResult> Index()
         {
-            // TODO: This is a placeholder value. This should be removed after the User Accounts dropdown works
+            // TODO: This is a placeholder value. These two lines should be removed after the User Accounts dropdown works
             User ActiveUser = context.User.Single(u => u.UserId == 1);
-
             SessionHelper.ActiveUser = ActiveUser;
 
-
+            // For help with this LINQ query, refer to
             // https://stackoverflow.com/questions/373541/how-to-do-joins-in-linq-on-multiple-fields-in-single-join
             var activeProducts =
                 from product in context.Product
