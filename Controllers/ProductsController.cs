@@ -97,6 +97,7 @@ namespace BangazonWeb.Controllers
                 return NotFound();
             }
 
+            ViewBag.Users = Users.GetAllUsers(context);
             return View(product);
         }
 
@@ -183,7 +184,9 @@ namespace BangazonWeb.Controllers
                     Text = $"{li.FirstName} {li.LastName}",
                     Value = li.UserId.ToString()
                 });
-                
+            
+            ViewBag.Users = Users.GetAllUsers(context);
+
             return View(product);
         }
         public IActionResult Error()
