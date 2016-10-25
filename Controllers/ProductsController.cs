@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Bangazon.Helpers;
 using Bangazon.Models;
 using BangazonWeb.Data;
 using Microsoft.AspNetCore.Mvc;
@@ -44,6 +45,7 @@ namespace BangazonWeb.Controllers
 
         public async Task<IActionResult> Index()
         {
+            ViewBag.Users = Users.GetAllUsers(context);
             return View(await context.Product.ToListAsync());
         }
 
@@ -65,6 +67,7 @@ namespace BangazonWeb.Controllers
                 return NotFound();
             }
 
+            ViewBag.Users = Users.GetAllUsers(context);
             return View(product);
         }
 
@@ -94,6 +97,7 @@ namespace BangazonWeb.Controllers
                 return NotFound();
             }
 
+            ViewBag.Users = Users.GetAllUsers(context);
             return View(product);
         }
 
@@ -140,6 +144,8 @@ namespace BangazonWeb.Controllers
                     Value = li.ProductTypeId.ToString()
                     });
 
+            ViewBag.Users = Users.GetAllUsers(context);
+
             ViewData["UserId"] = context.User
                 .OrderBy(l => l.LastName)
                 .AsEnumerable()
@@ -178,12 +184,18 @@ namespace BangazonWeb.Controllers
                     Text = $"{li.FirstName} {li.LastName}",
                     Value = li.UserId.ToString()
                 });
-                
+            
+            ViewBag.Users = Users.GetAllUsers(context);
+
             return View(product);
         }
         public IActionResult Error()
         {
+            ViewBag.Users = Users.GetAllUsers(context);
             return View();
         }
     }
 }
+
+
+
