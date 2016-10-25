@@ -80,13 +80,30 @@ namespace BangazonWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Product product)
         {
-
+            
             if (ModelState.IsValid)
             {
                 context.Add(product);
                 await context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
+
+            ViewData["ProductTypeId"] = context.ProductType
+                .OrderBy(l => l.Label)
+                .AsEnumerable()
+                .Select(li => new SelectListItem { 
+                    Text = li.Label,
+                    Value = li.ProductTypeId.ToString()
+                    });
+
+            ViewData["UserId"] = context.User
+                .OrderBy(l => l.LastName)
+                .AsEnumerable()
+                .Select(li => new SelectListItem { 
+                    Text = $"{li.FirstName} {li.LastName}",
+                    Value = li.UserId.ToString()
+                });
+                
             return View(product);
         }
         public IActionResult Error()
