@@ -116,7 +116,8 @@ namespace BangazonWeb.Controllers
                 throw;
             }
             
-            return RedirectToAction("Index", "Products");
+            return RedirectToAction( "Detail", new RouteValueDictionary( 
+                     new { controller = "ProductTypes", action = "Detail", Id = originalProduct.ProductId } ) );
         }
 
         public IActionResult Type([FromRoute]int id)
