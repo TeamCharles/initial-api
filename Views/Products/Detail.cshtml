@@ -1,22 +1,18 @@
-@model Bangazon.Models.Product
+@model BangazonWeb.ViewModels.ProductDetail
 
-@{
-    ViewData["Title"] = "Product Details";
-}
-
-<h2>@Html.DisplayFor(model => model.Name)</h2>
+<h2>@Html.DisplayFor(model => model.CurrentProduct.Name)</h2>
 
 <div class="row">
-    <div class="col-md-3">@Html.DisplayFor(model => model.Description)</div>
-    <div class="col-md-3">@Html.DisplayFor(model => model.Price)</div>
-    <div class="col-md-3">@Html.DisplayFor(model => model.DateCreated)</div>
-    <div class="col-md-3"><a asp-action="Purchase" asp-route-id="@Model.ProductId">Add to Cart</a></div>
+    <div class="col-md-3">@Html.DisplayFor(model => model.CurrentProduct.Description)</div>
+    <div class="col-md-3">@Html.DisplayFor(model => model.CurrentProduct.Price)</div>
+    <div class="col-md-3">@Html.DisplayFor(model => model.CurrentProduct.DateCreated)</div>
+    <div class="col-md-3"><a asp-action="Purchase" asp-route-id="@Model.CurrentProduct.ProductId">Add to Cart</a></div>
 </div>
 
 <div>
-    Seller: @Html.DisplayFor(model => model.User.FirstName) @Html.DisplayFor(model => model.User.LastName)
+    Seller: @Html.DisplayFor(model => model.CurrentProduct.User.FirstName) @Html.DisplayFor(model => model.CurrentProduct.User.LastName)
 </div>
 
 <div>
-    &lt;&lt; <a asp-action="Index">Back to List</a>
+    &lt;&lt; <a asp-controller="ProductTypes" asp-action="List" asp-route-id="@Model.CurrentProduct.ProductTypeId">Back to List</a>
 </div>

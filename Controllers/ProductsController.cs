@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Bangazon.Helpers;
+using BangazonWeb.ViewModels;
 using Bangazon.Models;
 using BangazonWeb.Data;
 using Microsoft.AspNetCore.Mvc;
@@ -43,12 +44,6 @@ namespace BangazonWeb.Controllers
             context = ctx;
         }
 
-        public async Task<IActionResult> Index()
-        {
-            ViewBag.Users = Users.GetAllUsers(context);
-            return View(await context.Product.ToListAsync());
-        }
-
         public async Task<IActionResult> Detail(int? id)
         {
             // If no id was in the route, return 404
@@ -67,8 +62,9 @@ namespace BangazonWeb.Controllers
                 return NotFound();
             }
 
-            ViewBag.Users = Users.GetAllUsers(context);
-            return View(product);
+            var model = new ProductDetail(context);
+            model.CurrentProduct = product;
+            return View(model);
         }
 
         public async Task<IActionResult> EditInfo([FromRoute]int? id)
@@ -97,8 +93,9 @@ namespace BangazonWeb.Controllers
                 return NotFound();
             }
 
-            ViewBag.Users = Users.GetAllUsers(context);
-            return View(product);
+            var model = new ProductDetail(context);
+            model.CurrentProduct = product;
+            return View(model);
         }
 
         [ValidateAntiForgeryToken]
@@ -114,7 +111,7 @@ namespace BangazonWeb.Controllers
             
             
             originalProduct.ProductId = id;
-            originalProduct.Price =product.Price;
+            originalProduct.Price = product.Price;
             originalProduct.Description = product.Description;
             originalProduct.Name = product.Name;
             originalProduct.ProductTypeId = product.ProductTypeId;
