@@ -22,6 +22,7 @@ namespace BangazonWeb.Controllers
 
         public async Task<IActionResult> Index()
         {
+            // TODO: This is a placeholder value. This should be removed after the User Accounts dropdown works
             User ActiveUser = context.User.Single(u => u.UserId == 1);
 
             SessionHelper.ActiveUser = ActiveUser;
@@ -31,7 +32,7 @@ namespace BangazonWeb.Controllers
             var activeProducts =
                 from product in context.Product
                 from lineItem in context.LineItem
-                    .Where(lineItem => lineItem.OrderId == context.Order.SingleOrDefault(o => o.DateCompleted == null && o.UserId == ActiveUser.UserId).OrderId && lineItem.ProductId == product.ProductId)
+                    .Where(lineItem => lineItem.OrderId == context.Order.SingleOrDefault(o => o.DateCompleted == null && o.UserId == SessionHelper.ActiveUser.UserId).OrderId && lineItem.ProductId == product.ProductId)
                 select product;
 
             if (activeProducts == null)
