@@ -87,20 +87,15 @@ namespace BangazonWeb.Controllers
         }
 
         [ValidateAntiForgeryToken]
-        public async  Task <IActionResult> Edit([FromRoute]int id, Product product)
+        public async Task <IActionResult> Edit([FromRoute]int id, Product product)
         {
             if (!ModelState.IsValid)
             {
-                return View(product);
+                return RedirectToAction("Index", "ProductTypes");
             }
             
-            if (id == null)
-            {
-                return BadRequest(product);
-            }
-
             
-            Product originalProduct = context.Product.Single(p => p.ProductId == id);
+            Product originalProduct = await context.Product.SingleAsync(p => p.ProductId == id);
             originalProduct.ProductId = (int)id;
             originalProduct.Description = product.Description;
             originalProduct.Name = product.Name;
@@ -117,7 +112,7 @@ namespace BangazonWeb.Controllers
                 throw;
             }
             
-            return RedirectToAction("Index", "Products");
+            return RedirectToAction("Index", "ProductTypes");
         }
 
         public IActionResult Type([FromRoute]int id)
