@@ -1,0 +1,26 @@
+@model IEnumerable<Bangazon.Models.Product>
+@using Bangazon.Models;
+
+@{
+    ViewData["Title"] = "Shopping Cart";
+}
+
+<h1>Your Cart</h1>
+
+@foreach (Product item in Model)
+{
+<div class="row">
+    <div class="col-md-2">
+        <span class="glyphicon glyphicon-remove" aria-hidden="true" style="color:red"><span>
+        <div>
+            <div>@Html.DisplayFor(modelItem => item.Name)</div>
+            <div>@Html.DisplayFor(modelItem => item.Description)</div>
+        </div>
+    </div>
+    <div class="col-md-2 col-md-offset-8">
+        <div style="color:red">@Html.DisplayFor(modelItem => item.Price)</div>
+    </div>
+</div>
+}
+
+<input type="button" value="Checkout" class="btn btn-primary" asp-action="CompleteOrder"/>
