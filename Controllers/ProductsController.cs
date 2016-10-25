@@ -7,6 +7,7 @@ using Bangazon.Models;
 using BangazonWeb.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 
 namespace BangazonWeb.Controllers
@@ -89,14 +90,16 @@ namespace BangazonWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task <IActionResult> Edit([FromRoute]int id, Product product)
         {
+            Product originalProduct = await context.Product.SingleAsync(p => p.ProductId == id);
+
             if (!ModelState.IsValid)
             {
-                return RedirectToAction("Index", "ProductTypes");
+                return RedirectToAction( "EditInfo", new RouteValueDictionary( 
+                     new { controller = "Products", action = "EditInfo", Id = originalProduct.ProductId } ) );
             }
             
             
-            Product originalProduct = await context.Product.SingleAsync(p => p.ProductId == id);
-            originalProduct.ProductId = (int)id;
+            originalProduct.ProductId = id;
             originalProduct.Description = product.Description;
             originalProduct.Name = product.Name;
             originalProduct.ProductTypeId = product.ProductTypeId;
@@ -112,7 +115,7 @@ namespace BangazonWeb.Controllers
                 throw;
             }
             
-            return RedirectToAction("Index", "ProductTypes");
+            return RedirectToAction("Index", "Products");
         }
 
         public IActionResult Type([FromRoute]int id)
