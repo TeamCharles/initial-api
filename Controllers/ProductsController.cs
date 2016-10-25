@@ -10,6 +10,17 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 
+/**
+ * Class: ProductsController
+ * Purpose: Provide methods for the different products views
+ * Author: Anulfo Ordaz
+ * Methods:
+ *   ProductsController() - retrieve data from context
+ *   Task<IActionResult>Index() - returns a list of every product
+ *   Task<IActionResult> Detail() - returns the information for an individual product
+ *   Task<IActionResult> Create() - retrieve the types and users for the dropdowns and return the form view
+ *   Task<IActionResult> Create(Product Product) - post the new item to the database and redirects to the index view
+ */
 namespace BangazonWeb.Controllers
 {
     /**
@@ -56,7 +67,6 @@ namespace BangazonWeb.Controllers
 
             return View(product);
         }
-
 
         public async Task<IActionResult> EditInfo([FromRoute]int? id)
         {
@@ -120,13 +130,57 @@ namespace BangazonWeb.Controllers
                      new { controller = "ProductTypes", action = "Detail", Id = originalProduct.ProductId } ) );
         }
 
-        public IActionResult Type([FromRoute]int id)
+        public IActionResult Create()
         {
-            ViewData["Message"] = "Your contact page.";
+           ViewData["ProductTypeId"] = context.ProductType
+                .OrderBy(l => l.Label)
+                .AsEnumerable()
+                .Select(li => new SelectListItem { 
+                    Text = li.Label,
+                    Value = li.ProductTypeId.ToString()
+                    });
 
-            return View();
+            ViewData["UserId"] = context.User
+                .OrderBy(l => l.LastName)
+                .AsEnumerable()
+                .Select(li => new SelectListItem { 
+                    Text = $"{li.FirstName} {li.LastName}",
+                    Value = li.UserId.ToString()
+                });
+
+            return View(); 
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(Product product)
+        {
+            
+            if (ModelState.IsValid)
+            {
+                context.Add(product);
+                await context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+
+            ViewData["ProductTypeId"] = context.ProductType
+                .OrderBy(l => l.Label)
+                .AsEnumerable()
+                .Select(li => new SelectListItem { 
+                    Text = li.Label,
+                    Value = li.ProductTypeId.ToString()
+                    });
+
+            ViewData["UserId"] = context.User
+                .OrderBy(l => l.LastName)
+                .AsEnumerable()
+                .Select(li => new SelectListItem { 
+                    Text = $"{li.FirstName} {li.LastName}",
+                    Value = li.UserId.ToString()
+                });
+                
+            return View(product);
+        }
         public IActionResult Error()
         {
             return View();
