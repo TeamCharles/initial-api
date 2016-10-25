@@ -134,6 +134,8 @@ namespace initialsite.Migrations
                         .IsRequired()
                         .HasAnnotation("MaxLength", 20);
 
+                    b.Property<int>("Quantity");
+
                     b.HasKey("ProductTypeId");
 
                     b.ToTable("ProductType");
