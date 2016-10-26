@@ -1,35 +1,20 @@
 ## Status
-**READY/IN DEVELOPMENT/HOLD**
+**READY/IN DEVELOPMENT**
 
 ## Documentation
 
-[ ] I have fully documented features in this PR. Please put an `X` in the box to confirm.
+[ ] I have fully documented features in this PR's code. Please put an `X` in the box to confirm.
 
-## Migrations
-YES | NO
+[ ] This PR does **NOT** require documentation.
 
 ## Description
 A few sentences describing the overall goals of the pull request's commits.
 
-## Related PRs
-List related PRs against other branches:
-
-branch | PR
------- | ------
-other_pr_production | [link]()
-other_pr_master | [link]()
-
-
 ## Resolves Issue Number
-number [link]()
-
 
 ## Deploy Notes
 Notes regarding deployment the contained body of work.  These should note any
 db migrations, etc.
-
-## Steps to Test or Reproduce
-Outline the steps to test or reproduce the PR here.
 
 ```sh
 git pull --prune
@@ -37,9 +22,12 @@ git checkout <feature_branch>
 dotnet run
 ```
 
+## Steps to Test or Reproduce
+Outline the steps to test or reproduce the PR here.
+
 1. 
 
-## Impacted Areas in Application
+## Impacted Files in Application
 List general components of the application that this PR will affect:
 
 * 
