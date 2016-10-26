@@ -34,7 +34,10 @@ namespace BangazonWeb.Controllers
         public async Task<IActionResult> Index()
         {
             // TODO: This is a placeholder value. These two lines should be removed after the User Accounts dropdown works
-            SessionHelper.ActiveUser = 1;
+            if (SessionHelper.ActiveUser == null)
+            {
+                SessionHelper.ActiveUser = 1;
+            }
 
             ViewBag.Users = Users.GetAllUsers(context);
 
@@ -63,18 +66,18 @@ namespace BangazonWeb.Controllers
             return View(activeProducts);
         }
 
-        public async Task<IActionResult> AddToCart(int productId)
+        public async Task<IActionResult> AddToCart([FromRoute]int id)
         {
             // When not logged in
-            if (SessionHelper.ActiveUser != null)
+            if (SessionHelper.ActiveUser == null)
             {
                 return Forbid();
             }
 
             // Find the product
-            var productQuery = await(
+            Product productQuery = await(
                 from product in context.Product
-                where product.ProductId == productId
+                where product.ProductId == id
                 select product).SingleOrDefaultAsync();
 
             if (productQuery == null)
@@ -83,9 +86,9 @@ namespace BangazonWeb.Controllers
             }
 
             // Find the user's active order
-            var openOrderQuery = await(
+            Order openOrderQuery = await(
                 from order in context.Order
-                where order.UserId == SessionHelper.ActiveUser
+                where order.UserId == SessionHelper.ActiveUser && order.DateCompleted == null
                 select order).SingleOrDefaultAsync();
 
             Order openOrder = null;
@@ -106,12 +109,13 @@ namespace BangazonWeb.Controllers
             }
 
             // Create a new LineItem with the ProductId and OrderId
-            LineItem lineItem = new LineItem(){ OrderId = openOrder.OrderId, ProductId = productId };
+            LineItem lineItem = new LineItem(){ OrderId = openOrder.OrderId, ProductId = id };
 
             context.LineItem.Add(lineItem);
             context.SaveChanges();
 
-            return View();
+            return RedirectToAction( "Detail", new RouteValueDictionary(
+                     new { controller = "Products", action = "Detail", Id = id } ) );
         }
 
         public IActionResult Error()
