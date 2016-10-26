@@ -92,9 +92,17 @@ namespace BangazonWeb.Controllers
         }
 
         [ValidateAntiForgeryToken]
-        public async Task <IActionResult> Edit([FromRoute]int id, ProductEdit product)
+        public async Task <IActionResult> Edit(ProductEdit product)
         {
-            Product originalProduct = await context.Product.SingleAsync(p => p.ProductId == id);
+            Product originalProduct = await context.Product.SingleAsync(p => p.ProductId == product.CurrentProduct.ProductId);
+            product.ChosenUser = new User {
+                                        FirstName = "Carson",
+                                        LastName = "Alexander",
+                                        StreetAddress = "100 Infinity Way",
+                                        City = "St. Paul",
+                                        State = "Minnesota",
+                                        ZipCode = 12345
+                                };
 
             if (!ModelState.IsValid)
             {
@@ -103,7 +111,7 @@ namespace BangazonWeb.Controllers
             }
             
             
-            originalProduct.ProductId = id;
+            originalProduct.ProductId = product.CurrentProduct.ProductId;
             originalProduct.Price = product.CurrentProduct.Price;
             originalProduct.Description = product.CurrentProduct.Description;
             originalProduct.Name = product.CurrentProduct.Name;
