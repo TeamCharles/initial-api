@@ -64,6 +64,9 @@ namespace BangazonWeb
                     name: "default",
                     template: "{controller=ProductTypes}/{action=Buy}/{id?}");
                 routes.MapRoute(
+                    name: "paymentTypes",
+                    template: "{controller=PaymentTypes}/{action=Create}");
+                routes.MapRoute(
                     name: "products",
                     template: "{controller=Products}/{action=Index}");
                 routes.MapRoute(
