@@ -76,11 +76,12 @@ namespace BangazonWeb.Controllers
             ViewData["ProductTypeId"] = context.ProductType
                 .OrderBy(l => l.Label)
                 .AsEnumerable()
-                .Select(li => new SelectListItem { 
+                .Select(li => new SelectListItem
+                {
                     Text = li.Label,
                     Value = li.ProductTypeId.ToString()
-                    });
-                                        
+                });
+
             // If no id was in the route, return 404
             if (id == null)
             {
@@ -102,19 +103,19 @@ namespace BangazonWeb.Controllers
         }
 
         [ValidateAntiForgeryToken]
-        public async Task <IActionResult> Edit([FromRoute]int id, Product product)
+        public async Task<IActionResult> Edit([FromRoute]int id, Product product)
         {
             Product originalProduct = await context.Product.SingleAsync(p => p.ProductId == id);
 
             if (!ModelState.IsValid)
             {
-                return RedirectToAction( "EditInfo", new RouteValueDictionary( 
-                     new { controller = "Products", action = "EditInfo", Id = originalProduct.ProductId } ) );
+                return RedirectToAction("EditInfo", new RouteValueDictionary(
+                     new { controller = "Products", action = "EditInfo", Id = originalProduct.ProductId }));
             }
-            
-            
+
+
             originalProduct.ProductId = id;
-            originalProduct.Price =product.Price;
+            originalProduct.Price = product.Price;
             originalProduct.Description = product.Description;
             originalProduct.Name = product.Name;
             originalProduct.ProductTypeId = product.ProductTypeId;
@@ -129,39 +130,41 @@ namespace BangazonWeb.Controllers
             {
                 throw;
             }
-            
-            return RedirectToAction( "Detail", new RouteValueDictionary( 
-                     new { controller = "Products", action = "Detail", Id = originalProduct.ProductId } ) );
+
+            return RedirectToAction("Detail", new RouteValueDictionary(
+                     new { controller = "Products", action = "Detail", Id = originalProduct.ProductId }));
         }
 
         public IActionResult Create()
         {
-           ViewData["ProductTypeId"] = context.ProductType
-                .OrderBy(l => l.Label)
-                .AsEnumerable()
-                .Select(li => new SelectListItem { 
-                    Text = li.Label,
-                    Value = li.ProductTypeId.ToString()
-                    });
+            ViewData["ProductTypeId"] = context.ProductType
+                 .OrderBy(l => l.Label)
+                 .AsEnumerable()
+                 .Select(li => new SelectListItem
+                 {
+                     Text = li.Label,
+                     Value = li.ProductTypeId.ToString()
+                 });
 
             ViewBag.Users = Users.GetAllUsers(context);
 
             ViewData["UserId"] = context.User
                 .OrderBy(l => l.LastName)
                 .AsEnumerable()
-                .Select(li => new SelectListItem { 
+                .Select(li => new SelectListItem
+                {
                     Text = $"{li.FirstName} {li.LastName}",
                     Value = li.UserId.ToString()
                 });
 
-            return View(); 
+            return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Product product)
         {
-            
+
             if (ModelState.IsValid)
             {
                 context.Add(product);
@@ -172,31 +175,52 @@ namespace BangazonWeb.Controllers
             ViewData["ProductTypeId"] = context.ProductType
                 .OrderBy(l => l.Label)
                 .AsEnumerable()
-                .Select(li => new SelectListItem { 
+                .Select(li => new SelectListItem
+                {
                     Text = li.Label,
                     Value = li.ProductTypeId.ToString()
-                    });
+                });
 
             ViewData["UserId"] = context.User
                 .OrderBy(l => l.LastName)
                 .AsEnumerable()
-                .Select(li => new SelectListItem { 
+                .Select(li => new SelectListItem
+                {
                     Text = $"{li.FirstName} {li.LastName}",
                     Value = li.UserId.ToString()
                 });
-            
+
             ViewBag.Users = Users.GetAllUsers(context);
 
             return View(product);
         }
 
-        [HttpDelete]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete([FromRoute]int id)
         {
+            Product originalProduct = await context.Product.SingleAsync(p => p.ProductId == id);
 
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("List", new RouteValueDictionary(
+                                        new { controller = "ProductTypes", action = "List", Id = originalProduct.ProductTypeId }));
+            }
+            else
+            {
+
+                try
+                {
+                    context.Remove(originalProduct);
+                    await context.SaveChangesAsync();
+                    return RedirectToAction("List", new RouteValueDictionary(
+                                        new { controller = "ProductTypes", action = "List", Id = originalProduct.ProductTypeId }));
+                }
+                catch (DbUpdateException)
+                {
+                    throw;
+                }
+            }
         }
-        
+
         public IActionResult Error()
         {
             ViewBag.Users = Users.GetAllUsers(context);
