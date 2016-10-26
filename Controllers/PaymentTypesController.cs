@@ -6,7 +6,14 @@ using Bangazon.Models;
 using Bangazon.Helpers;
 
 
-
+/**
+ * Class: PaymentTypesController
+ * Purpose: Create a new Payment Method for the Logged User 
+ * Author: Anulfo Ordaz
+ * Methods:
+ *   IActionResult Create() - Returns the PaymentType view
+ *   Task<IActionResult> Create(PaymentType paymentType) - Post new Payment Type to the database and get the user to the Cart view 
+ */
 namespace BangazonWeb.Controllers
 {
     public class PaymentTypesController : Controller
