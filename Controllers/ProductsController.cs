@@ -189,6 +189,14 @@ namespace BangazonWeb.Controllers
 
             return View(product);
         }
+
+        [HttpDelete]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete([FromRoute]int id)
+        {
+
+        }
+        
         public IActionResult Error()
         {
             ViewBag.Users = Users.GetAllUsers(context);
