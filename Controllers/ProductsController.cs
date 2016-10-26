@@ -95,17 +95,10 @@ namespace BangazonWeb.Controllers
         public async Task <IActionResult> Edit(ProductEdit product)
         {
             Product originalProduct = await context.Product.SingleAsync(p => p.ProductId == product.CurrentProduct.ProductId);
-            product.ChosenUser = new User {
-                                        FirstName = "Carson",
-                                        LastName = "Alexander",
-                                        StreetAddress = "100 Infinity Way",
-                                        City = "St. Paul",
-                                        State = "Minnesota",
-                                        ZipCode = 12345
-                                };
 
             if (!ModelState.IsValid)
             {
+                
                 return RedirectToAction( "EditInfo", new RouteValueDictionary( 
                      new { controller = "Products", action = "EditInfo", Id = originalProduct.ProductId } ) );
             }
