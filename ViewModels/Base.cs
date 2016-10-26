@@ -8,7 +8,7 @@ namespace BangazonWeb.ViewModels
 {
   public class BaseViewModel
   {
-    public IEnumerable<SelectListItem> UserId { get; set; }
+    public IEnumerable<SelectListItem> Users { get; set; }
     protected BangazonContext context;
     private ActiveUser singleton = ActiveUser.Instance;
     public User ChosenUser 
@@ -46,7 +46,7 @@ namespace BangazonWeb.ViewModels
     public BaseViewModel(BangazonContext ctx)
     {
         context = ctx;
-        this.UserId = context.User
+        this.Users = context.User
             .OrderBy(l => l.LastName)
             .AsEnumerable()
             .Select(li => new SelectListItem { 

@@ -64,7 +64,7 @@ namespace BangazonWeb.Controllers
                 }
             }
 
-            return RedirectToAction("Index", "Products");
+            return RedirectToAction("Buy", "ProductTypes");
         }
 
         public IActionResult Error()
