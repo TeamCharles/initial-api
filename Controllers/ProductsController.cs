@@ -25,6 +25,7 @@ namespace BangazonWeb.Controllers
      *   Edit() - executes the edit within the database
      *   New() - allows for users to navigate to form
      *   New(Product product) - updates database with new product information.
+     *   Delete() - deletes product from database and view of customer.
      */
     public class ProductsController : Controller
     {
