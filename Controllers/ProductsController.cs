@@ -11,17 +11,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 
-/**
- * Class: ProductsController
- * Purpose: Provide methods for the different products views
- * Author: Anulfo Ordaz
- * Methods:
- *   ProductsController() - retrieve data from context
- *   Task<IActionResult>Index() - returns a list of every product
- *   Task<IActionResult> Detail() - returns the information for an individual product
- *   Task<IActionResult> Create() - retrieve the types and users for the dropdowns and return the form view
- *   Task<IActionResult> Create(Product Product) - post the new item to the database and redirects to the index view
- */
+
 namespace BangazonWeb.Controllers
 {
     /**
