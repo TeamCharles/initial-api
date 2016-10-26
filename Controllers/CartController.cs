@@ -65,6 +65,12 @@ namespace BangazonWeb.Controllers
 
         public async Task<IActionResult> AddToCart(int productId)
         {
+            // When not logged in
+            if (SessionHelper.ActiveUser != null)
+            {
+                return Forbid();
+            }
+
             // Find the product
             var productQuery = await(
                 from product in context.Product
@@ -82,9 +88,30 @@ namespace BangazonWeb.Controllers
                 where order.UserId == SessionHelper.ActiveUser
                 select order).SingleOrDefaultAsync();
 
+            Order openOrder = null;
 
+            // If the user does not have an open order
+            if (openOrderQuery == null)
+            {
+                // Creating a new Order for Carson Alexander
+                openOrder = new Order {
+                    UserId = (int)SessionHelper.ActiveUser,
+                };
+                context.Order.Add(openOrder);
+                context.SaveChanges();
+            }
+            else
+            {
+                openOrder = openOrderQuery;
+            }
 
             // Create a new LineItem with the ProductId and OrderId
+            LineItem lineItem = new LineItem(){ OrderId = openOrder.OrderId, ProductId = productId };
+
+            context.LineItem.Add(lineItem);
+            context.SaveChanges();
+
+            return View();
         }
 
         public IActionResult Error()
