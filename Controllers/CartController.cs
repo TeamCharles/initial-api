@@ -101,7 +101,7 @@ namespace BangazonWeb.Controllers
                     UserId = (int)SessionHelper.ActiveUser,
                 };
                 context.Order.Add(openOrder);
-                context.SaveChanges();
+                await context.SaveChangesAsync();
             }
             else
             {
@@ -112,7 +112,7 @@ namespace BangazonWeb.Controllers
             LineItem lineItem = new LineItem(){ OrderId = openOrder.OrderId, ProductId = id };
 
             context.LineItem.Add(lineItem);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
 
             return RedirectToAction( "Detail", new RouteValueDictionary(
                      new { controller = "Products", action = "Detail", Id = id } ) );
