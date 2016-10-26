@@ -1,3 +1,5 @@
+@model BangazonWeb.ViewModels.BaseViewModel
+
 <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
@@ -14,9 +16,9 @@
                 <li><a asp-area="" asp-controller="User" asp-action="New">Create an Account</a></li>
                 <li><a asp-area="" asp-controller="Products" asp-action="New">Add Product</a></li>
                 <li><a asp-area="" asp-controller="Cart" asp-action="Index"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span></a></li>
-            <li class="dropdown">
-                @Html.DropDownList("UserId", "Select User")
-            </li>
+                <li>
+                    @Html.DropDownList("ChosenUser.UserId", @Model.Users,"SELECT USER", new { @class = "dropdown" })
+                </li>
             </ul>
         </div>
     </div>

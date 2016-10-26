@@ -64,7 +64,13 @@ namespace BangazonWeb.Controllers
                 }
             }
 
+            ActivateUser(user.NewUser);
             return RedirectToAction("Buy", "ProductTypes");
+        }
+
+        public void Activate(int id)
+        {
+            ActivateUser(context.User.Single(u => u.UserId == id));
         }
 
         public IActionResult Error()
@@ -75,6 +81,12 @@ namespace BangazonWeb.Controllers
         private bool UserExists(int id)
         {
             return context.User.Count(e => e.UserId == id) > 0;
+        }
+
+        private void ActivateUser(User user)
+        {
+            ActiveUser singleton = ActiveUser.Instance;
+            singleton.User = user;
         }
     }
 }

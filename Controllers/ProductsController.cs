@@ -124,11 +124,8 @@ namespace BangazonWeb.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-<<<<<<< HEAD
-        public async Task<IActionResult> New(Product product)
-=======
+
         public async Task<IActionResult> Create(ProductCreate product)
->>>>>>> 79-view-model-refactor
         {
             
             if (ModelState.IsValid)
@@ -136,35 +133,12 @@ namespace BangazonWeb.Controllers
                 context.Add(product.NewProduct);
                 await context.SaveChangesAsync();
                 return RedirectToAction( "Detail", new RouteValueDictionary( 
-                     new { controller = "Products", action = "Detail", Id = product.ProductId } ) );
+                     new { controller = "Products", action = "Detail", Id = product.NewProduct.ProductId } ) );
             }
 
-<<<<<<< HEAD
-            ViewData["ProductTypeId"] = context.ProductType
-                .OrderBy(l => l.Label)
-                .AsEnumerable()
-                .Select(li => new SelectListItem { 
-                    Text = li.Label,
-                    Value = li.ProductTypeId.ToString()
-                    });
-
-            ViewData["UserId"] = context.User
-                .OrderBy(l => l.LastName)
-                .AsEnumerable()
-                .Select(li => new SelectListItem { 
-                    Text = $"{li.FirstName} {li.LastName}",
-                    Value = li.UserId.ToString()
-                });
-            
-            ViewBag.Users = Users.GetAllUsers(context);
-
-            return View(product);
-
-=======
             var model = new ProductCreate(context);
             model.NewProduct = product.NewProduct;
             return View(model);
->>>>>>> 79-view-model-refactor
         }
         public IActionResult Error()
         {
