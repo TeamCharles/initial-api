@@ -18,6 +18,8 @@ namespace BangazonWeb.Controllers
      * Author: Matt Hamil
      * Methods:
      *   Task<IActionResult> Index() - Queries for all products on user's active order and renders view
+     *   Task<IActionResult> CreateNewOrder() - Creates a new open order for the customer
+     *   Task<IActionResult> AddToCart() - Adds a product to a user's open order
      *   IActionResult Error() - Renders an error
      */
     public class CartController : Controller
@@ -59,6 +61,30 @@ namespace BangazonWeb.Controllers
             ViewBag.totalPrice = totalPrice;
 
             return View(activeProducts);
+        }
+
+        public async Task<IActionResult> AddToCart(int productId)
+        {
+            // Find the product
+            var productQuery = await(
+                from product in context.Product
+                where product.ProductId == productId
+                select product).SingleOrDefaultAsync();
+
+            if (productQuery == null)
+            {
+                return NotFound();
+            }
+
+            // Find the user's active order
+            var openOrderQuery = await(
+                from order in context.Order
+                where order.UserId == SessionHelper.ActiveUser
+                select order).SingleOrDefaultAsync();
+
+
+
+            // Create a new LineItem with the ProductId and OrderId
         }
 
         public IActionResult Error()
