@@ -1,4 +1,4 @@
-@model Bangazon.Models.User
+@model BangazonWeb.ViewModels.UserCreate
 
 @{
     ViewData["Title"] = "New User";
@@ -12,45 +12,45 @@
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
-            <label asp-for="FirstName" class="col-md-2 control-label">First Name</label>
+            <label asp-for="NewUser.FirstName" class="col-md-2 control-label">First Name</label>
             <div class="col-md-10">
-                <input asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
+                <input asp-for="NewUser.FirstName" class="form-control" />
+                <span asp-validation-for="NewUser.FirstName" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="LastName" class="col-md-2 control-label">Last Name</label>
+            <label asp-for="NewUser.LastName" class="col-md-2 control-label">Last Name</label>
             <div class="col-md-10">
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
+                <input asp-for="NewUser.LastName" class="form-control" />
+                <span asp-validation-for="NewUser.LastName" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="StreetAddress" class="col-md-2 control-label">Street Address</label>
+            <label asp-for="NewUser.StreetAddress" class="col-md-2 control-label">Street Address</label>
             <div class="col-md-10">
-                <input asp-for="StreetAddress" class="form-control" />
-                <span asp-validation-for="StreetAddress" class="text-danger"></span>
+                <input asp-for="NewUser.StreetAddress" class="form-control" />
+                <span asp-validation-for="NewUser.StreetAddress" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="City" class="col-md-2 control-label">City</label>
+            <label asp-for="NewUser.City" class="col-md-2 control-label">City</label>
             <div class="col-md-10">
-                <input asp-for="City" class="form-control" />
-                <span asp-validation-for="City" class="text-danger"></span>
+                <input asp-for="NewUser.City" class="form-control" />
+                <span asp-validation-for="NewUser.City" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="State" class="col-md-2 control-label">State</label>
+            <label asp-for="NewUser.State" class="col-md-2 control-label">State</label>
             <div class="col-md-10">
-                <input asp-for="State" class="form-control" />
-                <span asp-validation-for="State" class="text-danger"></span>
+                <input asp-for="NewUser.State" class="form-control" />
+                <span asp-validation-for="NewUser.State" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="ZipCode" class="col-md-2 control-label">Zip Code</label>
+            <label asp-for="NewUser.ZipCode" class="col-md-2 control-label">Zip Code</label>
             <div class="col-md-10">
-                <input asp-for="ZipCode" class="form-control" />
-                <span asp-validation-for="ZipCode" class="text-danger"></span>
+                <input asp-for="NewUser.ZipCode" class="form-control" />
+                <span asp-validation-for="NewUser.ZipCode" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">

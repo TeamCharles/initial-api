@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Bangazon.Helpers;
+using BangazonWeb.ViewModels;
 using Bangazon.Models;
 using BangazonWeb.Data;
 using Microsoft.AspNetCore.Mvc;
@@ -35,12 +36,6 @@ namespace BangazonWeb.Controllers
             context = ctx;
         }
 
-        public async Task<IActionResult> Index()
-        {
-            ViewBag.Users = Users.GetAllUsers(context);
-            return View(await context.Product.ToListAsync());
-        }
-
         public async Task<IActionResult> Detail(int? id)
         {
             // If no id was in the route, return 404
@@ -59,19 +54,13 @@ namespace BangazonWeb.Controllers
                 return NotFound();
             }
 
-            ViewBag.Users = Users.GetAllUsers(context);
-            return View(product);
+            var model = new ProductDetail(context);
+            model.CurrentProduct = product;
+            return View(model);
         }
 
         public async Task<IActionResult> EditInfo([FromRoute]int? id)
         {
-            ViewData["ProductTypeId"] = context.ProductType
-                .OrderBy(l => l.Label)
-                .AsEnumerable()
-                .Select(li => new SelectListItem { 
-                    Text = li.Label,
-                    Value = li.ProductTypeId.ToString()
-                    });
                                         
             // If no id was in the route, return 404
             if (id == null)
@@ -89,12 +78,13 @@ namespace BangazonWeb.Controllers
                 return NotFound();
             }
 
-            ViewBag.Users = Users.GetAllUsers(context);
-            return View(product);
+            var model = new ProductEdit(context);
+            model.CurrentProduct = product;
+            return View(model);
         }
 
         [ValidateAntiForgeryToken]
-        public async Task <IActionResult> Edit([FromRoute]int id, Product product)
+        public async Task <IActionResult> Edit([FromRoute]int id, ProductEdit product)
         {
             Product originalProduct = await context.Product.SingleAsync(p => p.ProductId == id);
 
@@ -106,10 +96,10 @@ namespace BangazonWeb.Controllers
             
             
             originalProduct.ProductId = id;
-            originalProduct.Price =product.Price;
-            originalProduct.Description = product.Description;
-            originalProduct.Name = product.Name;
-            originalProduct.ProductTypeId = product.ProductTypeId;
+            originalProduct.Price = product.CurrentProduct.Price;
+            originalProduct.Description = product.CurrentProduct.Description;
+            originalProduct.Name = product.CurrentProduct.Name;
+            originalProduct.ProductTypeId = product.CurrentProduct.ProductTypeId;
             context.Entry(originalProduct).State = EntityState.Modified;
 
             context.Update(originalProduct);
@@ -128,40 +118,28 @@ namespace BangazonWeb.Controllers
 
         public IActionResult New()
         {
-           ViewData["ProductTypeId"] = context.ProductType
-                .OrderBy(l => l.Label)
-                .AsEnumerable()
-                .Select(li => new SelectListItem { 
-                    Text = li.Label,
-                    Value = li.ProductTypeId.ToString()
-                    });
-
-            ViewBag.Users = Users.GetAllUsers(context);
-
-            ViewData["UserId"] = context.User
-                .OrderBy(l => l.LastName)
-                .AsEnumerable()
-                .Select(li => new SelectListItem { 
-                    Text = $"{li.FirstName} {li.LastName}",
-                    Value = li.UserId.ToString()
-                });
-
-            return View(); 
+            var model = new ProductCreate(context);
+            return View(model); 
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+<<<<<<< HEAD
         public async Task<IActionResult> New(Product product)
+=======
+        public async Task<IActionResult> Create(ProductCreate product)
+>>>>>>> 79-view-model-refactor
         {
             
             if (ModelState.IsValid)
             {
-                context.Add(product);
+                context.Add(product.NewProduct);
                 await context.SaveChangesAsync();
                 return RedirectToAction( "Detail", new RouteValueDictionary( 
                      new { controller = "Products", action = "Detail", Id = product.ProductId } ) );
             }
 
+<<<<<<< HEAD
             ViewData["ProductTypeId"] = context.ProductType
                 .OrderBy(l => l.Label)
                 .AsEnumerable()
@@ -182,11 +160,16 @@ namespace BangazonWeb.Controllers
 
             return View(product);
 
+=======
+            var model = new ProductCreate(context);
+            model.NewProduct = product.NewProduct;
+            return View(model);
+>>>>>>> 79-view-model-refactor
         }
         public IActionResult Error()
         {
-            ViewBag.Users = Users.GetAllUsers(context);
-            return View();
+            var model = new BaseViewModel(context);
+            return View(model);
         }
     }
 }

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Bangazon.Helpers;
+using BangazonWeb.ViewModels;
 
 namespace BangazonWeb.Controllers
 {
@@ -31,27 +32,29 @@ namespace BangazonWeb.Controllers
 
         public IActionResult New()
         {
-          ViewBag.Users = Users.GetAllUsers(context);  
-          return View();
+          var model = new UserCreate(context);
+          return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult New(User user)
+        public IActionResult New(UserCreate user)
         {
             if (!ModelState.IsValid)
             {
-                return View(user);
+                var model = new UserCreate(context);
+                model.NewUser = user.NewUser;
+                return View(model);
             }
 
-            context.User.Add(user);
+            context.User.Add(user.NewUser);
             try
             {
                 context.SaveChanges();
             }
             catch (DbUpdateException)
             {
-                if (UserExists(user.UserId))
+                if (UserExists(user.NewUser.UserId))
                 {
                     return new StatusCodeResult(StatusCodes.Status409Conflict);
                 }
