@@ -17,29 +17,35 @@ namespace BangazonWeb.Controllers
         {
             context = ctx;
         }
-        public async Task<IActionResult> Create()
+        public IActionResult Create()
         {
-        
-        ViewBag.Users = Users.GetAllUsers(context);
 
+        ViewBag.Users = Users.GetAllUsers(context);
+        
         return View();
         }
-    
+
         [HttpPost]
 
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(PaymentType paymentType)
         {
+            paymentType.UserId = 1;
             if (ModelState.IsValid)
             {
                 context.Add(paymentType);
                 await context.SaveChangesAsync();
-                return RedirectToAction("Cart", "Index");
+                return RedirectToAction("Index", "Cart");
             }
             
             ViewBag.Users = Users.GetAllUsers(context);
 
             return View(paymentType);
+        }
+        public IActionResult Error()
+        {
+            ViewBag.Users = Users.GetAllUsers(context);
+            return View();
         }
     }
 
