@@ -18,6 +18,8 @@ namespace BangazonWeb.Controllers
      * Author: Matt Hamil
      * Methods:
      *   Task<IActionResult> Index() - Queries for all products on user's active order and renders view
+     *   Task<IActionResult> CreateNewOrder() - Creates a new open order for the customer
+     *   Task<IActionResult> AddToCart() - Adds a product to a user's open order
      *   IActionResult Error() - Renders an error
      */
     public class CartController : Controller
@@ -32,7 +34,10 @@ namespace BangazonWeb.Controllers
         public async Task<IActionResult> Index()
         {
             // TODO: This is a placeholder value. These two lines should be removed after the User Accounts dropdown works
-            SessionHelper.ActiveUser = 1;
+            if (SessionHelper.ActiveUser == null)
+            {
+                SessionHelper.ActiveUser = 1;
+            }
 
             ViewBag.Users = Users.GetAllUsers(context);
 
@@ -59,6 +64,58 @@ namespace BangazonWeb.Controllers
             ViewBag.totalPrice = totalPrice;
 
             return View(activeProducts);
+        }
+
+        public async Task<IActionResult> AddToCart([FromRoute]int id)
+        {
+            // When not logged in
+            if (SessionHelper.ActiveUser == null)
+            {
+                return Forbid();
+            }
+
+            // Find the product
+            Product productQuery = await(
+                from product in context.Product
+                where product.ProductId == id
+                select product).SingleOrDefaultAsync();
+
+            if (productQuery == null)
+            {
+                return NotFound();
+            }
+
+            // Find the user's active order
+            Order openOrderQuery = await(
+                from order in context.Order
+                where order.UserId == SessionHelper.ActiveUser && order.DateCompleted == null
+                select order).SingleOrDefaultAsync();
+
+            Order openOrder = null;
+
+            // If the user does not have an open order
+            if (openOrderQuery == null)
+            {
+                // Creating a new Order for Carson Alexander
+                openOrder = new Order {
+                    UserId = (int)SessionHelper.ActiveUser,
+                };
+                context.Order.Add(openOrder);
+                await context.SaveChangesAsync();
+            }
+            else
+            {
+                openOrder = openOrderQuery;
+            }
+
+            // Create a new LineItem with the ProductId and OrderId
+            LineItem lineItem = new LineItem(){ OrderId = openOrder.OrderId, ProductId = id };
+
+            context.LineItem.Add(lineItem);
+            await context.SaveChangesAsync();
+
+            return RedirectToAction( "Detail", new RouteValueDictionary(
+                     new { controller = "Products", action = "Detail", Id = id } ) );
         }
 
         public IActionResult Error()
