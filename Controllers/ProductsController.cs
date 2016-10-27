@@ -26,6 +26,7 @@ namespace BangazonWeb.Controllers
      *   Edit() - executes the edit within the database
      *   New() - allows for users to navigate to form
      *   New(Product product) - updates database with new product information.
+     *   Delete() - deletes product from database and view of customer.
      */
     public class ProductsController : Controller
     {
@@ -61,7 +62,6 @@ namespace BangazonWeb.Controllers
 
         public async Task<IActionResult> EditInfo([FromRoute]int? id)
         {
-                                        
             // If no id was in the route, return 404
             if (id == null)
             {
@@ -112,9 +112,9 @@ namespace BangazonWeb.Controllers
             {
                 throw;
             }
-            
-            return RedirectToAction( "Detail", new RouteValueDictionary( 
-                     new { controller = "Products", action = "Detail", Id = originalProduct.ProductId } ) );
+
+            return RedirectToAction("Detail", new RouteValueDictionary(
+                     new { controller = "Products", action = "Detail", Id = originalProduct.ProductId }));
         }
 
         public IActionResult New()
@@ -127,7 +127,7 @@ namespace BangazonWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ProductCreate product)
         {
-            
+
             if (ModelState.IsValid)
             {
                 context.Add(product.NewProduct);
@@ -140,6 +140,33 @@ namespace BangazonWeb.Controllers
             model.NewProduct = product.NewProduct;
             return View(model);
         }
+
+        public async Task<IActionResult> Delete([FromRoute]int id)
+        {
+            Product originalProduct = await context.Product.SingleAsync(p => p.ProductId == id);
+
+            if (originalProduct == null)
+            {
+                return RedirectToAction("List", new RouteValueDictionary(
+                    new { controller = "ProductTypes", action = "List", Id = originalProduct.ProductTypeId }));
+            }
+            else
+            {
+
+                try
+                {
+                    context.Remove(originalProduct);
+                    await context.SaveChangesAsync();
+                    return RedirectToAction("List", new RouteValueDictionary(
+                        new { controller = "ProductTypes", action = "List", Id = originalProduct.ProductTypeId }));
+                }
+                catch (DbUpdateException)
+                {
+                    throw;
+                }
+            }
+        }
+
         public IActionResult Error()
         {
             var model = new BaseViewModel(context);
