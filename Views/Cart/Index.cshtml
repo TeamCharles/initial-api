@@ -26,4 +26,6 @@
 }
 
 <h2>TOTAL: $@Model.TotalPrice</h2>
+<h2>TOTAL: $@ViewBag.totalPrice</h2>
+<a type="button" value="Add Payment Method" class="btn btn-primary" asp-controller="PaymentTypes" asp-action="Create">Select Payment Type</a>
 <input type="button" value="Checkout" class="btn btn-primary" asp-action="CompleteOrder"/>

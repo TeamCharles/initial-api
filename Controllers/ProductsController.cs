@@ -12,28 +12,20 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 
-/**
- * Class: ProductsController
- * Purpose: Provide methods for the different products views
- * Author: Anulfo Ordaz
- * Methods:
- *   ProductsController() - retrieve data from context
- *   Task<IActionResult>Index() - returns a list of every product
- *   Task<IActionResult> Detail() - returns the information for an individual product
- *   Task<IActionResult> Create() - retrieve the types and users for the dropdowns and return the form view
- *   Task<IActionResult> Create(Product Product) - post the new item to the database and redirects to the index view
- */
+
 namespace BangazonWeb.Controllers
 {
     /**
      * Class: ProductsController
      * Purpose: Currently allows for users to view and edit different products
-     * Author: Garrett
+     * Author: Garrett/Anulfo
      * Methods:
      *   Index() - shows index view of products
      *   Detail() - shows detailed view of individual product
      *   EditInfo() - allows users to fill form to change product information
      *   Edit() - executes the edit within the database
+     *   New() - allows for users to navigate to form
+     *   New(Product product) - updates database with new product information.
      */
     public class ProductsController : Controller
     {
@@ -125,7 +117,7 @@ namespace BangazonWeb.Controllers
                      new { controller = "Products", action = "Detail", Id = originalProduct.ProductId } ) );
         }
 
-        public IActionResult Create()
+        public IActionResult New()
         {
             var model = new ProductCreate(context);
             return View(model); 
@@ -140,7 +132,8 @@ namespace BangazonWeb.Controllers
             {
                 context.Add(product.NewProduct);
                 await context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction( "Detail", new RouteValueDictionary( 
+                     new { controller = "Products", action = "Detail", Id = product.ProductId } ) );
             }
 
             var model = new ProductCreate(context);

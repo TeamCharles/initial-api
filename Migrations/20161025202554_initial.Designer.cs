@@ -8,9 +8,10 @@ using BangazonWeb.Data;
 namespace initialsite.Migrations
 {
     [DbContext(typeof(BangazonContext))]
-    partial class BangazonContextModelSnapshot : ModelSnapshot
+    [Migration("20161025202554_initial")]
+    partial class initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431");
