@@ -6,7 +6,7 @@
     <div class="col-md-3">@Html.DisplayFor(model => model.CurrentProduct.Description)</div>
     <div class="col-md-3">@Html.DisplayFor(model => model.CurrentProduct.Price)</div>
     <div class="col-md-3">@Html.DisplayFor(model => model.CurrentProduct.DateCreated)</div>
-    <div class="col-md-3"><a asp-action="Purchase" asp-route-id="@Model.CurrentProduct.ProductId">Add to Cart</a></div>
+    <div class="col-md-3"><a asp-controller="Cart" asp-action="AddToCart" asp-route-id="@Model.CurrentProduct.ProductId">Add to Cart</a></div>
 </div>
 
 <div>
