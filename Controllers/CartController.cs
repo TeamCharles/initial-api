@@ -21,6 +21,7 @@ namespace BangazonWeb.Controllers
      *   Task<IActionResult> Index() - Queries for all products on user's active order and renders view
      *   Task<IActionResult> CreateNewOrder() - Creates a new open order for the customer
      *   Task<IActionResult> AddToCart() - Adds a product to a user's open order
+     *   Task<IActionResult> DeleteLineItem() - Deletes a LineItem from the cart
      *   IActionResult Error() - Renders an error
      */
     public class CartController : Controller
