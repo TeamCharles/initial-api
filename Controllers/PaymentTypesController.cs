@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using BangazonWeb.Data;
 using Bangazon.Models;
 using Bangazon.Helpers;
+using BangazonWeb.ViewModels;
 
 
 /**
@@ -27,17 +28,16 @@ namespace BangazonWeb.Controllers
         public IActionResult Create()
         {
 
-        ViewBag.Users = Users.GetAllUsers(context);
+        var model = new PaymentTypeView(context);
         
-        return View();
+        return View(model);
         }
 
         [HttpPost]
-
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(PaymentType paymentType)
         {
-            paymentType.UserId = 1;
+            paymentType.UserId = ActiveUser.Instance.User.UserId;
             if (ModelState.IsValid)
             {
                 context.Add(paymentType);
