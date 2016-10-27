@@ -21,6 +21,7 @@ namespace BangazonWeb.Controllers
      *   Task<IActionResult> Index() - Queries for all products on user's active order and renders view
      *   Task<IActionResult> CreateNewOrder() - Creates a new open order for the customer
      *   Task<IActionResult> AddToCart() - Adds a product to a user's open order
+     *   Task<IActionResult> DeleteLineItem() - Deletes a LineItem from the cart
      *   IActionResult Error() - Renders an error
      */
     public class CartController : Controller
@@ -109,6 +110,36 @@ namespace BangazonWeb.Controllers
 
             return RedirectToAction( "Detail", new RouteValueDictionary(
                      new { controller = "Products", action = "Detail", Id = id } ) );
+        }
+
+        public async Task<IActionResult> DeleteLineItem([FromRoute]int id)
+        {
+            Order OpenOrder = await(
+                from order in context.Order
+                where order.UserId == ActiveUser.Instance.User.UserId && order.DateCompleted == null
+                select order).SingleOrDefaultAsync();  
+            
+
+            LineItem deletedItem = await context.LineItem.SingleAsync(p => p.ProductId == id && p.OrderId == OpenOrder.OrderId);
+
+
+            if (deletedItem == null)
+            {
+                return RedirectToAction("Index", new RouteValueDictionary(
+                    new { controller = "Cart", action = "Index"} ) );   
+            }
+
+            try
+            {
+                context.Remove(deletedItem);
+                await context.SaveChangesAsync();
+                return RedirectToAction( "Index", new RouteValueDictionary(
+                     new { controller = "Cart", action = "Index", Id = id } ) ); 
+            }
+            catch (DbUpdateException)
+            {
+                throw;
+            }   
         }
 
         public IActionResult Error()

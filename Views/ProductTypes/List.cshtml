@@ -12,7 +12,7 @@
         <div class="col-md-3">$@Html.DisplayFor(modelItem => item.Price)</div>
         <div class="col-md-3">@Html.DisplayFor(modelItem => item.DateCreated)</div>
         <div class="col-md-3">
-            @if (item.UserId == 1)
+            @if (item.UserId == @Model.ChosenUser.UserId)
             {
                 <a asp-controller="Products" asp-action="Delete" asp-route-id="@item.ProductId"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
