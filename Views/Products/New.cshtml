@@ -35,7 +35,7 @@
         <div class="form-group">
             <label asp-for="NewProduct.ProductTypeId" class="col-md-2 control-label">Product Type</label>
             <div class="col-md-10">
-                @Html.DropDownList("NewProduct.ProductTypeId",@Model.ProductTypes)
+                @Html.DropDownList("NewProduct.ProductTypeId",@Model.ProductTypes,"Select a Category")
                 <span asp-validation-for="NewProduct.ProductTypeId" class="text-danger"></span>
             </div>
         </div>
