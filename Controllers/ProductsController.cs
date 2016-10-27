@@ -133,7 +133,7 @@ namespace BangazonWeb.Controllers
                 context.Add(product.NewProduct);
                 await context.SaveChangesAsync();
                 return RedirectToAction( "Detail", new RouteValueDictionary( 
-                     new { controller = "Products", action = "Detail", Id = product.ProductId } ) );
+                     new { controller = "Products", action = "Detail", Id = product.NewProduct.ProductId } ) );
             }
 
             var model = new ProductCreate(context);
