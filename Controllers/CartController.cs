@@ -96,9 +96,8 @@ namespace BangazonWeb.Controllers
             // If the user does not have an open order
             if (openOrderQuery == null)
             {
-                // Creating a new Order for Carson Alexander
-                openOrder = new Order {
-                    
+                // Creating a new Order
+                openOrder = new Order {    
                     UserId = (int)ActiveUser.Instance.User.UserId
                 };
                 context.Order.Add(openOrder);
@@ -121,10 +120,9 @@ namespace BangazonWeb.Controllers
 
         public async Task<IActionResult> DeleteLineItem([FromRoute]int id)
         {
-
             User user = ActiveUser.Instance.User;
             int? userId = user.UserId;
-
+            
             Order OpenOrder = await(
                 from order in context.Order
 
