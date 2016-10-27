@@ -6,7 +6,17 @@
     <div class="col-md-3">@Html.DisplayFor(model => model.CurrentProduct.Description)</div>
     <div class="col-md-3">@Html.DisplayFor(model => model.CurrentProduct.Price)</div>
     <div class="col-md-3">@Html.DisplayFor(model => model.CurrentProduct.DateCreated)</div>
-    <div class="col-md-3"><a asp-controller="Cart" asp-action="AddToCart" asp-route-id="@Model.CurrentProduct.ProductId">Add to Cart</a></div>
+    @if (@Model.CurrentProduct.UserId != @Model.ChosenUser.UserId)
+    {
+        <div class="col-md-3"><a asp-controller="Cart" asp-action="AddToCart" asp-route-id="@Model.CurrentProduct.ProductId">Add to Cart</a></div>
+    }
+    else
+    {
+        <a asp-controller="Products" asp-action="Delete" asp-route-id="@Model.CurrentProduct.ProductId"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        <a asp-controller="Products" asp-action="Edit" asp-route-id="@Model.CurrentProduct.ProductId"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
+        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    }
 </div>
 
 <div>
