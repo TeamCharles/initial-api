@@ -45,14 +45,9 @@ namespace BangazonWeb.Controllers
                 return RedirectToAction("Index", "Cart");
             }
             
-            ViewBag.Users = Users.GetAllUsers(context);
+            var model = new PaymentTypeView(context);
 
-            return View(paymentType);
-        }
-        public IActionResult Error()
-        {
-            ViewBag.Users = Users.GetAllUsers(context);
-            return View();
+            return View(model);
         }
     }
 
