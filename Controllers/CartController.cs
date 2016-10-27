@@ -127,11 +127,11 @@ namespace BangazonWeb.Controllers
 
             Order OpenOrder = await(
                 from order in context.Order
-                where order.UserId == SessionHelper.ActiveUser && order.DateCompleted == null
+                where order.UserId == ActiveUser.Instance.User.UserId && order.DateCompleted == null
                 select order).SingleOrDefaultAsync();  
             
 
-            Product deletedItem = await context.Product.SingleAsync(p => p.ProductId == id);
+            LineItem deletedItem = await context.LineItem.SingleAsync(p => p.ProductId == id && p.OrderId == OpenOrder.OrderId);
 
 
             if (deletedItem == null)
