@@ -118,7 +118,7 @@ namespace BangazonWeb.Controllers
                      new { controller = "Products", action = "Detail", Id = originalProduct.ProductId }));
         }
 
-        public IActionResult New()
+        public IActionResult Create()
         {
             var model = new ProductCreate(context);
             return View(model);
