@@ -1,12 +1,9 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BangazonWeb.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Bangazon.Helpers;
 using Bangazon.Models;
 using Microsoft.AspNetCore.Routing;
 using BangazonWeb.ViewModels;
@@ -35,9 +32,7 @@ namespace BangazonWeb.Controllers
         }
 
         public async Task<IActionResult> Index()
-        {
-            // TODO: This is a placeholder value. These two lines should be removed after the User Accounts dropdown works
-            
+        {            
             User user = ActiveUser.Instance.User;
             int? userId = user.UserId;
             if (userId == null)
@@ -188,8 +183,6 @@ namespace BangazonWeb.Controllers
 
         public IActionResult Error()
         {
-            
-            ViewBag.Users = Users.GetAllUsers(context);
             return View();
         }
     }

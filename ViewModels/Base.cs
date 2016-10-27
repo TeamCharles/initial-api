@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Linq;
 using System;
 using Bangazon.Models;
@@ -12,6 +13,7 @@ namespace BangazonWeb.ViewModels
     public IEnumerable<SelectListItem> Users { get; set; }
     protected BangazonContext context;
     private ActiveUser singleton = ActiveUser.Instance;
+    public int TotalCount { get;  private set; }
     public User ChosenUser 
     {
       get
@@ -54,6 +56,18 @@ namespace BangazonWeb.ViewModels
                 Text = $"{li.FirstName} {li.LastName}",
                 Value = li.UserId.ToString()
             });
+
+        var CartProducts = (
+                from product in context.Product
+                from lineItem in context.LineItem
+                    .Where(lineItem => lineItem.OrderId == context.Order.SingleOrDefault(o => o.DateCompleted == null && o.User == ChosenUser).OrderId && lineItem.ProductId == product.ProductId)
+                select product).ToList();
+
+        foreach (Product product in CartProducts)
+            {
+                this.TotalCount += 1;
+            }
+        
     }
     public BaseViewModel() { }
   }
