@@ -34,18 +34,12 @@ namespace BangazonWeb.Controllers
 
         public async Task<IActionResult> Index()
         {
-            // TODO: This is a placeholder value. These two lines should be removed after the User Accounts dropdown works
-            if (SessionHelper.ActiveUser == null)
-            {
-                SessionHelper.ActiveUser = 1;
-            }
-
             // For help with this LINQ query, refer to
             // https://stackoverflow.com/questions/373541/how-to-do-joins-in-linq-on-multiple-fields-in-single-join
             var activeProducts = await(
                 from product in context.Product
                 from lineItem in context.LineItem
-                    .Where(lineItem => lineItem.OrderId == context.Order.SingleOrDefault(o => o.DateCompleted == null && o.UserId == SessionHelper.ActiveUser).OrderId && lineItem.ProductId == product.ProductId)
+                    .Where(lineItem => lineItem.OrderId == context.Order.SingleOrDefault(o => o.DateCompleted == null && o.UserId == ActiveUser.Instance.User.UserId).OrderId && lineItem.ProductId == product.ProductId)
                 select product).ToListAsync();
 
             if (activeProducts == null)
@@ -68,7 +62,7 @@ namespace BangazonWeb.Controllers
         public async Task<IActionResult> AddToCart([FromRoute]int id)
         {
             // When not logged in
-            if (SessionHelper.ActiveUser == null)
+            if (ActiveUser.Instance.User == null)
             {
                 return Forbid();
             }
@@ -87,7 +81,7 @@ namespace BangazonWeb.Controllers
             // Find the user's active order
             Order openOrderQuery = await(
                 from order in context.Order
-                where order.UserId == SessionHelper.ActiveUser && order.DateCompleted == null
+                where order.UserId == ActiveUser.Instance.User.UserId && order.DateCompleted == null
                 select order).SingleOrDefaultAsync();
 
             Order openOrder = null;
@@ -95,9 +89,9 @@ namespace BangazonWeb.Controllers
             // If the user does not have an open order
             if (openOrderQuery == null)
             {
-                // Creating a new Order for Carson Alexander
+                // Creating a new Order
                 openOrder = new Order {
-                    UserId = (int)SessionHelper.ActiveUser,
+                    UserId = (int)ActiveUser.Instance.User.UserId,
                 };
                 context.Order.Add(openOrder);
                 await context.SaveChangesAsync();
