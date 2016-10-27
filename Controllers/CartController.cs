@@ -37,7 +37,7 @@ namespace BangazonWeb.Controllers
             // TODO: This is a placeholder value. These two lines should be removed after the User Accounts dropdown works
             if (SessionHelper.ActiveUser == null)
             {
-                SessionHelper.ActiveUser = 1;
+                SessionHelper.ActiveUser = ActiveUser.Instance.User.UserId;
             }
 
             // For help with this LINQ query, refer to
@@ -115,6 +115,41 @@ namespace BangazonWeb.Controllers
 
             return RedirectToAction( "Detail", new RouteValueDictionary(
                      new { controller = "Products", action = "Detail", Id = id } ) );
+        }
+
+        public async Task<IActionResult> DeleteLineItem([FromRoute]int id)
+        {
+            if (SessionHelper.ActiveUser == null)
+            {
+                SessionHelper.ActiveUser = ActiveUser.Instance.User.UserId;
+            }
+
+            Order OpenOrder = await(
+                from order in context.Order
+                where order.UserId == SessionHelper.ActiveUser && order.DateCompleted == null
+                select order).SingleOrDefaultAsync();  
+            
+
+            Product deletedItem = await context.Product.SingleAsync(p => p.ProductId == id);
+
+
+            if (deletedItem == null)
+            {
+                return RedirectToAction("Index", new RouteValueDictionary(
+                    new { controller = "Cart", action = "Index"} ) );   
+            }
+
+            try
+            {
+                context.Remove(deletedItem);
+                await context.SaveChangesAsync();
+                return RedirectToAction( "Index", new RouteValueDictionary(
+                     new { controller = "Cart", action = "Index", Id = id } ) ); 
+            }
+            catch (DbUpdateException)
+            {
+                throw;
+            }   
         }
 
         public IActionResult Error()
