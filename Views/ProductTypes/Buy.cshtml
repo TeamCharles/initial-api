@@ -1,11 +1,11 @@
-@model IEnumerable<Bangazon.Models.ProductType>
+@model BangazonWeb.ViewModels.ProductTypeList
 @using Bangazon.Models;
 
 <h2>Product Types</h2>
 
 <a asp-controller="Products"><input value="View All Products" type="button" class="btn btn-primary"/></a>
 
-@foreach (ProductType type in Model)
+@foreach (ProductType type in Model.ProductTypes)
 {
   <div class="row">
       <div class="col-md-3"><a asp-action="List" asp-route-id="@type.ProductTypeId">@Html.DisplayFor(model => type.Label)</a></div>

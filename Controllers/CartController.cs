@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Bangazon.Helpers;
 using Bangazon.Models;
 using Microsoft.AspNetCore.Routing;
+using BangazonWeb.ViewModels;
 
 namespace BangazonWeb.Controllers
 {
@@ -39,8 +40,6 @@ namespace BangazonWeb.Controllers
                 SessionHelper.ActiveUser = 1;
             }
 
-            ViewBag.Users = Users.GetAllUsers(context);
-
             // For help with this LINQ query, refer to
             // https://stackoverflow.com/questions/373541/how-to-do-joins-in-linq-on-multiple-fields-in-single-join
             var activeProducts = await(
@@ -55,15 +54,15 @@ namespace BangazonWeb.Controllers
                 return RedirectToAction("Index", "ProductTypes");
             }
 
-            float totalPrice = 0;
+            var model = new CartView(context);
+            model.ActiveProducts = activeProducts;
+
             foreach (var product in activeProducts)
             {
-                totalPrice += product.Price;
+                model.TotalPrice += product.Price;
             }
 
-            ViewBag.totalPrice = totalPrice;
-
-            return View(activeProducts);
+            return View(model);
         }
 
         public async Task<IActionResult> AddToCart([FromRoute]int id)

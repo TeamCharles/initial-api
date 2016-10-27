@@ -1,50 +1,48 @@
-@model Bangazon.Models.Product
+@model BangazonWeb.ViewModels.ProductEdit
 
-
-
-@{
-    ViewData["Title"] = "Product Edit";
-}
-
-<form asp-action="Edit" asp-route-id="@Model.ProductId">
+<form asp-action="Edit" asp-route-id="@Model.CurrentProduct.ProductId">
     <div class="form-horizontal">
         <h4>Edit</h4>
         <hr>
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div>
-            <label asp-for="Name" class="col-md-2 control-label">Product Name</label>
+            <label asp-for="CurrentProduct.Name" class="col-md-2 control-label">Product Name</label>
             <div class="col-md-10">
-            <input asp-for="Name" class="form-control" placeholder="@Html.DisplayFor(model => model.Name)" />
-            <span asp-validation-for="Name" class="text-danger" />
+            <input asp-for="CurrentProduct.Name" class="form-control" placeholder="@Html.DisplayFor(model => model.CurrentProduct.Name)" />
+            <span asp-validation-for="CurrentProduct.Name" class="text-danger" />
             </div>
         </div>
 
         <div>
-            <label asp-for="Price" class="col-md-2 control-label">Price</label>
+            <label asp-for="CurrentProduct.Price" class="col-md-2 control-label">Price</label>
             <div class="col-md-10">
-            <input asp-for="Price"  class="form-control" placeholder="@Html.DisplayFor(model => model.Price)" />
-            <span asp-validation-for="Price" class="text-danger" />
+            <input asp-for="CurrentProduct.Price"  class="form-control" placeholder="@Html.DisplayFor(model => model.CurrentProduct.Price)" />
+            <span asp-validation-for="CurrentProduct.Price" class="text-danger" />
             </div>
         </div>
 
         <div>
-            <label asp-for="Description" class="col-md-2 control-label">Description</label>
+            <label asp-for="CurrentProduct.Description" class="col-md-2 control-label">Description</label>
             <div class="col-md-10">
-            <input asp-for="Description" class="form-control" placeholder="@Html.DisplayFor(model => model.Description)" />
-            <span asp-validation-for="Description" class="text-danger" />
+            <input asp-for="CurrentProduct.Description" class="form-control" placeholder="@Html.DisplayFor(model => model.CurrentProduct.Description)" />
+            <span asp-validation-for="CurrentProduct.Description" class="text-danger" />
             </div>
         </div>
 
         <div class="form-group">
-            <label asp-validation-for="ProductTypeId" class="col-md-2 control-label">Product Type</label>
+            <label asp-validation-for="CurrentProduct.ProductTypeId" class="col-md-2 control-label">Product Type</label>
             <div class="col-md-10">
-                <span class="text-danger" />
-                @Html.DropDownList("ProductTypeId","Product Type")
+                <span class="text-danger"></span>
+
+                 @Html.DropDownList("CurrentProduct.ProductTypeId", @Model.ProductTypes, "SELECT" , new { @class = "dropdown" })
+
             </div>
+
+            @Html.Hidden("CurrentProduct.ProductId", Model.CurrentProduct.ProductId)
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input asp-controller="Products" asp-action="Edit" asp-route-id="@Model.ProductId" type="submit" value="Save Changes" class="btn btn-default" />
+                <input asp-controller="Products" asp-action="Edit" asp-route-id="@Model.CurrentProduct.ProductId" type="submit" value="Save Changes" class="btn btn-default" />
             </div>
         </div>
 
@@ -55,5 +53,5 @@
 
 
 <div>
-    &lt;&lt; <a asp-controller="ProductTypes" asp-action="List" asp-route-id="@Model.ProductTypeId">Back to List</a>
+    &lt;&lt; <a asp-controller="ProductTypes" asp-action="List" asp-route-id="@Model.CurrentProduct.ProductTypeId">Back to List</a>
 </div>
