@@ -1,4 +1,4 @@
-@model Bangazon.Models.PaymentType
+@model BangazonWeb.ViewModels.PaymentTypeView
 
 @{
     ViewData["Title"] = "New Payment Type";
@@ -13,17 +13,17 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
         <div class="form-group">
-            <label asp-for="Description" class="col-md-2 control-label">Payment Type Name</label>
+            <label asp-for="NewPaymentType.Description" class="col-md-2 control-label">Payment Type Name</label>
             <div class="col-md-10">
-                <input asp-for="Description" class="form-control"/>
-                <span asp-validation-for="Description" class="text-danger"></span>
+                <input asp-for="NewPaymentType.Description" class="form-control"/>
+                <span asp-validation-for="NewPaymentType.Description" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="AccountNumber" class="col-md-2 control-label">Account Number</label>
+            <label asp-for="NewPaymentType.AccountNumber" class="col-md-2 control-label">Account Number</label>
             <div class="col-md-10">
-                <input asp-for="AccountNumber" class="form-control" />
-                <span asp-validation-for="AccountNumber" class="text-danger"></span>
+                <input asp-for="NewPaymentType.AccountNumber" class="form-control" />
+                <span asp-validation-for="NewPaymentType.AccountNumber" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">

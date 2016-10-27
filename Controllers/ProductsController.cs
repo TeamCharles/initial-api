@@ -84,18 +84,18 @@ namespace BangazonWeb.Controllers
         }
 
         [ValidateAntiForgeryToken]
-        public async Task <IActionResult> Edit(ProductEdit product)
+        public async Task<IActionResult> Edit(ProductEdit product)
         {
             Product originalProduct = await context.Product.SingleAsync(p => p.ProductId == product.CurrentProduct.ProductId);
 
             if (!ModelState.IsValid)
             {
-                
-                return RedirectToAction( "EditInfo", new RouteValueDictionary( 
-                     new { controller = "Products", action = "EditInfo", Id = originalProduct.ProductId } ) );
+
+                return RedirectToAction("EditInfo", new RouteValueDictionary(
+                     new { controller = "Products", action = "EditInfo", Id = originalProduct.ProductId }));
             }
-            
-            
+
+
             originalProduct.ProductId = product.CurrentProduct.ProductId;
             originalProduct.Price = product.CurrentProduct.Price;
             originalProduct.Description = product.CurrentProduct.Description;
@@ -120,7 +120,7 @@ namespace BangazonWeb.Controllers
         public IActionResult New()
         {
             var model = new ProductCreate(context);
-            return View(model); 
+            return View(model);
         }
 
         [HttpPost]
@@ -133,8 +133,8 @@ namespace BangazonWeb.Controllers
                 product.NewProduct.UserId = ActiveUser.Instance.User.UserId;
                 context.Add(product.NewProduct);
                 await context.SaveChangesAsync();
-                return RedirectToAction( "Detail", new RouteValueDictionary( 
-                     new { controller = "Products", action = "Detail", Id = product.NewProduct.ProductId } ) );
+                return RedirectToAction("Detail", new RouteValueDictionary(
+                     new { controller = "Products", action = "Detail", Id = product.NewProduct.ProductId }));
             }
 
             var model = new ProductCreate(context);
