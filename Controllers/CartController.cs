@@ -97,9 +97,8 @@ namespace BangazonWeb.Controllers
             // If the user does not have an open order
             if (openOrderQuery == null)
             {
-                // Creating a new Order for Carson Alexander
-                openOrder = new Order {
-                    
+                // Creating a new Order
+                openOrder = new Order {    
                     UserId = (int)ActiveUser.Instance.User.UserId
                 };
                 context.Order.Add(openOrder);
