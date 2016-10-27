@@ -68,9 +68,11 @@ namespace BangazonWeb.Controllers
             return RedirectToAction("Buy", "ProductTypes");
         }
 
-        public void Activate(int id)
+        [HttpPost]
+        public IActionResult Activate(int id)
         {
             ActivateUser(context.User.Single(u => u.UserId == id));
+            return Json(new {result = "User updated successfully"});
         }
 
         public IActionResult Error()
