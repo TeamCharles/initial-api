@@ -35,12 +35,21 @@ namespace BangazonWeb.Controllers
 
         public async Task<IActionResult> Index()
         {
+            // TODO: This is a placeholder value. These two lines should be removed after the User Accounts dropdown works
+            
+            User user = ActiveUser.Instance.User;
+            int? userId = user.UserId;
+            if (userId == null)
+            {
+                return Redirect("ProductTypes");
+            }
+
             // For help with this LINQ query, refer to
             // https://stackoverflow.com/questions/373541/how-to-do-joins-in-linq-on-multiple-fields-in-single-join
             var activeProducts = await(
                 from product in context.Product
                 from lineItem in context.LineItem
-                    .Where(lineItem => lineItem.OrderId == context.Order.SingleOrDefault(o => o.DateCompleted == null && o.UserId == ActiveUser.Instance.User.UserId).OrderId && lineItem.ProductId == product.ProductId)
+                    .Where(lineItem => lineItem.OrderId == context.Order.SingleOrDefault(o => o.DateCompleted == null && o.UserId == userId).OrderId && lineItem.ProductId == product.ProductId)
                 select product).ToListAsync();
 
             if (activeProducts == null)
@@ -62,11 +71,8 @@ namespace BangazonWeb.Controllers
 
         public async Task<IActionResult> AddToCart([FromRoute]int id)
         {
-            // When not logged in
-            if (ActiveUser.Instance.User == null)
-            {
-                return Forbid();
-            }
+            User user = ActiveUser.Instance.User;
+            int? userId = user.UserId;
 
             // Find the product
             Product productQuery = await(
@@ -82,7 +88,7 @@ namespace BangazonWeb.Controllers
             // Find the user's active order
             Order openOrderQuery = await(
                 from order in context.Order
-                where order.UserId == ActiveUser.Instance.User.UserId && order.DateCompleted == null
+                where order.UserId == userId && order.DateCompleted == null
                 select order).SingleOrDefaultAsync();
 
             Order openOrder = null;
@@ -91,8 +97,8 @@ namespace BangazonWeb.Controllers
             if (openOrderQuery == null)
             {
                 // Creating a new Order
-                openOrder = new Order {
-                    UserId = (int)ActiveUser.Instance.User.UserId,
+                openOrder = new Order {    
+                    UserId = (int)ActiveUser.Instance.User.UserId
                 };
                 context.Order.Add(openOrder);
                 await context.SaveChangesAsync();
@@ -114,8 +120,12 @@ namespace BangazonWeb.Controllers
 
         public async Task<IActionResult> DeleteLineItem([FromRoute]int id)
         {
+            User user = ActiveUser.Instance.User;
+            int? userId = user.UserId;
+            
             Order OpenOrder = await(
                 from order in context.Order
+
                 where order.UserId == ActiveUser.Instance.User.UserId && order.DateCompleted == null
                 select order).SingleOrDefaultAsync();  
             
