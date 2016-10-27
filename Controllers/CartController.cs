@@ -164,12 +164,12 @@ namespace BangazonWeb.Controllers
             }
             Order openOrder = await(
                 from order in context.Order
-                where order.UserId == SessionHelper.ActiveUser && order.DateCompleted == null
+                where order.UserId == userId && order.DateCompleted == null
                 select order).SingleOrDefaultAsync();
 
             if (openOrder == null)
             {
-                return RedirectToAction("ProductTypes", "Buy");
+                return RedirectToAction("Buy", "ProductTypes");
             }
 
             try
