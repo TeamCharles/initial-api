@@ -23,9 +23,10 @@ namespace BangazonWeb.Controllers
      *   Task<IActionResult> AddToCart() - Adds a product to a user's open order
      *   Task<IActionResult> DeleteLineItem() - Deletes a LineItem from the cart
      *   IActionResult Error() - Renders an error
+     *   CompleteOrder() - Adds a completed date to the new order
      */
     public class CartController : Controller
-    {
+    {   
         private BangazonContext context;
 
         public CartController(BangazonContext ctx)
@@ -118,6 +119,7 @@ namespace BangazonWeb.Controllers
                      new { controller = "Products", action = "Detail", Id = id } ) );
         }
 
+
         public async Task<IActionResult> DeleteLineItem([FromRoute]int id)
         {
             User user = ActiveUser.Instance.User;
@@ -152,8 +154,41 @@ namespace BangazonWeb.Controllers
             }   
         }
 
+        public async Task<IActionResult> CompleteOrder([FromRoute]int id)
+        {
+            User user = ActiveUser.Instance.User;
+            int? userId = user.UserId;
+            if (userId == null)
+            {
+                return Redirect("ProductTypes");
+            }
+            Order openOrder = await(
+                from order in context.Order
+                where order.UserId == userId && order.DateCompleted == null
+                select order).SingleOrDefaultAsync();
+
+            if (openOrder == null)
+            {
+                return RedirectToAction("Buy", "ProductTypes");
+            }
+
+            try
+            {
+                openOrder.DateCompleted = DateTime.Now;
+                context.Order.Update(openOrder);
+                await context.SaveChangesAsync();
+                return RedirectToAction("Index","Cart");
+
+            }
+            catch (DbUpdateException)
+            {
+                throw;
+            }   
+        }
+
         public IActionResult Error()
         {
+            
             ViewBag.Users = Users.GetAllUsers(context);
             return View();
         }
