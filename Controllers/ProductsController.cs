@@ -162,8 +162,8 @@ namespace BangazonWeb.Controllers
             {
                 context.Add(product);
                 await context.SaveChangesAsync();
-                return RedirectToAction( "Detail", new RouteValueDictionary( 
-                     new { controller = "Products", action = "Detail", Id = product.ProductId } ) );
+                return RedirectToAction("Detail", new RouteValueDictionary(
+                     new { controller = "Products", action = "Detail", Id = product.ProductId }));
             }
 
             ViewData["ProductTypeId"] = context.ProductType
@@ -194,10 +194,10 @@ namespace BangazonWeb.Controllers
         {
             Product originalProduct = await context.Product.SingleAsync(p => p.ProductId == id);
 
-            if (!ModelState.IsValid)
+            if (originalProduct == null)
             {
                 return RedirectToAction("List", new RouteValueDictionary(
-                                        new { controller = "ProductTypes", action = "List", Id = originalProduct.ProductTypeId }));
+                    new { controller = "ProductTypes", action = "List", Id = originalProduct.ProductTypeId }));
             }
             else
             {
@@ -207,7 +207,7 @@ namespace BangazonWeb.Controllers
                     context.Remove(originalProduct);
                     await context.SaveChangesAsync();
                     return RedirectToAction("List", new RouteValueDictionary(
-                                        new { controller = "ProductTypes", action = "List", Id = originalProduct.ProductTypeId }));
+                        new { controller = "ProductTypes", action = "List", Id = originalProduct.ProductTypeId }));
                 }
                 catch (DbUpdateException)
                 {
