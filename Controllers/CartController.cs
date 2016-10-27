@@ -22,6 +22,7 @@ namespace BangazonWeb.Controllers
      *   Task<IActionResult> CreateNewOrder() - Creates a new open order for the customer
      *   Task<IActionResult> AddToCart() - Adds a product to a user's open order
      *   IActionResult Error() - Renders an error
+     *   CompleteOrder() - Adds a completed date to the new order
      */
     public class CartController : Controller
     {   
