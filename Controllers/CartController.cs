@@ -24,7 +24,7 @@ namespace BangazonWeb.Controllers
      *   IActionResult Error() - Renders an error
      */
     public class CartController : Controller
-    {
+    {   
         private BangazonContext context;
 
         public CartController(BangazonContext ctx)
@@ -117,8 +117,41 @@ namespace BangazonWeb.Controllers
                      new { controller = "Products", action = "Detail", Id = id } ) );
         }
 
+        public async Task<IActionResult> CompleteOrder([FromRoute]int id)
+        {
+            User user = ActiveUser.Instance.User;
+            int? userId = user.UserId;
+            if (userId == null)
+            {
+                return Redirect("ProductTypes");
+            }
+            Order openOrder = await(
+                from order in context.Order
+                where order.UserId == SessionHelper.ActiveUser && order.DateCompleted == null
+                select order).SingleOrDefaultAsync();
+
+            if (openOrder == null)
+            {
+                return RedirectToAction("ProductTypes", "Buy");
+            }
+
+            try
+            {
+                openOrder.DateCompleted = DateTime.Now;
+                context.Order.Update(openOrder);
+                await context.SaveChangesAsync();
+                return RedirectToAction("Index","Cart");
+
+            }
+            catch (DbUpdateException)
+            {
+                throw;
+            }   
+        }
+
         public IActionResult Error()
         {
+            
             ViewBag.Users = Users.GetAllUsers(context);
             return View();
         }
