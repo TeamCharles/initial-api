@@ -35,17 +35,18 @@ namespace BangazonWeb.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(PaymentType paymentType)
+        public async Task<IActionResult> Create(PaymentTypeView paymentType)
         {
-            paymentType.UserId = ActiveUser.Instance.User.UserId;
+            paymentType.NewPaymentType.UserId = ActiveUser.Instance.User.UserId;
             if (ModelState.IsValid)
             {
-                context.Add(paymentType);
+                context.Add(paymentType.NewPaymentType);
                 await context.SaveChangesAsync();
                 return RedirectToAction("Index", "Cart");
             }
             
             var model = new PaymentTypeView(context);
+            model.NewPaymentType = paymentType.NewPaymentType;
 
             return View(model);
         }

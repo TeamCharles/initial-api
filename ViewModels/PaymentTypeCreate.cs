@@ -8,8 +8,7 @@ namespace BangazonWeb.ViewModels
 {
   public class PaymentTypeView : BaseViewModel
   {
-    public string Description { get; set; }    
-    public string AccountNumber { get; set; }
+    public PaymentType NewPaymentType { get; set; }
     public PaymentTypeView(BangazonContext ctx) : base(ctx) { }
     public PaymentTypeView() { }
   }
