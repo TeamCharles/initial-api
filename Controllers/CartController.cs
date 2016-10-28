@@ -171,17 +171,10 @@ namespace BangazonWeb.Controllers
         }
         public async Task<IActionResult> Confirmation(int id)
         {
-            User user = ActiveUser.Instance.User;
-            int? userId = user.UserId;
-
-            if (userId == null)
-            {
-                return Redirect("ProductTypes");
-            }
 
             Order CompleteOrder = await(
                 from order in context.Order
-                where order.UserId == userId && order.OrderId == id 
+                where order.OrderId == id 
                 select order).SingleOrDefaultAsync();
                 
             if (CompleteOrder == null)
@@ -189,7 +182,7 @@ namespace BangazonWeb.Controllers
                 return RedirectToAction("Buy", "ProductTypes");
             }
 
-            if (CompleteOrder.UserId != userId)
+            if (CompleteOrder.UserId != CompleteOrder.UserId)
             {
                 return Redirect("ProductTypes");
             }
