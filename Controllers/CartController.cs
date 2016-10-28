@@ -162,6 +162,7 @@ namespace BangazonWeb.Controllers
             {
                 return Redirect("ProductTypes");
             }
+
             Order openOrder = await(
                 from order in context.Order
                 where order.UserId == userId && order.DateCompleted == null
@@ -170,6 +171,15 @@ namespace BangazonWeb.Controllers
             if (openOrder == null)
             {
                 return RedirectToAction("Buy", "ProductTypes");
+            }
+
+            //check for a selected PaymentId, otherwise redirect
+            if (orderView.selectedPaymentId > 0)
+            {
+                openOrder.PaymentTypeId = orderView.selectedPaymentId;
+            } else
+            {
+                return RedirectToAction("Final","Order");
             }
 
             try
