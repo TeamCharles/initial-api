@@ -122,12 +122,9 @@ namespace BangazonWeb.Controllers
 
         public async Task<IActionResult> DeleteLineItem([FromRoute]int id)
         {
-            User user = ActiveUser.Instance.User;
-            int? userId = user.UserId;
             
             Order OpenOrder = await(
                 from order in context.Order
-
                 where order.UserId == ActiveUser.Instance.User.UserId && order.DateCompleted == null
                 select order).SingleOrDefaultAsync();  
             
@@ -177,7 +174,8 @@ namespace BangazonWeb.Controllers
                 openOrder.DateCompleted = DateTime.Now;
                 context.Order.Update(openOrder);
                 await context.SaveChangesAsync();
-                return RedirectToAction("Confirmation","Cart");
+                return RedirectToAction("Confirmation", new RouteValueDictionary(
+                     new { controller = "Cart", action = "Confirmation", Id = openOrder.OrderId } ));
 
             }
             catch (DbUpdateException)
@@ -185,7 +183,7 @@ namespace BangazonWeb.Controllers
                 throw;
             }   
         }
-        public async Task<IActionResult> Confirmation()
+        public async Task<IActionResult> Confirmation(int id)
         {
             User user = ActiveUser.Instance.User;
             int? userId = user.UserId;
@@ -197,7 +195,7 @@ namespace BangazonWeb.Controllers
 
             Order CompleteOrder = await(
                 from order in context.Order
-                where order.UserId == userId && order.DateCompleted != null 
+                where order.UserId == userId && order.OrderId == id 
                 select order).SingleOrDefaultAsync();
                 
             if (CompleteOrder == null)
@@ -215,7 +213,7 @@ namespace BangazonWeb.Controllers
             var LineItems = await(
                 from product in context.Product
                 from lineItem in context.LineItem
-                    .Where(lineItem => lineItem.OrderId == context.Order.SingleOrDefault(o => o.DateCompleted != null && o.UserId == userId).OrderId && lineItem.ProductId == product.ProductId)
+                    .Where(lineItem => lineItem.OrderId == id && lineItem.ProductId == product.ProductId)
                 select product).ToListAsync();
 
 
