@@ -1,17 +1,25 @@
 @model BangazonWeb.ViewModels.ProductList
 @using Bangazon.Models;
 
-<p>
-    <a asp-action="Create">Sell Something</a>
-</p>
-
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Product Name</th>
+            <th>Product Price</th>
+            <th>Date Added</th>
+            <th>View Details</th>
+            <th>Delete/Edit</th>
+        </tr>
+    </thead>
+    <tbody>
 @foreach (Product item in Model.Products)
 {
-    <div class="row">
-        <div class="col-md-3">@Html.DisplayFor(modelItem => item.Name)</div>
-        <div class="col-md-3">$@Html.DisplayFor(modelItem => item.Price)</div>
-        <div class="col-md-3">@Html.DisplayFor(modelItem => item.DateCreated)</div>
-        <div class="col-md-3">
+    <tr>
+        <td>@Html.DisplayFor(modelItem => item.Name)</td>
+        <td>$@Html.DisplayFor(modelItem => item.Price)</td>
+        <td>@Html.DisplayFor(modelItem => item.DateCreated)</td>
+        <td><a class="btn btn-primary btn-xs" asp-controller="Products" asp-action="Detail" asp-route-id="@item.ProductId">Details</a></td>
+        <td>
             @if (item.UserId == @Model.ChosenUser.UserId)
             {
                 <a asp-controller="Products" asp-action="Delete" asp-route-id="@item.ProductId"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
@@ -19,10 +27,11 @@
                 <a asp-controller="Products" asp-action="Edit" asp-route-id="@item.ProductId"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
             }
-            <a asp-controller="Products" asp-action="Detail" asp-route-id="@item.ProductId">Details</a>
-        </div>
-    </div>
+        </td>
+    </tr>
 }
+    </tbody>
+</table>
 <div>
     &lt;&lt; <a asp-controller="ProductTypes" asp-action="Buy">Back to Product Types</a>
 </div>
