@@ -15,7 +15,7 @@
 @foreach (ProductType type in Model.ProductTypes)
 {
   <tr>
-      <td><a asp-action="List" asp-route-id="@type.ProductTypeId">@Html.DisplayFor(model => type.Label)</a></td>
+      <td><a asp-controller="ProductSubTypes" asp-action="List" asp-route-id="@type.ProductTypeId">@Html.DisplayFor(model => type.Label)</a></td>
       <td>(@Html.DisplayFor(model => type.Quantity))</td>
   </tr>
 }
