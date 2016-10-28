@@ -4,10 +4,25 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace initialsite.Migrations
 {
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "ProductSubType",
+                columns: table => new
+                {
+                    ProductSubTypeId = table.Column<int>(nullable: false)
+                        .Annotation("Autoincrement", true),
+                    DateCreated = table.Column<DateTime>(nullable: false, defaultValueSql: "strftime('%Y-%m-%d %H:%M:%S')"),
+                    Label = table.Column<string>(maxLength: 20, nullable: false),
+                    ProductTypeId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductSubType", x => x.ProductSubTypeId);
+                });
+
             migrationBuilder.CreateTable(
                 name: "ProductType",
                 columns: table => new
@@ -75,6 +90,7 @@ namespace initialsite.Migrations
                     IsActive = table.Column<bool>(nullable: false),
                     Name = table.Column<string>(maxLength: 55, nullable: false),
                     Price = table.Column<float>(nullable: false),
+                    ProductSubTypeId = table.Column<int>(nullable: false),
                     ProductTypeId = table.Column<int>(nullable: false),
                     UserId = table.Column<int>(nullable: false)
                 },
@@ -190,6 +206,9 @@ namespace initialsite.Migrations
         {
             migrationBuilder.DropTable(
                 name: "LineItem");
+
+            migrationBuilder.DropTable(
+                name: "ProductSubType");
 
             migrationBuilder.DropTable(
                 name: "Order");

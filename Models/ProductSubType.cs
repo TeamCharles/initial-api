@@ -15,11 +15,11 @@ namespace Bangazon.Models
       [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
       public DateTime DateCreated {get;set;}
 
-      [required]
+      [Required]
       [StringLength(20)]
       public string Label { get; set; }
 
-      [required]
+      [Required]
       public int ProductTypeId { get; set; }
   }
 }

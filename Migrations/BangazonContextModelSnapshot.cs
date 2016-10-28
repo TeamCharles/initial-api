@@ -8,10 +8,9 @@ using BangazonWeb.Data;
 namespace initialsite.Migrations
 {
     [DbContext(typeof(BangazonContext))]
-    [Migration("20161025202554_initial")]
-    partial class initial
+    partial class BangazonContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431");
@@ -109,6 +108,8 @@ namespace initialsite.Migrations
 
                     b.Property<float>("Price");
 
+                    b.Property<int>("ProductSubTypeId");
+
                     b.Property<int>("ProductTypeId");
 
                     b.Property<int>("UserId");
@@ -120,6 +121,26 @@ namespace initialsite.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Product");
+                });
+
+            modelBuilder.Entity("Bangazon.Models.ProductSubType", b =>
+                {
+                    b.Property<int>("ProductSubTypeId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("DateCreated")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasDefaultValueSql("strftime('%Y-%m-%d %H:%M:%S')");
+
+                    b.Property<string>("Label")
+                        .IsRequired()
+                        .HasAnnotation("MaxLength", 20);
+
+                    b.Property<int>("ProductTypeId");
+
+                    b.HasKey("ProductSubTypeId");
+
+                    b.ToTable("ProductSubType");
                 });
 
             modelBuilder.Entity("Bangazon.Models.ProductType", b =>
