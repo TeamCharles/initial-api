@@ -8,7 +8,7 @@ namespace BangazonWeb.ViewModels
 {
   public class CartView : BaseViewModel
   {
-    public float TotalPrice { get; set; }
+    public decimal TotalPrice { get; set; }
     public IEnumerable<Product> ActiveProducts { get; set; }
     public CartView(BangazonContext ctx) : base(ctx) { }
     public CartView() { }
