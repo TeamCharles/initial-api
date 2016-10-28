@@ -1,0 +1,12 @@
+@model BangazonWeb.ViewModels.ProductSubTypeList
+@using Bangazon.Models;
+
+<h2>Product SubTypes for @Html.DisplayFor(model => model.ProductSubType.Label)</h2>
+
+@foreach (ProductSubType type in Model.ProductSubTypes)
+{
+  <div class="row">
+      <div class="col-md-3"><a asp-action="List" asp-route-id="@type.ProductTypeId">@Html.DisplayFor(model => type.Label)</a></div>
+      <div class="col-md-1">(@Html.DisplayFor(model => type.Quantity))</div>
+  </div>
+}
