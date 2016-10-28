@@ -1,6 +1,8 @@
 @model BangazonWeb.ViewModels.ProductSubTypeList
 @using Bangazon.Models;
 
+<h2>@Html.DisplayFor(model => model.ProductSubType.Label) Products</h2>
+
 @foreach (Product item in Model.Products)
 {
     <div class="row">
