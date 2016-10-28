@@ -1,12 +1,9 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BangazonWeb.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Bangazon.Helpers;
 using Bangazon.Models;
 using Microsoft.AspNetCore.Routing;
 using BangazonWeb.ViewModels;
@@ -16,9 +13,9 @@ namespace BangazonWeb.Controllers
     /**
      * Class: CartController
      * Purpose: Controls logged in user's cart
-     * Author: Matt Hamil
+     * Author: Matt Hamil/Dayne Wright
      * Methods:
-     *   Task<IActionResult> Index() - Queries for all products on user's active order and renders view
+     *   IActionResult Index() - Adds logged in user and checks view model.  Sends view model to view file.
      *   Task<IActionResult> CreateNewOrder() - Creates a new open order for the customer
      *   Task<IActionResult> AddToCart() - Adds a product to a user's open order
      *   Task<IActionResult> DeleteLineItem() - Deletes a LineItem from the cart
@@ -34,35 +31,24 @@ namespace BangazonWeb.Controllers
             context = ctx;
         }
 
-        public async Task<IActionResult> Index()
-        {
-            // TODO: This is a placeholder value. These two lines should be removed after the User Accounts dropdown works
+        public IActionResult Index()
+        {            
+            int? userId = ActiveUser.Instance.User.UserId;
             
-            User user = ActiveUser.Instance.User;
-            int? userId = user.UserId;
             if (userId == null)
             {
                 return Redirect("ProductTypes");
             }
 
-            // For help with this LINQ query, refer to
-            // https://stackoverflow.com/questions/373541/how-to-do-joins-in-linq-on-multiple-fields-in-single-join
-            var activeProducts = await(
-                from product in context.Product
-                from lineItem in context.LineItem
-                    .Where(lineItem => lineItem.OrderId == context.Order.SingleOrDefault(o => o.DateCompleted == null && o.UserId == userId).OrderId && lineItem.ProductId == product.ProductId)
-                select product).ToListAsync();
+            var model = new CartView(context);
 
-            if (activeProducts == null)
+            if (model.CartProducts == null)
             {
                 // Redirect to ProductTypes
                 return RedirectToAction("Index", "ProductTypes");
             }
 
-            var model = new CartView(context);
-            model.ActiveProducts = activeProducts;
-
-            foreach (var product in activeProducts)
+            foreach (var product in model.CartProducts)
             {
                 model.TotalPrice += product.Price;
             }
@@ -188,8 +174,6 @@ namespace BangazonWeb.Controllers
 
         public IActionResult Error()
         {
-            
-            ViewBag.Users = Users.GetAllUsers(context);
             return View();
         }
     }
