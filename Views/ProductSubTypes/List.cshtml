@@ -6,7 +6,11 @@
 @foreach (ProductSubType type in Model.ProductSubTypes)
 {
   <div class="row">
-      <div class="col-md-3"><a asp-action="List" asp-route-id="@type.ProductTypeId">@Html.DisplayFor(model => type.Label)</a></div>
+      <div class="col-md-3"><a asp-action="Products" asp-route-id="@type.ProductSubTypeId">@Html.DisplayFor(model => type.Label)</a></div>
       <div class="col-md-1">(@Html.DisplayFor(model => type.Quantity))</div>
   </div>
 }
+
+<div>
+    &lt;&lt; <a asp-controller="ProductTypes" asp-action="Buy">Back to Product Types</a>
+</div>

@@ -22,5 +22,5 @@
     </div>
 }
 <div>
-    &lt;&lt; <a asp-controller="ProductTypes" asp-action="Buy">Back to @Html.DisplayFor(model => model.ProductSubType.Label) Products</a>
+    &lt;&lt; <a asp-controller="ProductSubTypes" asp-action="List" asp-route-id="@Model.ProductSubType.ProductTypeId">Back to @Html.DisplayFor(model => model.ProductSubType.Label) Products</a>
 </div>
