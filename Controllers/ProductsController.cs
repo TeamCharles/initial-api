@@ -168,6 +168,13 @@ namespace BangazonWeb.Controllers
             }
         }
 
+        public async Task<IActionResult> Index()
+        {
+            var model = new ProductList(context);
+            model.Products = await context.Product.OrderBy(s => s.Name).ToListAsync();
+            return View(model);
+        }
+
         public IActionResult Error()
         {
             var model = new BaseViewModel(context);
