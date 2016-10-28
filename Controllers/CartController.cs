@@ -177,13 +177,58 @@ namespace BangazonWeb.Controllers
                 openOrder.DateCompleted = DateTime.Now;
                 context.Order.Update(openOrder);
                 await context.SaveChangesAsync();
-                return RedirectToAction("Index","Cart");
+                return RedirectToAction("Confirmation","Cart");
 
             }
             catch (DbUpdateException)
             {
                 throw;
             }   
+        }
+        public async Task<IActionResult> Confirmation()
+        {
+            User user = ActiveUser.Instance.User;
+            int? userId = user.UserId;
+
+            if (userId == null)
+            {
+                return Redirect("ProductTypes");
+            }
+
+            Order CompleteOrder = await(
+                from order in context.Order
+                where order.UserId == userId && order.DateCompleted != null 
+                select order).SingleOrDefaultAsync();
+                
+            if (CompleteOrder == null)
+            {
+                return RedirectToAction("Buy", "ProductTypes");
+            }
+
+            if (CompleteOrder.UserId != userId)
+            {
+                return Redirect("ProductTypes");
+            }
+            
+
+
+            var LineItems = await(
+                from product in context.Product
+                from lineItem in context.LineItem
+                    .Where(lineItem => lineItem.OrderId == context.Order.SingleOrDefault(o => o.DateCompleted != null && o.UserId == userId).OrderId && lineItem.ProductId == product.ProductId)
+                select product).ToListAsync();
+
+
+            var model = new CartView(context);
+            model.LineItems = LineItems;
+            model.OrderId = CompleteOrder.OrderId;
+
+            foreach (var product in LineItems)
+            {
+                model.TotalPrice += product.Price;
+            }
+
+            return View(model);
         }
 
         public IActionResult Error()

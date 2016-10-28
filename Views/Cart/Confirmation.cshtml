@@ -1,0 +1,32 @@
+@model BangazonWeb.ViewModels.CartView
+@using Bangazon.Models;
+
+@{
+    ViewData["Title"] = "Shopping Cart";
+}
+
+<h1>Thank you for your Order! (@Model.OrderId)</h1>
+
+@foreach (Product item in Model.LineItems)
+{
+<div class="row">
+    <div class="col-md-10">
+        <div style="display:inline-block">
+            <a asp-controller="Cart" asp-action="DeleteLineItem" asp-route-id="@item.ProductId"><span class="glyphicon glyphicon-remove" aria-hidden="true" style="color:red"><span></a>
+        </div>
+        <div style="display:inline-block">
+            <div><strong>@Html.DisplayFor(modelItem => item.Name)</strong></div>
+            <div>@Html.DisplayFor(modelItem => item.Description)</div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div style="color:red">$@Html.DisplayFor(modelItem => item.Price)</div>
+    </div>
+</div>
+}
+
+<h2>TOTAL: $@Model.TotalPrice</h2>
+<div class="center">
+    <a asp-controller="ProductTypes" asp-action="Buy"><input type="button" value="Continue Shopping" class="btn btn-primary" asp-action="CompleteOrder"/></a>
+
+</div>
