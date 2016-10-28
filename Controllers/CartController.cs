@@ -21,6 +21,9 @@ namespace BangazonWeb.Controllers
      *   Task<IActionResult> DeleteLineItem() - Deletes a LineItem from the cart
      *   IActionResult Error() - Renders an error
      *   CompleteOrder() - Adds a completed date to the new order
+     *   Confirmation() - Changes the user's view to a completed order form.
+     *   DeleteLineItem() - Deletes a lineitem from the order for the user.
+     *   AddToCart() - Adds an active product to a user's cart.
      */
     public class CartController : Controller
     {   
