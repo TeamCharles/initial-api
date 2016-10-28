@@ -41,3 +41,8 @@ footer {
     currentColor: gray;
     background: black
 }
+
+.userDropDown {
+    padding-top: 1px;
+    top: 14px;
+}

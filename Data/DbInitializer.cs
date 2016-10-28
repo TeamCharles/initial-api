@@ -123,7 +123,7 @@ namespace BangazonWeb.Data
                       ProductTypeId = productTypes.Single(s => s.Label == "Housewares").ProductTypeId,
                       ProductSubTypeId = 5,
                       Name = "Throw Pillow",
-                      Price = 7.49f,
+                      Price = 7.49M,
                       UserId = users.Single(s => s.FirstName == "Tractor").UserId,
                       IsActive = true
                   },
@@ -132,7 +132,7 @@ namespace BangazonWeb.Data
                       ProductTypeId = productTypes.Single(s => s.Label == "Electronics").ProductTypeId,
                       ProductSubTypeId = 1,
                       Name = "iPod Shuffle",
-                      Price = 18.00f,
+                      Price = 18.00M,
                       UserId = users.Single(s => s.FirstName == "Steve").UserId,
                       IsActive = true
                   },
@@ -141,7 +141,7 @@ namespace BangazonWeb.Data
                       ProductTypeId = productTypes.Single(s => s.Label == "Appliances").ProductTypeId,
                       ProductSubTypeId = 3,
                       Name = "Samsung refrigerator",
-                      Price = 500.00f,
+                      Price = 500.0M,
                       UserId = users.Single(s => s.FirstName == "Carson").UserId,
                       IsActive = true
                   },
@@ -150,7 +150,7 @@ namespace BangazonWeb.Data
                       ProductTypeId = productTypes.Single(s => s.Label == "Housewares").ProductTypeId,
                       ProductSubTypeId = 5,
                       Name = "Supreme Housewares Lemon Squeezer",
-                      Price = 5.49f,
+                      Price = 5.49M,
                       UserId = users.Single(s => s.FirstName == "Tractor").UserId,
                       IsActive = true
                   },
@@ -159,7 +159,7 @@ namespace BangazonWeb.Data
                       ProductTypeId = productTypes.Single(s => s.Label == "Electronics").ProductTypeId,
                       ProductSubTypeId = 1,
                       Name = "Samsung Galaxy S7",
-                      Price = 563.49f,
+                      Price = 563.49M,
                       UserId = users.Single(s => s.FirstName == "Steve").UserId,
                       IsActive = true
                   },
@@ -168,7 +168,7 @@ namespace BangazonWeb.Data
                       ProductTypeId = productTypes.Single(s => s.Label == "Electronics").ProductTypeId,
                       ProductSubTypeId = 1,
                       Name = "Apple Iphone 7",
-                      Price = 7.49f,
+                      Price = 7.49M,
                       UserId = users.Single(s => s.FirstName == "Tractor").UserId,
                       IsActive = true
                   },
@@ -177,7 +177,7 @@ namespace BangazonWeb.Data
                       ProductTypeId = productTypes.Single(s => s.Label == "Electronics").ProductTypeId,
                       ProductSubTypeId = 1,
                       Name = "Bose Soundlink Mini",
-                      Price = 199.00f,
+                      Price = 199.00M,
                       UserId = users.Single(s => s.FirstName == "Steve").UserId,
                       IsActive = true
                   },
@@ -186,7 +186,7 @@ namespace BangazonWeb.Data
                       ProductTypeId = productTypes.Single(s => s.Label == "Electronics").ProductTypeId,
                       ProductSubTypeId = 2,
                       Name = "Google Cardboard V2",
-                      Price = 10.49f,
+                      Price = 10.49M,
                       UserId = users.Single(s => s.FirstName == "Carson").UserId,
                       IsActive = true
                   },
@@ -195,7 +195,7 @@ namespace BangazonWeb.Data
                       ProductTypeId = productTypes.Single(s => s.Label == "Electronics").ProductTypeId,
                       ProductSubTypeId = 2,
                       Name = "Epson Home Cinema 5040UB",
-                      Price = 7.49f,
+                      Price = 7.49M,
                       UserId = users.Single(s => s.FirstName == "Tractor").UserId,
                       IsActive = true
                   },
@@ -204,7 +204,7 @@ namespace BangazonWeb.Data
                       ProductTypeId = productTypes.Single(s => s.Label == "Appliances").ProductTypeId,
                       ProductSubTypeId = 3,
                       Name = "Hamilton Beach 25460A Panini Press",
-                      Price = 24.94f,
+                      Price = 24.94M,
                       UserId = users.Single(s => s.FirstName == "Steve").UserId,
                       IsActive = true
                   },
@@ -213,7 +213,7 @@ namespace BangazonWeb.Data
                       ProductTypeId = productTypes.Single(s => s.Label == "Appliances").ProductTypeId,
                       ProductSubTypeId = 3,
                       Name = "Dash Go Rapid Egg Cooker,",
-                      Price = 14.49f,
+                      Price = 14.49M,
                       UserId = users.Single(s => s.FirstName == "Tractor").UserId,
                       IsActive = true
                   },
@@ -222,7 +222,7 @@ namespace BangazonWeb.Data
                       ProductTypeId = productTypes.Single(s => s.Label == "Appliances").ProductTypeId,
                       ProductSubTypeId = 3,
                       Name = "Disney Mickey Kettle Style Popcorn Popper",
-                      Price =25.00f,
+                      Price =25.00M,
                       UserId = users.Single(s => s.FirstName == "Steve").UserId,
                       IsActive = true
                   },
@@ -231,7 +231,7 @@ namespace BangazonWeb.Data
                       ProductTypeId = productTypes.Single(s => s.Label == "Housewares").ProductTypeId,
                       ProductSubTypeId = 3,
                       Name = "SimpleHouseware Cut Resistant Gloves",
-                      Price = 7.87f,
+                      Price = 7.87M,
                       UserId = users.Single(s => s.FirstName == "Carson").UserId,
                       IsActive = true
                   },
@@ -240,7 +240,7 @@ namespace BangazonWeb.Data
                       ProductTypeId = productTypes.Single(s => s.Label == "Housewares").ProductTypeId,
                       ProductSubTypeId = 3,
                       Name = "Yedi Houseware Classic Coffee and Tea Siena Tea",
-                      Price = 21.49f,
+                      Price = 21.49M,
                       UserId = users.Single(s => s.FirstName == "Tractor").UserId,
                       IsActive = true
                   },
@@ -249,7 +249,7 @@ namespace BangazonWeb.Data
                       ProductTypeId = productTypes.Single(s => s.Label == "Appliances").ProductTypeId,
                       ProductSubTypeId = 3,
                       Name = "Ice-Cream Maker",
-                      Price = 49.50f,
+                      Price = 49.50M,
                       UserId = users.Single(s => s.FirstName == "Steve").UserId,
                       IsActive = true
                   },
@@ -258,7 +258,7 @@ namespace BangazonWeb.Data
                       ProductTypeId = productTypes.Single(s => s.Label == "Appliances").ProductTypeId,
                       ProductSubTypeId = 3,
                       Name = "SunrisePro Knife Sharpener",
-                      Price = 7.49f,
+                      Price = 7.49M,
                       UserId = users.Single(s => s.FirstName == "Tractor").UserId,
                       IsActive = true
                   },
@@ -267,7 +267,7 @@ namespace BangazonWeb.Data
                       ProductTypeId = productTypes.Single(s => s.Label == "Housewares").ProductTypeId,
                       ProductSubTypeId = 6,
                       Name = "Mystique Flameless Candle",
-                      Price = 35.60f,
+                      Price = 35.60M,
                       UserId = users.Single(s => s.FirstName == "Steve").UserId,
                       IsActive = true
                   },
@@ -276,7 +276,7 @@ namespace BangazonWeb.Data
                       ProductTypeId = productTypes.Single(s => s.Label == "Appliances").ProductTypeId,
                       ProductSubTypeId = 3,
                       Name = "Top Load Washer",
-                      Price = 800.49f,
+                      Price = 800.49M,
                       UserId = users.Single(s => s.FirstName == "Carson").UserId,
                       IsActive = true
                   },
@@ -285,7 +285,7 @@ namespace BangazonWeb.Data
                       ProductTypeId = productTypes.Single(s => s.Label == "Appliances").ProductTypeId,
                       ProductSubTypeId = 3,
                       Name = "Portable Washing Machine",
-                      Price = 149.49f,
+                      Price = 149.49M,
                       UserId = users.Single(s => s.FirstName == "Tractor").UserId,
                       IsActive = true
                   },
@@ -294,7 +294,7 @@ namespace BangazonWeb.Data
                       ProductTypeId = productTypes.Single(s => s.Label == "Appliances").ProductTypeId,
                       ProductSubTypeId = 4,
                       Name = "Commercial Upright Vacuum",
-                      Price = 18.00f,
+                      Price = 18.00M,
                       UserId = users.Single(s => s.FirstName == "Steve").UserId,
                       IsActive = true
                   },
@@ -303,7 +303,7 @@ namespace BangazonWeb.Data
                       ProductTypeId = productTypes.Single(s => s.Label == "Electronics").ProductTypeId,
                       ProductSubTypeId = 2,
                       Name = "Speaking Vocabulary Builder ",
-                      Price = 9.99f,
+                      Price = 9.99M,
                       UserId = users.Single(s => s.FirstName == "Tractor").UserId,
                       IsActive = true
                   },
@@ -312,7 +312,7 @@ namespace BangazonWeb.Data
                       ProductTypeId = productTypes.Single(s => s.Label == "Appliances").ProductTypeId,
                       ProductSubTypeId = 4,
                       Name = "UV Sanitizer and Odor Reducer",
-                      Price = 35.00f,
+                      Price = 35.00M,
                       UserId = users.Single(s => s.FirstName == "Steve").UserId,
                       IsActive = true
                   },
@@ -321,7 +321,7 @@ namespace BangazonWeb.Data
                       ProductTypeId = productTypes.Single(s => s.Label == "Housewares").ProductTypeId,
                       ProductSubTypeId = 6,
                       Name = "Cotton Bath Towels",
-                      Price = 324.00f,
+                      Price = 324.00M,
                       UserId = users.Single(s => s.FirstName == "Carson").UserId,
                       IsActive = true
                   },
@@ -330,7 +330,7 @@ namespace BangazonWeb.Data
                       ProductTypeId = productTypes.Single(s => s.Label == "Electronics").ProductTypeId,
                       ProductSubTypeId = 2,
                       Name = "Retro Bit Nintendo NES Entertainment System ",
-                      Price = 47.49f,
+                      Price = 7.49M,
                       UserId = users.Single(s => s.FirstName == "Tractor").UserId,
                       IsActive = true
                   },
@@ -339,7 +339,7 @@ namespace BangazonWeb.Data
                       ProductTypeId = productTypes.Single(s => s.Label == "Appliances").ProductTypeId,
                       ProductSubTypeId = 3,
                       Name = "Food Processor",
-                      Price = 35.99f,
+                      Price = 35.99M,
                       UserId = users.Single(s => s.FirstName == "Steve").UserId,
                       IsActive = true
                   }
