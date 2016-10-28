@@ -8,7 +8,7 @@ using BangazonWeb.Data;
 namespace initialsite.Migrations
 {
     [DbContext(typeof(BangazonContext))]
-    [Migration("20161028181132_Initial")]
+    [Migration("20161028184105_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -138,6 +138,8 @@ namespace initialsite.Migrations
                         .HasAnnotation("MaxLength", 20);
 
                     b.Property<int>("ProductTypeId");
+
+                    b.Property<int>("Quantity");
 
                     b.HasKey("ProductSubTypeId");
 

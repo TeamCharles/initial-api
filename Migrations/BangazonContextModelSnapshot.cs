@@ -138,6 +138,8 @@ namespace initialsite.Migrations
 
                     b.Property<int>("ProductTypeId");
 
+                    b.Property<int>("Quantity");
+
                     b.HasKey("ProductSubTypeId");
 
                     b.ToTable("ProductSubType");

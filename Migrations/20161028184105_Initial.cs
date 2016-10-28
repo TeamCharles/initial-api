@@ -16,7 +16,8 @@ namespace initialsite.Migrations
                         .Annotation("Autoincrement", true),
                     DateCreated = table.Column<DateTime>(nullable: false, defaultValueSql: "strftime('%Y-%m-%d %H:%M:%S')"),
                     Label = table.Column<string>(maxLength: 20, nullable: false),
-                    ProductTypeId = table.Column<int>(nullable: false)
+                    ProductTypeId = table.Column<int>(nullable: false),
+                    Quantity = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {

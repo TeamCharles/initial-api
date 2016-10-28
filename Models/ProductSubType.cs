@@ -21,5 +21,6 @@ namespace Bangazon.Models
 
       [Required]
       public int ProductTypeId { get; set; }
+      public int Quantity { get; set; }
   }
 }
