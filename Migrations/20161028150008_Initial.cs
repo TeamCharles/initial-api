@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace initialsite.Migrations
 {
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -74,7 +74,7 @@ namespace initialsite.Migrations
                     Description = table.Column<string>(maxLength: 255, nullable: false),
                     IsActive = table.Column<bool>(nullable: false),
                     Name = table.Column<string>(maxLength: 55, nullable: false),
-                    Price = table.Column<float>(nullable: false),
+                    Price = table.Column<decimal>(nullable: false),
                     ProductTypeId = table.Column<int>(nullable: false),
                     UserId = table.Column<int>(nullable: false)
                 },
