@@ -151,7 +151,7 @@ namespace BangazonWeb.Controllers
             }   
         }
 
-        public async Task<IActionResult> CompleteOrder([FromRoute]int id)
+        public async Task<IActionResult> CompleteOrder()
         {
             User user = ActiveUser.Instance.User;
             int? userId = user.UserId;
@@ -218,8 +218,17 @@ namespace BangazonWeb.Controllers
 
 
             var model = new CartView(context);
+
+            //Mock information, will be removed once payment selector is avaliable
+            if (CompleteOrder.PaymentType == null)
+            {
+                PaymentType Paypal = new PaymentType();
+                Paypal.Description = "Paypal";
+                CompleteOrder.PaymentType = Paypal;
+            };
+            model.PaymentType = CompleteOrder.PaymentType;
             model.LineItems = LineItems;
-            model.OrderId = CompleteOrder.OrderId;
+            model.Order = CompleteOrder;
 
             foreach (var product in LineItems)
             {
