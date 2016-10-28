@@ -15,16 +15,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 namespace BangazonWeb.Controllers
 {
     /**
-     * Class: CartController
+     * Class: OrderController
      * Purpose: Controls logged in user's cart
-     * Author: Matt Hamil
+     * Author: Anulfo Ordaz / Matt Kraatz / Dayne Writght / Garret Vangilder
      * Methods:
-     *   Task<IActionResult> Index() - Queries for all products on user's active order and renders view
-     *   Task<IActionResult> CreateNewOrder() - Creates a new open order for the customer
-     *   Task<IActionResult> AddToCart() - Adds a product to a user's open order
-     *   Task<IActionResult> DeleteLineItem() - Deletes a LineItem from the cart
-     *   IActionResult Error() - Renders an error
-     *   CompleteOrder() - Adds a completed date to the new order
+     *   OrderController(BangazonContext ctx) - Bring the context back
+     *   Task<IActionResult> Final() - It retrieves the data for the drop
      */
     public class OrderController : Controller
     {   
@@ -37,7 +33,6 @@ namespace BangazonWeb.Controllers
 
         public async Task<IActionResult> Final([FromRoute] int id)
         {
-            // TODO: This is a placeholder value. These two lines should be removed after the User Accounts dropdown works
             
             User user = ActiveUser.Instance.User;
             int? userId = user.UserId;
@@ -46,8 +41,6 @@ namespace BangazonWeb.Controllers
                 return Redirect("ProductTypes");
             }
 
-            // For help with this LINQ query, refer to
-            // https://stackoverflow.com/questions/373541/how-to-do-joins-in-linq-on-multiple-fields-in-single-join
             var activeProducts = await(
                 from product in context.Product
                 from lineItem in context.LineItem
