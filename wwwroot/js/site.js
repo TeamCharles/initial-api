@@ -7,7 +7,7 @@ $(document).ready(function () {
       dataType: "json",
       contentType: 'application/json; charset=utf-8'
     }).done(()=> {
-        location.reload(true);
+        location.replace("/");
     });
   });
 });

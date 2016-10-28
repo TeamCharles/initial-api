@@ -14,9 +14,18 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li><a asp-area="" asp-controller="User" asp-action="New">Create an Account</a></li>
-                <li><a asp-area="" asp-controller="Products" asp-action="New">Add Product</a></li>
-                <li><a asp-area="" asp-controller="Cart" asp-action="Index"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span></a></li>
+                <li><a asp-area="" asp-controller="Products" asp-action="Create">Sell a Product</a></li>
                 <li>
+                  <a asp-area="" asp-controller="Cart" asp-action="Index">
+                    <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true">
+                      @if(@Model.TotalCount > 0)
+                      {
+                        <span class="badge">@Html.DisplayFor(Model => Model.TotalCount)</span>
+                      }
+                    </span>
+                  </a>
+                </li>
+                <li class="userDropDown">
                     @Html.DropDownList("ChosenUser.UserId", @Model.Users,"SELECT USER", new { @class = "dropdown" })
                 </li>
             </ul>

@@ -8,7 +8,7 @@ namespace BangazonWeb.ViewModels
 {
   public class OrderView : BaseViewModel
   {
-    public float TotalPrice { get; set; }
+    public decimal TotalPrice { get; set; }
     public IEnumerable<Product> ActiveProducts { get; set; }
     public IEnumerable<SelectListItem> AvailablePaymentType {get; set; }
     public int selectedPaymentId {get; set;}

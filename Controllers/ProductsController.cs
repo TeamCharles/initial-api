@@ -22,11 +22,12 @@ namespace BangazonWeb.Controllers
      * Methods:
      *   Index() - shows index view of products
      *   Detail() - shows detailed view of individual product
-     *   EditInfo() - allows users to fill form to change product information
-     *   Edit() - executes the edit within the database
+     *   Edit() - allows users to fill form to change product information
+     *   Edit(ProductEdit) - executes the edit within the database
      *   New() - allows for users to navigate to form
      *   New(Product product) - updates database with new product information.
      *   Delete() - deletes product from database and view of customer.
+     *   Index() - returns a view of all products in the database
      */
     public class ProductsController : Controller
     {
@@ -60,7 +61,8 @@ namespace BangazonWeb.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> EditInfo([FromRoute]int? id)
+        [HttpGet]
+        public async Task<IActionResult> Edit([FromRoute]int? id)
         {
             // If no id was in the route, return 404
             if (id == null)
@@ -83,6 +85,7 @@ namespace BangazonWeb.Controllers
             return View(model);
         }
 
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(ProductEdit product)
         {
@@ -90,11 +93,10 @@ namespace BangazonWeb.Controllers
 
             if (!ModelState.IsValid)
             {
-
-                return RedirectToAction("EditInfo", new RouteValueDictionary(
-                     new { controller = "Products", action = "EditInfo", Id = originalProduct.ProductId }));
+                var model = new ProductEdit(context);
+                model.CurrentProduct = product.CurrentProduct;
+                return View(model);
             }
-
 
             originalProduct.ProductId = product.CurrentProduct.ProductId;
             originalProduct.Price = product.CurrentProduct.Price;
@@ -117,7 +119,7 @@ namespace BangazonWeb.Controllers
                      new { controller = "Products", action = "Detail", Id = originalProduct.ProductId }));
         }
 
-        public IActionResult New()
+        public IActionResult Create()
         {
             var model = new ProductCreate(context);
             return View(model);
@@ -166,6 +168,13 @@ namespace BangazonWeb.Controllers
                     throw;
                 }
             }
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var model = new ProductList(context);
+            model.Products = await context.Product.OrderBy(s => s.Name).ToListAsync();
+            return View(model);
         }
 
         public IActionResult Error()

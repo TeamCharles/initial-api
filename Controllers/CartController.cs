@@ -1,12 +1,9 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BangazonWeb.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Bangazon.Helpers;
 using Bangazon.Models;
 using Microsoft.AspNetCore.Routing;
 using BangazonWeb.ViewModels;
@@ -16,14 +13,17 @@ namespace BangazonWeb.Controllers
     /**
      * Class: CartController
      * Purpose: Controls logged in user's cart
-     * Author: Matt Hamil
+     * Author: Matt Hamil/Dayne Wright
      * Methods:
-     *   Task<IActionResult> Index() - Queries for all products on user's active order and renders view
+     *   IActionResult Index() - Adds logged in user and checks view model.  Sends view model to view file.
      *   Task<IActionResult> CreateNewOrder() - Creates a new open order for the customer
      *   Task<IActionResult> AddToCart() - Adds a product to a user's open order
      *   Task<IActionResult> DeleteLineItem() - Deletes a LineItem from the cart
      *   IActionResult Error() - Renders an error
      *   CompleteOrder() - Adds a completed date to the new order
+     *   Confirmation() - Changes the user's view to a completed order form.
+     *   DeleteLineItem() - Deletes a lineitem from the order for the user.!--
+     *   AddToCart() - Adds an active product to a user's cart.
      */
     public class CartController : Controller
     {   
@@ -34,35 +34,24 @@ namespace BangazonWeb.Controllers
             context = ctx;
         }
 
-        public async Task<IActionResult> Index()
-        {
-            // TODO: This is a placeholder value. These two lines should be removed after the User Accounts dropdown works
+        public IActionResult Index()
+        {            
+            int? userId = ActiveUser.Instance.User.UserId;
             
-            User user = ActiveUser.Instance.User;
-            int? userId = user.UserId;
             if (userId == null)
             {
                 return Redirect("ProductTypes");
             }
 
-            // For help with this LINQ query, refer to
-            // https://stackoverflow.com/questions/373541/how-to-do-joins-in-linq-on-multiple-fields-in-single-join
-            var activeProducts = await(
-                from product in context.Product
-                from lineItem in context.LineItem
-                    .Where(lineItem => lineItem.OrderId == context.Order.SingleOrDefault(o => o.DateCompleted == null && o.UserId == userId).OrderId && lineItem.ProductId == product.ProductId)
-                select product).ToListAsync();
+            var model = new CartView(context);
 
-            if (activeProducts == null)
+            if (model.CartProducts == null)
             {
                 // Redirect to ProductTypes
                 return RedirectToAction("Index", "ProductTypes");
             }
 
-            var model = new CartView(context);
-            model.ActiveProducts = activeProducts;
-
-            foreach (var product in activeProducts)
+            foreach (var product in model.CartProducts)
             {
                 model.TotalPrice += product.Price;
             }
@@ -122,12 +111,9 @@ namespace BangazonWeb.Controllers
 
         public async Task<IActionResult> DeleteLineItem([FromRoute]int id)
         {
-            User user = ActiveUser.Instance.User;
-            int? userId = user.UserId;
             
             Order OpenOrder = await(
                 from order in context.Order
-
                 where order.UserId == ActiveUser.Instance.User.UserId && order.DateCompleted == null
                 select order).SingleOrDefaultAsync();  
             
@@ -187,7 +173,8 @@ namespace BangazonWeb.Controllers
                 openOrder.DateCompleted = DateTime.Now;
                 context.Order.Update(openOrder);
                 await context.SaveChangesAsync();
-                return RedirectToAction("Index","Cart");
+                return RedirectToAction("Confirmation", new RouteValueDictionary(
+                     new { controller = "Cart", action = "Confirmation", Id = openOrder.OrderId } ));
 
             }
             catch (DbUpdateException)
@@ -195,11 +182,56 @@ namespace BangazonWeb.Controllers
                 throw;
             }   
         }
+        public async Task<IActionResult> Confirmation(int id)
+        {
+
+            Order CompleteOrder = await(
+                from order in context.Order
+                where order.OrderId == id 
+                select order).SingleOrDefaultAsync();
+                
+            if (CompleteOrder == null)
+            {
+                return RedirectToAction("Buy", "ProductTypes");
+            }
+
+            if (CompleteOrder.UserId != CompleteOrder.UserId)
+            {
+                return Redirect("ProductTypes");
+            }
+            
+
+
+            var LineItems = await(
+                from product in context.Product
+                from lineItem in context.LineItem
+                    .Where(lineItem => lineItem.OrderId == id && lineItem.ProductId == product.ProductId)
+                select product).ToListAsync();
+
+
+            var model = new CartView(context);
+
+            //Mock information, will be removed once payment selector is avaliable
+            if (CompleteOrder.PaymentType == null)
+            {
+                PaymentType Paypal = new PaymentType();
+                Paypal.Description = "Paypal";
+                CompleteOrder.PaymentType = Paypal;
+            };
+            model.PaymentType = CompleteOrder.PaymentType;
+            model.LineItems = LineItems;
+            model.Order = CompleteOrder;
+
+            foreach (var product in LineItems)
+            {
+                model.TotalPrice += product.Price;
+            }
+
+            return View(model);
+        }
 
         public IActionResult Error()
         {
-            
-            ViewBag.Users = Users.GetAllUsers(context);
             return View();
         }
     }

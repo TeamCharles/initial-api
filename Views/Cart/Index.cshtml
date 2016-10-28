@@ -7,12 +7,12 @@
 
 <h1>Your Cart</h1>
 
-@foreach (Product item in Model.ActiveProducts)
+@foreach (Product item in Model.CartProducts)
 {
 <div class="row">
     <div class="col-md-10">
         <div style="display:inline-block">
-            <a asp-controller="Cart" asp-action="DeleteLineItem" asp-route-id="@item.ProductId"><span class="glyphicon glyphicon-remove" aria-hidden="true" style="color:red"><span></a>
+            <a asp-controller="Cart" asp-action="DeleteLineItem" asp-route-id="@item.ProductId"><span class="glyphicon glyphicon-remove" aria-hidden="true"><span></a>
         </div>
         <div style="display:inline-block">
             <div><strong>@Html.DisplayFor(modelItem => item.Name)</strong></div>
