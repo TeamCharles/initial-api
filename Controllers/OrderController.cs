@@ -10,6 +10,7 @@ using Bangazon.Helpers;
 using Bangazon.Models;
 using Microsoft.AspNetCore.Routing;
 using BangazonWeb.ViewModels;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BangazonWeb.Controllers
 {
@@ -34,7 +35,7 @@ namespace BangazonWeb.Controllers
             context = ctx;
         }
 
-        public async Task<IActionResult> Final()
+        public async Task<IActionResult> Final([FromRoute] int id)
         {
             // TODO: This is a placeholder value. These two lines should be removed after the User Accounts dropdown works
             
@@ -62,130 +63,28 @@ namespace BangazonWeb.Controllers
             var model = new OrderView(context);
             model.ActiveProducts = activeProducts;
 
+
+            if (id > 0)
+            {
+                model.selectedPaymentId = id;
+            }
+
             foreach (var product in activeProducts)
             {
                 model.TotalPrice += product.Price;
             }
 
+            model.AvailablePaymentType = 
+                from PaymentType in context.PaymentType
+                orderby PaymentType.Description
+                where PaymentType.UserId == userId
+                select new SelectListItem {
+                    Text = PaymentType.Description,
+                    Value = PaymentType.PaymentTypeId.ToString()
+                    };
+
             return View(model);
         }
-
-        public async Task<IActionResult> AddToCart([FromRoute]int id)
-        {
-            User user = ActiveUser.Instance.User;
-            int? userId = user.UserId;
-
-            // Find the product
-            Product productQuery = await(
-                from product in context.Product
-                where product.ProductId == id
-                select product).SingleOrDefaultAsync();
-
-            if (productQuery == null)
-            {
-                return NotFound();
-            }
-
-            // Find the user's active order
-            Order openOrderQuery = await(
-                from order in context.Order
-                where order.UserId == userId && order.DateCompleted == null
-                select order).SingleOrDefaultAsync();
-
-            Order openOrder = null;
-
-            // If the user does not have an open order
-            if (openOrderQuery == null)
-            {
-                // Creating a new Order
-                openOrder = new Order {    
-                    UserId = (int)ActiveUser.Instance.User.UserId
-                };
-                context.Order.Add(openOrder);
-                await context.SaveChangesAsync();
-            }
-            else
-            {
-                openOrder = openOrderQuery;
-            }
-
-            // Create a new LineItem with the ProductId and OrderId
-            LineItem lineItem = new LineItem(){ OrderId = openOrder.OrderId, ProductId = id };
-
-            context.LineItem.Add(lineItem);
-            await context.SaveChangesAsync();
-
-            return RedirectToAction( "Detail", new RouteValueDictionary(
-                     new { controller = "Products", action = "Detail", Id = id } ) );
-        }
-
-
-        public async Task<IActionResult> DeleteLineItem([FromRoute]int id)
-        {
-            User user = ActiveUser.Instance.User;
-            int? userId = user.UserId;
-            
-            Order OpenOrder = await(
-                from order in context.Order
-
-                where order.UserId == ActiveUser.Instance.User.UserId && order.DateCompleted == null
-                select order).SingleOrDefaultAsync();  
-            
-
-            LineItem deletedItem = await context.LineItem.SingleAsync(p => p.ProductId == id && p.OrderId == OpenOrder.OrderId);
-
-
-            if (deletedItem == null)
-            {
-                return RedirectToAction("Index", new RouteValueDictionary(
-                    new { controller = "Cart", action = "Index"} ) );   
-            }
-
-            try
-            {
-                context.Remove(deletedItem);
-                await context.SaveChangesAsync();
-                return RedirectToAction( "Index", new RouteValueDictionary(
-                     new { controller = "Cart", action = "Index", Id = id } ) ); 
-            }
-            catch (DbUpdateException)
-            {
-                throw;
-            }   
-        }
-
-        public async Task<IActionResult> CompleteOrder([FromRoute]int id)
-        {
-            User user = ActiveUser.Instance.User;
-            int? userId = user.UserId;
-            if (userId == null)
-            {
-                return Redirect("ProductTypes");
-            }
-            Order openOrder = await(
-                from order in context.Order
-                where order.UserId == userId && order.DateCompleted == null
-                select order).SingleOrDefaultAsync();
-
-            if (openOrder == null)
-            {
-                return RedirectToAction("Buy", "ProductTypes");
-            }
-
-            try
-            {
-                openOrder.DateCompleted = DateTime.Now;
-                context.Order.Update(openOrder);
-                await context.SaveChangesAsync();
-                return RedirectToAction("Index","Cart");
-
-            }
-            catch (DbUpdateException)
-            {
-                throw;
-            }   
-        }
-
         public IActionResult Error()
         {
             

@@ -154,7 +154,7 @@ namespace BangazonWeb.Controllers
             }   
         }
 
-        public async Task<IActionResult> CompleteOrder([FromRoute]int id)
+        public async Task<IActionResult> CompleteOrder(OrderView orderView)
         {
             User user = ActiveUser.Instance.User;
             int? userId = user.UserId;

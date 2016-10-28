@@ -1,19 +1,12 @@
 @model BangazonWeb.ViewModels.OrderView
 @using Bangazon.Models;
 
-@{
-    ViewData["Title"] = "Select/Create Payment Type Complete your Order";
-}
-
 <h1>Select/Create Payment Type Complete your Order</h1>
 
 @foreach (Product item in Model.ActiveProducts)
 {
 <div class="row">
     <div class="col-md-10">
-        <div style="display:inline-block">
-            <a asp-controller="Cart" asp-action="DeleteLineItem" asp-route-id="@item.ProductId"><span class="glyphicon glyphicon-remove" aria-hidden="true" style="color:red"><span></a>
-        </div>
         <div style="display:inline-block">
             <div><strong>@Html.DisplayFor(modelItem => item.Name)</strong></div>
             <div>@Html.DisplayFor(modelItem => item.Description)</div>
@@ -24,9 +17,8 @@
     </div>
 </div>
 }
-
 <h2>TOTAL: $@Model.TotalPrice</h2>
-@Html.DropDownList("AvailablePaymentType.Description", @Model.PaymentTypes, "SELECT" , new { @class = "dropdown" })
+@Html.DropDownList("selectedPaymentId", @Model.AvailablePaymentType, "SELECT" , new { @class = "dropdown" })
 
-<a type="button" value="Add Payment Method" class="btn btn-primary" asp-controller="PaymentTypes" asp-action="Create">Create Payment Type</a>
-<a asp-controller="Cart" asp-action="CompleteOrder"><input type="button" value="Complete Order" class="btn btn-primary" asp-action="CompleteOrder"/></a>
+<a  class="btn btn-primary" asp-controller="PaymentTypes" asp-action="Create">Create Payment Type</a>
+<a asp-controller="Cart" asp-action="CompleteOrder" class="btn btn-primary">Complete Order</a>
