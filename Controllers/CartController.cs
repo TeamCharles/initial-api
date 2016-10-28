@@ -31,7 +31,7 @@ namespace BangazonWeb.Controllers
             context = ctx;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {            
             User user = ActiveUser.Instance.User;
             int? userId = user.UserId;
@@ -41,14 +41,6 @@ namespace BangazonWeb.Controllers
             }
 
             var model = new CartView(context);
-
-            // For help with this LINQ query, refer to
-            // https://stackoverflow.com/questions/373541/how-to-do-joins-in-linq-on-multiple-fields-in-single-join
-            // var activeProducts = await(
-            //     from product in context.Product
-            //     from lineItem in context.LineItem
-            //         .Where(lineItem => lineItem.OrderId == context.Order.SingleOrDefault(o => o.DateCompleted == null && o.UserId == userId).OrderId && lineItem.ProductId == product.ProductId)
-            //     select product).ToListAsync();
 
             if (model.CartProducts == null)
             {
