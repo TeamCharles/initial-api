@@ -1,0 +1,26 @@
+@model BangazonWeb.ViewModels.ProductSubTypeList
+@using Bangazon.Models;
+
+<h2>@Html.DisplayFor(model => model.ProductSubType.Label) Products</h2>
+
+@foreach (Product item in Model.Products)
+{
+    <div class="row">
+        <div class="col-md-3">@Html.DisplayFor(modelItem => item.Name)</div>
+        <div class="col-md-3">$@Html.DisplayFor(modelItem => item.Price)</div>
+        <div class="col-md-3">@Html.DisplayFor(modelItem => item.DateCreated)</div>
+        <div class="col-md-3">
+            @if (item.UserId == @Model.ChosenUser.UserId)
+            {
+                <a asp-controller="Products" asp-action="Delete" asp-route-id="@item.ProductId"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <a asp-controller="Products" asp-action="EditInfo" asp-route-id="@item.ProductId"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
+                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            }
+            <a asp-controller="Products" asp-action="Detail" asp-route-id="@item.ProductId">Details</a>
+        </div>
+    </div>
+}
+<div>
+    &lt;&lt; <a asp-controller="ProductTypes" asp-action="Buy">Back to @Html.DisplayFor(model => model.ProductSubType.Label) Products</a>
+</div>

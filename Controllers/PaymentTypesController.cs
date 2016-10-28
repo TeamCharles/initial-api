@@ -5,7 +5,7 @@ using BangazonWeb.Data;
 using Bangazon.Models;
 using Bangazon.Helpers;
 using BangazonWeb.ViewModels;
-
+using Microsoft.AspNetCore.Routing;
 
 /**
  * Class: PaymentTypesController
@@ -42,7 +42,9 @@ namespace BangazonWeb.Controllers
             {
                 context.Add(paymentType.NewPaymentType);
                 await context.SaveChangesAsync();
-                return RedirectToAction("Index", "Cart");
+                return RedirectToAction( "Final", new RouteValueDictionary(
+
+                     new { controller = "Order", action = "Final", Id = paymentType.NewPaymentType.PaymentTypeId } ) );
             }
             
             var model = new PaymentTypeView(context);

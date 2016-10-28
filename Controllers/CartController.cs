@@ -140,7 +140,7 @@ namespace BangazonWeb.Controllers
             }   
         }
 
-        public async Task<IActionResult> CompleteOrder([FromRoute]int id)
+        public async Task<IActionResult> CompleteOrder(OrderView orderView)
         {
             User user = ActiveUser.Instance.User;
             int? userId = user.UserId;
@@ -148,6 +148,7 @@ namespace BangazonWeb.Controllers
             {
                 return Redirect("ProductTypes");
             }
+
             Order openOrder = await(
                 from order in context.Order
                 where order.UserId == userId && order.DateCompleted == null
@@ -156,6 +157,15 @@ namespace BangazonWeb.Controllers
             if (openOrder == null)
             {
                 return RedirectToAction("Buy", "ProductTypes");
+            }
+
+            //check for a selected PaymentId, otherwise redirect
+            if (orderView.selectedPaymentId > 0)
+            {
+                openOrder.PaymentTypeId = orderView.selectedPaymentId;
+            } else
+            {
+                return RedirectToAction("Final","Order");
             }
 
             try

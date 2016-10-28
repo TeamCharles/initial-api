@@ -1,0 +1,26 @@
+@model BangazonWeb.ViewModels.OrderView
+@using Bangazon.Models;
+
+<h1>Select/Create Payment Type Complete your Order</h1>
+
+@foreach (Product item in Model.ActiveProducts)
+{
+<div class="row">
+    <div class="col-md-10">
+        <div style="display:inline-block">
+            <div><strong>@Html.DisplayFor(modelItem => item.Name)</strong></div>
+            <div>@Html.DisplayFor(modelItem => item.Description)</div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div style="color:red">$@Html.DisplayFor(modelItem => item.Price)</div>
+    </div>
+</div>
+}
+<h2>TOTAL: $@Model.TotalPrice</h2>
+<form asp-controller="Cart" asp-action="CompleteOrder">
+@Html.DropDownList("selectedPaymentId", @Model.AvailablePaymentType, "SELECT" , new { @class = "dropdown" })
+
+<a  class="btn btn-primary" asp-controller="PaymentTypes" asp-action="Create">Create Payment Type</a>
+<input type="submit" value="Complete Order" asp-controller="Cart" asp-action="CompleteOrder" class="btn btn-primary" />
+</form>
