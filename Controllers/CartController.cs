@@ -13,9 +13,9 @@ namespace BangazonWeb.Controllers
     /**
      * Class: CartController
      * Purpose: Controls logged in user's cart
-     * Author: Matt Hamil
+     * Author: Matt Hamil/Dayne Wright
      * Methods:
-     *   Task<IActionResult> Index() - Queries for all products on user's active order and renders view
+     *   IActionResult Index() - Adds logged in user and checks view model.  Sends view model to view file.
      *   Task<IActionResult> CreateNewOrder() - Creates a new open order for the customer
      *   Task<IActionResult> AddToCart() - Adds a product to a user's open order
      *   Task<IActionResult> DeleteLineItem() - Deletes a LineItem from the cart
@@ -33,8 +33,8 @@ namespace BangazonWeb.Controllers
 
         public IActionResult Index()
         {            
-            User user = ActiveUser.Instance.User;
-            int? userId = user.UserId;
+            int? userId = ActiveUser.Instance.User.UserId;
+            
             if (userId == null)
             {
                 return Redirect("ProductTypes");
