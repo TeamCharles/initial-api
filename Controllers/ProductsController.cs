@@ -60,7 +60,8 @@ namespace BangazonWeb.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> EditInfo([FromRoute]int? id)
+        [HttpGet]
+        public async Task<IActionResult> Edit([FromRoute]int? id)
         {
             // If no id was in the route, return 404
             if (id == null)
@@ -83,6 +84,7 @@ namespace BangazonWeb.Controllers
             return View(model);
         }
 
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(ProductEdit product)
         {
@@ -90,11 +92,10 @@ namespace BangazonWeb.Controllers
 
             if (!ModelState.IsValid)
             {
-
-                return RedirectToAction("EditInfo", new RouteValueDictionary(
-                     new { controller = "Products", action = "EditInfo", Id = originalProduct.ProductId }));
+                var model = new ProductEdit(context);
+                model.CurrentProduct = product.CurrentProduct;
+                return View(model);
             }
-
 
             originalProduct.ProductId = product.CurrentProduct.ProductId;
             originalProduct.Price = product.CurrentProduct.Price;
@@ -117,7 +118,7 @@ namespace BangazonWeb.Controllers
                      new { controller = "Products", action = "Detail", Id = originalProduct.ProductId }));
         }
 
-        public IActionResult New()
+        public IActionResult Create()
         {
             var model = new ProductCreate(context);
             return View(model);
