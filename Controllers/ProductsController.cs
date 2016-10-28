@@ -22,11 +22,12 @@ namespace BangazonWeb.Controllers
      * Methods:
      *   Index() - shows index view of products
      *   Detail() - shows detailed view of individual product
-     *   EditInfo() - allows users to fill form to change product information
-     *   Edit() - executes the edit within the database
+     *   Edit() - allows users to fill form to change product information
+     *   Edit(ProductEdit) - executes the edit within the database
      *   New() - allows for users to navigate to form
      *   New(Product product) - updates database with new product information.
      *   Delete() - deletes product from database and view of customer.
+     *   Index() - returns a view of all products in the database
      */
     public class ProductsController : Controller
     {
