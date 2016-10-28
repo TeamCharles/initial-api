@@ -26,7 +26,7 @@
 }
 
 <h2>TOTAL: $@Model.TotalPrice</h2>
+@Html.DropDownList("AvailablePaymentType.Description", @Model.PaymentTypes, "SELECT" , new { @class = "dropdown" })
 
 <a type="button" value="Add Payment Method" class="btn btn-primary" asp-controller="PaymentTypes" asp-action="Create">Create Payment Type</a>
 <a asp-controller="Cart" asp-action="CompleteOrder"><input type="button" value="Complete Order" class="btn btn-primary" asp-action="CompleteOrder"/></a>
-@*@Html.DropDownList("CurrentProduct.ProductTypeId", @Model.ProductTypes, "SELECT" , new { @class = "dropdown" })*@

@@ -10,16 +10,17 @@ namespace BangazonWeb.ViewModels
   {
     public float TotalPrice { get; set; }
     public IEnumerable<Product> ActiveProducts { get; set; }
-    public OrderView(BangazonContext ctx) : base(ctx) { }
-    public PaymentTypeSelect(BangazonContext ctx) : base(ctx)
+    public IEnumerable<SelectListItem> AvailablePaymentType {get; set; }
+    public IEnumerable<SelectListItem> PaymentType {get; set; }
+    public OrderView(BangazonContext ctx) : base(ctx)
     {
-        PaymentTypes = context.ProductType
-        .OrderBy(l => l.Label)
-        .AsEnumerable()
-        .Select(li => new SelectListItem { 
-        Text = li.Label,
-        Value = li.ProductTypeId.ToString()
-        });
+        AvailablePaymentType = context.PaymentType
+                              .OrderBy(d => d.Description)
+                              .AsEnumerable()
+                              .Select(li => new SelectListItem { 
+                              Text = li.Description,
+                              Value = li.PaymentTypeId.ToString()
+                              });
     }
     public OrderView() { }
   }
