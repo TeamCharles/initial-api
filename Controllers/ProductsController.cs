@@ -194,18 +194,14 @@ namespace BangazonWeb.Controllers
         }
 
         [HttpPost]
-        public IActionResult GetSubTypes(int id, [FromBody] ProductSubTypeForm productCreate)
+        public IActionResult GetSubTypes([FromRoute] int id)
         {
-            ProductEdit model = new ProductEdit(context);
 
-            model.CurrentProduct = new Product();
+            ProductSubTypeOptions Types = new ProductSubTypeOptions();
+            
+            Types.SubTypes = context.ProductSubType.OrderBy(s => s.Label).AsEnumerable().Where(t => t.ProductTypeId == id).ToList();
 
-            model.CurrentProduct.Name = productCreate.Name;
-            model.CurrentProduct.Description = productCreate.Description;
-            model.CurrentProduct.Price = (decimal)productCreate.Price * 10;
-            model.CurrentProduct.ProductTypeId = id;
-
-            return View(model);
+            return Json(new {subTypes = Types.SubTypes});
         }
 
         public IActionResult Error()
