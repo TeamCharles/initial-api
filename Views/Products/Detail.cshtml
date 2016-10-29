@@ -1,6 +1,14 @@
 @model BangazonWeb.ViewModels.ProductDetail
-
-<h2>@Html.DisplayFor(model => model.CurrentProduct.Name)</h2>
+<div class="center">
+<h2 style="text-decoration: underline;">@Html.DisplayFor(model => model.CurrentProduct.Name)
+    @if (@Model.CurrentProduct.UserId != @Model.ChosenUser.UserId)
+    {
+    <span>
+        Sold by <by></by> @Html.DisplayFor(model => model.CurrentProduct.User.FirstName) @Html.DisplayFor(model => model.CurrentProduct.User.LastName)
+    </span>
+    }
+</h2>
+</div>
 <hr />
 
 <div class="row">
@@ -34,12 +42,6 @@
     }
 </div>
 
-    @if (@Model.CurrentProduct.UserId != @Model.ChosenUser.UserId)
-    {
-<div>
-    Seller: @Html.DisplayFor(model => model.CurrentProduct.User.FirstName) @Html.DisplayFor(model => model.CurrentProduct.User.LastName)
-</div>
-    }
 
 
 <div>
