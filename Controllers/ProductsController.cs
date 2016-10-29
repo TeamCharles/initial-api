@@ -193,6 +193,21 @@ namespace BangazonWeb.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        public IActionResult GetSubTypes(int id, [FromBody] ProductSubTypeForm productCreate)
+        {
+            ProductEdit model = new ProductEdit(context);
+
+            model.CurrentProduct = new Product();
+
+            model.CurrentProduct.Name = productCreate.Name;
+            model.CurrentProduct.Description = productCreate.Description;
+            model.CurrentProduct.Price = (decimal)productCreate.Price * 10;
+            model.CurrentProduct.ProductTypeId = id;
+
+            return View(model);
+        }
+
         public IActionResult Error()
         {
             var model = new BaseViewModel(context);
