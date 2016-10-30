@@ -38,6 +38,13 @@ namespace BangazonWeb.Controllers
             context = ctx;
         }
 
+        public async Task<IActionResult> Index()
+        {
+            var model = new ProductList(context);
+            model.Products = await context.Product.OrderBy(s => s.Name).ToListAsync();
+            return View(model);
+        }
+
         public async Task<IActionResult> Detail(int? id)
         {
             // If no id was in the route, return 404
@@ -169,13 +176,6 @@ namespace BangazonWeb.Controllers
                     throw;
                 }
             }
-        }
-
-        public async Task<IActionResult> Index()
-        {
-            var model = new ProductList(context);
-            model.Products = await context.Product.OrderBy(s => s.Name).ToListAsync();
-            return View(model);
         }
 
         [HttpPost]
