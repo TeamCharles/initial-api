@@ -141,20 +141,17 @@ namespace BangazonWeb.Controllers
             }
 
             var model = new ProductCreate(context);
-            if (product.NewProduct != null)
+            model.NewProduct = product.NewProduct;
+            if (product.NewProduct.ProductTypeId > 0)
             {
-                model.NewProduct = product.NewProduct;
-                if (product.NewProduct.ProductTypeId > 0)
-                {
-                    model.ProductSubTypes = context.ProductSubType
-                        .OrderBy(l => l.Label)
-                        .AsEnumerable()
-                        .Where(t => t.ProductTypeId == product.NewProduct.ProductTypeId)
-                        .Select(li => new SelectListItem {
-                            Text = li.Label,
-                            Value = li.ProductSubTypeId.ToString()
-                        });
-                }
+                model.ProductSubTypes = context.ProductSubType
+                    .OrderBy(l => l.Label)
+                    .AsEnumerable()
+                    .Where(t => t.ProductTypeId == product.NewProduct.ProductTypeId)
+                    .Select(li => new SelectListItem {
+                        Text = li.Label,
+                        Value = li.ProductSubTypeId.ToString()
+                    });
             }
             return View(model);
         }
