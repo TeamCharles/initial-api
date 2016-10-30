@@ -11,6 +11,8 @@ $(document).ready(function () {
     });
   });
   $("#NewProduct_ProductTypeId").on("change", function () {
-    this.form.submit();
+    if ($("#NewProduct_ProductTypeId").val() > 0) {
+      this.form.submit();
+    }
   })
 });
