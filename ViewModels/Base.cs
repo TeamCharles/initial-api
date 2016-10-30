@@ -37,7 +37,13 @@ namespace BangazonWeb.ViewModels
         {
           // Return fake user for now
           return new User () {
-            FirstName = "LogInRequired"
+            FirstName = "LogInRequired",
+            LastName = "dummy",
+            StreetAddress = "dummy",
+            City = "dummy",
+            State = "dummy",
+            ZipCode = 12345,
+            UserId = 0
           };
         }
 
