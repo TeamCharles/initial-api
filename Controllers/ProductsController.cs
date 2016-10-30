@@ -126,27 +126,12 @@ namespace BangazonWeb.Controllers
             return View(model);
         }
 
-        public IActionResult Create([FromRoute]int id,ProductCreate product)
-        {
-            var model = new ProductCreate(context);
-            model.NewProduct = product.NewProduct;
-            model.ProductSubTypes = context.ProductSubType
-                .OrderBy(l => l.Label)
-                .AsEnumerable()
-                .Where(t => t.ProductTypeId == id)
-                .Select(li => new SelectListItem {
-                  Text = li.Label,
-                  Value = li.ProductSubTypeId.ToString()
-                });
-            return View(model);
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ProductCreate product)
         {
 
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && product.NewProduct.ProductSubTypeId > 0)
             {
                 product.NewProduct.UserId = ActiveUser.Instance.User.UserId;
                 context.Add(product.NewProduct);
@@ -156,7 +141,21 @@ namespace BangazonWeb.Controllers
             }
 
             var model = new ProductCreate(context);
-            model.NewProduct = product.NewProduct;
+            if (product.NewProduct != null)
+            {
+                model.NewProduct = product.NewProduct;
+                if (product.NewProduct.ProductTypeId > 0)
+                {
+                    model.ProductSubTypes = context.ProductSubType
+                        .OrderBy(l => l.Label)
+                        .AsEnumerable()
+                        .Where(t => t.ProductTypeId == product.NewProduct.ProductTypeId)
+                        .Select(li => new SelectListItem {
+                            Text = li.Label,
+                            Value = li.ProductSubTypeId.ToString()
+                        });
+                }
+            }
             return View(model);
         }
 

@@ -10,4 +10,7 @@ $(document).ready(function () {
         location.replace("/");
     });
   });
+  $("#NewProduct_ProductTypeId").on("change", function () {
+    this.form.submit();
+  })
 });

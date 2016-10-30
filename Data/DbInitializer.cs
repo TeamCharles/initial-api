@@ -115,6 +115,7 @@ namespace BangazonWeb.Data
               {
                   context.ProductSubType.Add(i);
               }
+              context.SaveChanges();
 
               var products = new Product[]
               {
