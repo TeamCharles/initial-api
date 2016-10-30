@@ -126,21 +126,6 @@ namespace BangazonWeb.Controllers
             return View(model);
         }
 
-        public IActionResult Create([FromRoute]int id,ProductCreate product)
-        {
-            var model = new ProductCreate(context);
-            model.NewProduct = product.NewProduct;
-            model.ProductSubTypes = context.ProductSubType
-                .OrderBy(l => l.Label)
-                .AsEnumerable()
-                .Where(t => t.ProductTypeId == id)
-                .Select(li => new SelectListItem {
-                  Text = li.Label,
-                  Value = li.ProductSubTypeId.ToString()
-                });
-            return View(model);
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ProductCreate product)
@@ -167,7 +152,7 @@ namespace BangazonWeb.Controllers
             if (originalProduct == null)
             {
                 return RedirectToAction("List", new RouteValueDictionary(
-                    new { controller = "ProductTypes", action = "List", Id = originalProduct.ProductTypeId }));
+                    new { controller = "ProductSubTypes", action = "List", Id = originalProduct.ProductSubTypeId }));
             }
             else
             {
@@ -177,7 +162,7 @@ namespace BangazonWeb.Controllers
                     context.Remove(originalProduct);
                     await context.SaveChangesAsync();
                     return RedirectToAction("List", new RouteValueDictionary(
-                        new { controller = "ProductTypes", action = "List", Id = originalProduct.ProductTypeId }));
+                        new { controller = "ProductSubTypes", action = "List", Id = originalProduct.ProductSubTypeId }));
                 }
                 catch (DbUpdateException)
                 {
