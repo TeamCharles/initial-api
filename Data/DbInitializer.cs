@@ -118,6 +118,7 @@ namespace BangazonWeb.Data
               {
                   context.ProductSubType.Add(i);
               }
+              context.SaveChanges();
 
             context.SaveChanges();  // Seed sub product types added
 
@@ -234,7 +235,7 @@ namespace BangazonWeb.Data
                   new Product {
                       Description = "DURABILITY - The higest level of cut resistant material - Level FIVE. 4x stronger than leather!",
                       ProductTypeId = productTypes.Single(s => s.Label == "Housewares").ProductTypeId,
-                      ProductSubTypeId = 3,
+                      ProductSubTypeId = 5,
                       Name = "SimpleHouseware Cut Resistant Gloves",
                       Price = 7.87M,
                       UserId = users.Single(s => s.FirstName == "Carson").UserId,
@@ -243,7 +244,7 @@ namespace BangazonWeb.Data
                   new Product {
                       Description = "Made of high quality porcelain. 14-Ounce capacity",
                       ProductTypeId = productTypes.Single(s => s.Label == "Housewares").ProductTypeId,
-                      ProductSubTypeId = 3,
+                      ProductSubTypeId = 5,
                       Name = "Yedi Houseware Classic Coffee and Tea Siena Tea",
                       Price = 21.49M,
                       UserId = users.Single(s => s.FirstName == "Tractor").UserId,

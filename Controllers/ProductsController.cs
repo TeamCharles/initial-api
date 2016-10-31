@@ -16,17 +16,22 @@ namespace BangazonWeb.Controllers
 {
     /**
      * Class: ProductsController
-     * Purpose: Currently allows for users to view and edit different products
+     * Purpose: Allows users to view, create and edit products
      * Author: Garrett/Anulfo
      * Methods:
-     *   Index() - shows index view of products
-     *   Detail() - shows detailed view of individual product
-     *   Edit() - allows users to fill form to change product information
-     *   Edit(ProductEdit) - executes the edit within the database
-     *   New() - allows for users to navigate to form
-     *   New(Product product) - updates database with new product information.
-     *   Delete() - deletes product from database and view of customer.
-     *   Index() - returns a view of all products in the database
+     *   Task<IActionResult> Detail(int id) - Returns Detail view for an individual product.
+     *          - int id: ProductId for the Product being viewed.
+     *   Task<IActionResult> Edit(int id) - Returns a form view that allows you to edit an existing Product.
+     *          - int id: ProductId for the Product being edited.
+     *   Task<IActionResult> Edit(ProductEdit) - Executes a Product edit within the database and returns that Product's Detail view.
+     *          - ProductEdit product: ProductEdit viewmodel posted on form submission. 
+     *   Task<IActionResult> Create() - Returns a form view that allows a user to create a new product.
+     *   Task<IActionResult> Create(Product product) - Posts a new product to the database and returns the Detail view for that Product.
+     *          - ProductCreate product: ProductCreate viewmodel posted on form submission.
+     *   Task<IActionResult> Delete(int id) - Sets the IsActive property on a Product to false and commits to the database. Redirects a user to the ProductTypes List page.
+     *          - int id: ProductId of the Product being updated.
+     *   Task<IActionResult> Index() - Returns a view of all active products in the database.
+     *   IActionResult Error() - Returns an Error view. Currently not in use.
      */
     public class ProductsController : Controller
     {
@@ -40,7 +45,7 @@ namespace BangazonWeb.Controllers
         public async Task<IActionResult> Index()
         {
             var model = new ProductList(context);
-            model.Products = await context.Product.OrderBy(s => s.Name).ToListAsync();
+            model.Products = await context.Product.Where(s => s.IsActive == true).OrderBy(s => s.Name).ToListAsync();
             return View(model);
         }
 
@@ -80,6 +85,15 @@ namespace BangazonWeb.Controllers
                     .Include(s => s.User)
                     .SingleOrDefaultAsync(m => m.ProductId == id);
 
+            var productSubTypes = context.ProductSubType
+                    .OrderBy(l => l.Label)
+                    .AsEnumerable()
+                    .Where(t => t.ProductTypeId == product.ProductTypeId)
+                    .Select(li => new SelectListItem {
+                        Text = li.Label,
+                        Value = li.ProductSubTypeId.ToString()
+                    });
+
             // If product not found, return 404
             if (product == null)
             {
@@ -88,6 +102,7 @@ namespace BangazonWeb.Controllers
 
             var model = new ProductEdit(context);
             model.CurrentProduct = product;
+            model.ProductSubTypes = productSubTypes;
             return View(model);
         }
 
@@ -97,32 +112,38 @@ namespace BangazonWeb.Controllers
         {
             Product originalProduct = await context.Product.SingleAsync(p => p.ProductId == product.CurrentProduct.ProductId);
 
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid && product.CurrentProduct.ProductSubTypeId > 0)
             {
-                var model = new ProductEdit(context);
-                model.CurrentProduct = product.CurrentProduct;
-                return View(model);
-            }
+                originalProduct.ProductId = product.CurrentProduct.ProductId;
+                originalProduct.Price = product.CurrentProduct.Price;
+                originalProduct.Description = product.CurrentProduct.Description;
+                originalProduct.Name = product.CurrentProduct.Name;
+                originalProduct.ProductTypeId = product.CurrentProduct.ProductTypeId;
+                originalProduct.ProductSubTypeId = product.CurrentProduct.ProductSubTypeId;
 
-            originalProduct.ProductId = product.CurrentProduct.ProductId;
-            originalProduct.Price = product.CurrentProduct.Price;
-            originalProduct.Description = product.CurrentProduct.Description;
-            originalProduct.Name = product.CurrentProduct.Name;
-            originalProduct.ProductTypeId = product.CurrentProduct.ProductTypeId;
-            context.Entry(originalProduct).State = EntityState.Modified;
+                context.Entry(originalProduct).State = EntityState.Modified;
 
-            context.Update(originalProduct);
-            try
-            {
+                context.Update(originalProduct);
                 context.SaveChanges();
-            }
-            catch (DbUpdateException)
-            {
-                throw;
+
+                
+                return RedirectToAction("Detail", new RouteValueDictionary(
+                     new { controller = "Products", action = "Detail", Id = originalProduct.ProductId }));
             }
 
-            return RedirectToAction("Detail", new RouteValueDictionary(
-                     new { controller = "Products", action = "Detail", Id = originalProduct.ProductId }));
+            var model = new ProductEdit(context);
+                model.CurrentProduct = product.CurrentProduct;
+
+                model.ProductSubTypes = context.ProductSubType
+                    .OrderBy(l => l.Label)
+                    .AsEnumerable()
+                    .Where(t => t.ProductTypeId == model.CurrentProduct.ProductTypeId)
+                    .Select(li => new SelectListItem {
+                        Text = li.Label,
+                        Value = li.ProductSubTypeId.ToString()
+                    });
+
+            return View(model);
         }
 
         [HttpGet]
@@ -137,9 +158,10 @@ namespace BangazonWeb.Controllers
         public async Task<IActionResult> Create(ProductCreate product)
         {
 
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && product.NewProduct.ProductTypeId > 0 && product.NewProduct.ProductSubTypeId > 0)
             {
                 product.NewProduct.UserId = ActiveUser.Instance.User.UserId;
+                product.NewProduct.IsActive = true;
                 context.Add(product.NewProduct);
                 await context.SaveChangesAsync();
                 return RedirectToAction("Detail", new RouteValueDictionary(
@@ -148,6 +170,17 @@ namespace BangazonWeb.Controllers
 
             var model = new ProductCreate(context);
             model.NewProduct = product.NewProduct;
+            if (product.NewProduct.ProductTypeId > 0)
+            {
+                model.ProductSubTypes = context.ProductSubType
+                    .OrderBy(l => l.Label)
+                    .AsEnumerable()
+                    .Where(t => t.ProductTypeId == product.NewProduct.ProductTypeId)
+                    .Select(li => new SelectListItem {
+                        Text = li.Label,
+                        Value = li.ProductSubTypeId.ToString()
+                    });
+            }
             return View(model);
         }
 
@@ -165,10 +198,11 @@ namespace BangazonWeb.Controllers
 
                 try
                 {
-                    context.Remove(originalProduct);
+                    originalProduct.IsActive = false;
+                    context.Update(originalProduct);
                     await context.SaveChangesAsync();
-                    return RedirectToAction("List", new RouteValueDictionary(
-                        new { controller = "ProductSubTypes", action = "List", Id = originalProduct.ProductSubTypeId }));
+                    return RedirectToAction("Products", new RouteValueDictionary(
+                        new { controller = "ProductSubTypes", action = "Products", Id = originalProduct.ProductSubTypeId }));
                 }
                 catch (DbUpdateException)
                 {
@@ -176,18 +210,6 @@ namespace BangazonWeb.Controllers
                 }
             }
         }
-
-        [HttpPost]
-        public IActionResult GetSubTypes([FromRoute] int id)
-        {
-
-            ProductSubTypeOptions Types = new ProductSubTypeOptions();
-            
-            Types.SubTypes = context.ProductSubType.OrderBy(s => s.Label).AsEnumerable().Where(t => t.ProductTypeId == id).ToList();
-
-            return Json(new {subTypes = Types.SubTypes});
-        }
-
         public IActionResult Error()
         {
             var model = new BaseViewModel(context);

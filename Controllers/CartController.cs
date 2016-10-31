@@ -15,18 +15,19 @@ namespace BangazonWeb.Controllers
      * Purpose: Controls logged in user's cart
      * Author: Matt Hamil/Dayne Wright
      * Methods:
-     *   IActionResult Index() - Adds logged in user and checks view model.  Sends view model to view file.
-     *   Task<IActionResult> CreateNewOrder() - Creates a new open order for the customer
-     *   Task<IActionResult> AddToCart() - Adds a product to a user's open order
-     *   Task<IActionResult> DeleteLineItem() - Deletes a LineItem from the cart
-     *   IActionResult Error() - Renders an error
-     *   CompleteOrder() - Adds a completed date to the new order
-     *   Confirmation() - Changes the user's view to a completed order form.
-     *   DeleteLineItem() - Deletes a lineitem from the order for the user.!--
-     *   AddToCart() - Adds an active product to a user's cart.
+     *   IActionResult Index() - Queries the Active User and returns that users' Cart view.
+     *   Task<IActionResult> AddToCart(int id) - Creates a new line item for the current active order. If no current order, also creates a new order. Returns Product Detail view.
+     *          - int id: ProductId for the Product that needs added to an order.
+     *   Task<IActionResult> DeleteLineItem(int id) - Deletes a LineItem from the current active order. Redirects to Cart view.
+     *          - int id: LineItemId for the LineItem that needs to be deleted.
+     *   Task<IActionResult> CompleteOrder(OrderView orderView) - Checks whether a PaymentType has been added to the current active order. If so, adds a DateCompleted to the order and saves to DB.
+     *          - OrderView orderView: Order ViewModel posted on submission of the form
+     *   Task<IActionResult> Confirmation(int id) - Returns a Confirmation view that lists cart information, the order# and payment method.
+     *          - int id: OrderId for the completed order.
+     *   IActionResult Error() - Returns an Error view. Currently not used.
      */
     public class CartController : Controller
-    {   
+    {
         private BangazonContext context;
         
         public CartController(BangazonContext ctx)
@@ -37,7 +38,7 @@ namespace BangazonWeb.Controllers
 
     /* Adds logged in user and checks view model.  Sends view model to view file. */
         public IActionResult Index()
-        {            
+        {
             var model = new CartView(context);
 
             if (model.CartProducts == null)
@@ -48,7 +49,8 @@ namespace BangazonWeb.Controllers
 
             foreach (var product in model.CartProducts)
             {
-                model.TotalPrice += product.Price;
+                if (product.IsActive)
+                    model.TotalPrice += product.Price;
             }
 
             return View(model);
@@ -89,7 +91,7 @@ namespace BangazonWeb.Controllers
             if (openOrderQuery == null)
             {
                 // Creating a new Order
-                openOrder = new Order {    
+                openOrder = new Order {
                     UserId = (int)ActiveUser.Instance.User.UserId
                 };
                 context.Order.Add(openOrder);
@@ -113,20 +115,20 @@ namespace BangazonWeb.Controllers
 
         public async Task<IActionResult> DeleteLineItem([FromRoute]int id)
         {
-            
+
             Order OpenOrder = await(
                 from order in context.Order
                 where order.UserId == ActiveUser.Instance.User.UserId && order.DateCompleted == null
-                select order).SingleOrDefaultAsync();  
-            
+                select order).SingleOrDefaultAsync();
 
-            LineItem deletedItem = await context.LineItem.SingleAsync(p => p.ProductId == id && p.OrderId == OpenOrder.OrderId);
+
+            LineItem deletedItem = await context.LineItem.FirstAsync(p => p.ProductId == id && p.OrderId == OpenOrder.OrderId);
 
 
             if (deletedItem == null)
             {
                 return RedirectToAction("Index", new RouteValueDictionary(
-                    new { controller = "Cart", action = "Index"} ) );   
+                    new { controller = "Cart", action = "Index"} ) );
             }
 
             try
@@ -134,12 +136,12 @@ namespace BangazonWeb.Controllers
                 context.Remove(deletedItem);
                 await context.SaveChangesAsync();
                 return RedirectToAction( "Index", new RouteValueDictionary(
-                     new { controller = "Cart", action = "Index", Id = id } ) ); 
+                     new { controller = "Cart", action = "Index", Id = id } ) );
             }
             catch (DbUpdateException)
             {
                 throw;
-            }   
+            }
         }
 
         public async Task<IActionResult> CompleteOrder(OrderView orderView)
@@ -182,16 +184,16 @@ namespace BangazonWeb.Controllers
             catch (DbUpdateException)
             {
                 throw;
-            }   
+            }
         }
         public async Task<IActionResult> Confirmation(int id)
         {
 
             Order CompleteOrder = await(
                 from order in context.Order
-                where order.OrderId == id 
+                where order.OrderId == id
                 select order).SingleOrDefaultAsync();
-                
+
             if (CompleteOrder == null)
             {
                 return RedirectToAction("Buy", "ProductTypes");
@@ -201,13 +203,13 @@ namespace BangazonWeb.Controllers
             {
                 return Redirect("ProductTypes");
             }
-            
+
 
 
             var LineItems = await(
                 from product in context.Product
                 from lineItem in context.LineItem
-                    .Where(lineItem => lineItem.OrderId == id && lineItem.ProductId == product.ProductId)
+                    .Where(lineItem => lineItem.OrderId == id && lineItem.ProductId == product.ProductId && lineItem.Product.IsActive == true)
                 select product).ToListAsync();
 
 
@@ -226,7 +228,8 @@ namespace BangazonWeb.Controllers
 
             foreach (var product in LineItems)
             {
-                model.TotalPrice += product.Price;
+                if (product.IsActive)
+                    model.TotalPrice += product.Price;
             }
 
             return View(model);
