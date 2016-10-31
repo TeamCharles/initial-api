@@ -22,12 +22,12 @@ This command sets the environment for your local copy of the application to deve
 export ASPNETCORE_ENVIRONMENT="Development"
 ```
 
-On initial installation of the Banagazon web application you must set an environment variable to your local database. This variable must point the application to the database
+On initial installation of the Banagazon web application you must set an environment variable to your local database. Even though you have not yet created a database, this variable will set the location of your database for later after creation.
 ```Bash
 export BangazonWeb_Db_Path="/path/to/bangazon.db"
 ```
 
-Once your local variables have been set run the following commands to start
+Once your local variables have been set run the following commands to start. `dotnet ef database update` will create the database for your application at the location that was set earlier.
 ```Bash
 dotnet restore
 dotnet ef database update
@@ -45,12 +45,12 @@ This command sets the environment for your local copy of the application to deve
 $env:ASPNETCORE_ENVIRONMENT="Development"
 ```
 
-On initial installation of the Banagazon web application you must set an environment variable to your local database. This variable must point the application to the database
+On initial installation of the Banagazon web application you must set an environment variable to your local database. Even though you have not yet created a database, this variable will set the location of your database for later after creation.
 ```Bash
 $env:BangazonWeb_Db_Path="/path/to/bangazon.db"
 ```
 
-Once your local variables have been set run the following commands to start
+Once your local variables have been set run the following commands to start. `dotnet ef database update` will create the database for your application at the location that was set earlier.
 ```Bash
 dotnet restore
 dotnet ef database update
