@@ -25,11 +25,21 @@ namespace BangazonWeb.Controllers
     {
         private BangazonContext context;
 
+        /**
+         * Purpose: Initializes the ProductTypesController with a reference to the database context
+         * Arguments:
+         *      ctx - Reference to the database context
+         */
         public ProductTypesController(BangazonContext ctx)
         {
             context = ctx;
         }
 
+        /**
+         * Purpose: Creates a sorted product type list view
+         * Return:
+         *      Redirects user to product type list view
+         */
         public async Task<IActionResult> Buy()
         {
             List<ProductType> ProductTypeList = await context.ProductType.OrderBy(s => s.Label).ToListAsync();
@@ -39,6 +49,13 @@ namespace BangazonWeb.Controllers
             return View(model);
         }
 
+        /**
+         * Purpose: Creates a sorted product type list that shows all products of that type
+         * Arguments:
+         *      id - product type id
+         * Return:
+         *      Redirects user to product type list view for a specific product type
+         */
         public async Task<IActionResult> List([FromRoute]int? id)
         {
             var model = new ProductList(context);
@@ -46,6 +63,13 @@ namespace BangazonWeb.Controllers
             return View(model);
         }
 
+        /**
+         * Purpose: Counts the number of products within a certain product type
+         * Arguments:
+         *      productType - A product type to be counted
+         * Return:
+         *      void
+         */
         public void CalculateTypeQuantities(ProductType productType)
         {
             int quantity = context.Product.Count(p => p.ProductTypeId == productType.ProductTypeId && p.IsActive == true);
