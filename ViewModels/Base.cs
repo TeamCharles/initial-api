@@ -10,13 +10,13 @@ namespace BangazonWeb.ViewModels
 {
   /**
    * Class: BaseViewModel
-   * Purpose: Base ViewModels for all views to help create a more complex model.
+   * Purpose: Contains the logged in user, products in cart, and all users from database
    * Author: Matt Kraatz/Dayne Wright/Matt Hamil
    * Methods:
-   *   Constructor BaseViewModel(ctx)  -  ctx is the current database context that is connected to query for data.
-   *      this.Users - Adds all users from database for navbar user selection.
-   *      this.CartProducts - Adds all products on the active order for the currently logged in user.
-   *      this.TotalCount - Total number of products on the active order for the current user.  Used for cart icon notification.
+   *   Constructor BaseViewModel(ctx) - database context reference
+   *      this.Users - All users from database for navbar user selection.
+   *      this.CartProducts - All products on the active order for the currently logged in user.
+   *      this.TotalCount - Number of active products in the active order for the current user. Used for cart icon notification.
    **/
   public class BaseViewModel
   {
@@ -58,6 +58,12 @@ namespace BangazonWeb.ViewModels
         }
       }
     }
+
+    /**
+     * Purpose: Populates the User dropdown and the Cart product count in the nav bar
+     * Arguments:
+     *      ctx - Database context reference
+     */
     public BaseViewModel(BangazonContext ctx)
     {
         context = ctx;
@@ -85,6 +91,7 @@ namespace BangazonWeb.ViewModels
             }
 
     }
+
     public BaseViewModel() { }
   }
 }
