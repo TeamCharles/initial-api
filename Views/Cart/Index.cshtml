@@ -27,9 +27,11 @@ else
         <div class="col-md-2">
             <div>$@Html.DisplayFor(modelItem => item.Price)</div>
         </div>
+    </div>
     }
     else
     {
+    <div class="row">
         <div class="col-md-10">
             <div style="display:inline-block">
                 <a asp-controller="Cart" asp-action="DeleteLineItem" asp-route-id="@item.ProductId"><span class="glyphicon glyphicon-remove" aria-hidden="true"><span></a>
@@ -43,8 +45,8 @@ else
         <div class="col-md-2">
             <div style="text-decoration:line-through">$@Html.DisplayFor(modelItem => item.Price)</div>
         </div>
+    </div>
     }
-</div>
 }
 
     <h2>TOTAL: $@Model.TotalPrice</h2>
