@@ -26,7 +26,7 @@ namespace BangazonWeb.Controllers
      *   AddToCart() - Adds an active product to a user's cart.
      */
     public class CartController : Controller
-    {   
+    {
         private BangazonContext context;
 
         public CartController(BangazonContext ctx)
@@ -35,7 +35,7 @@ namespace BangazonWeb.Controllers
         }
 
         public IActionResult Index()
-        {            
+        {
             var model = new CartView(context);
 
             if (model.CartProducts == null)
@@ -46,7 +46,8 @@ namespace BangazonWeb.Controllers
 
             foreach (var product in model.CartProducts)
             {
-                model.TotalPrice += product.Price;
+                if (product.IsActive)
+                    model.TotalPrice += product.Price;
             }
 
             return View(model);
@@ -80,7 +81,7 @@ namespace BangazonWeb.Controllers
             if (openOrderQuery == null)
             {
                 // Creating a new Order
-                openOrder = new Order {    
+                openOrder = new Order {
                     UserId = (int)ActiveUser.Instance.User.UserId
                 };
                 context.Order.Add(openOrder);
@@ -104,12 +105,12 @@ namespace BangazonWeb.Controllers
 
         public async Task<IActionResult> DeleteLineItem([FromRoute]int id)
         {
-            
+
             Order OpenOrder = await(
                 from order in context.Order
                 where order.UserId == ActiveUser.Instance.User.UserId && order.DateCompleted == null
-                select order).SingleOrDefaultAsync();  
-            
+                select order).SingleOrDefaultAsync();
+
 
             LineItem deletedItem = await context.LineItem.SingleAsync(p => p.ProductId == id && p.OrderId == OpenOrder.OrderId);
 
@@ -117,7 +118,7 @@ namespace BangazonWeb.Controllers
             if (deletedItem == null)
             {
                 return RedirectToAction("Index", new RouteValueDictionary(
-                    new { controller = "Cart", action = "Index"} ) );   
+                    new { controller = "Cart", action = "Index"} ) );
             }
 
             try
@@ -125,12 +126,12 @@ namespace BangazonWeb.Controllers
                 context.Remove(deletedItem);
                 await context.SaveChangesAsync();
                 return RedirectToAction( "Index", new RouteValueDictionary(
-                     new { controller = "Cart", action = "Index", Id = id } ) ); 
+                     new { controller = "Cart", action = "Index", Id = id } ) );
             }
             catch (DbUpdateException)
             {
                 throw;
-            }   
+            }
         }
 
         public async Task<IActionResult> CompleteOrder(OrderView orderView)
@@ -173,16 +174,16 @@ namespace BangazonWeb.Controllers
             catch (DbUpdateException)
             {
                 throw;
-            }   
+            }
         }
         public async Task<IActionResult> Confirmation(int id)
         {
 
             Order CompleteOrder = await(
                 from order in context.Order
-                where order.OrderId == id 
+                where order.OrderId == id
                 select order).SingleOrDefaultAsync();
-                
+
             if (CompleteOrder == null)
             {
                 return RedirectToAction("Buy", "ProductTypes");
@@ -192,13 +193,13 @@ namespace BangazonWeb.Controllers
             {
                 return Redirect("ProductTypes");
             }
-            
+
 
 
             var LineItems = await(
                 from product in context.Product
                 from lineItem in context.LineItem
-                    .Where(lineItem => lineItem.OrderId == id && lineItem.ProductId == product.ProductId)
+                    .Where(lineItem => lineItem.OrderId == id && lineItem.ProductId == product.ProductId && lineItem.Product.IsActive == true)
                 select product).ToListAsync();
 
 
@@ -217,7 +218,8 @@ namespace BangazonWeb.Controllers
 
             foreach (var product in LineItems)
             {
-                model.TotalPrice += product.Price;
+                if (product.IsActive)
+                    model.TotalPrice += product.Price;
             }
 
             return View(model);

@@ -22,7 +22,7 @@ namespace BangazonWeb.Controllers
      *   Task<IActionResult> Final() - It retrieves the data for the drop
      */
     public class OrderController : Controller
-    {   
+    {
         private BangazonContext context;
 
         public OrderController(BangazonContext ctx)
@@ -32,7 +32,7 @@ namespace BangazonWeb.Controllers
 
         public async Task<IActionResult> Final([FromRoute] int id)
         {
-            
+
             User user = ActiveUser.Instance.User;
             int? userId = user.UserId;
             if (userId == null)
@@ -43,7 +43,7 @@ namespace BangazonWeb.Controllers
             var activeProducts = await(
                 from product in context.Product
                 from lineItem in context.LineItem
-                    .Where(lineItem => lineItem.OrderId == context.Order.SingleOrDefault(o => o.DateCompleted == null && o.UserId == userId).OrderId && lineItem.ProductId == product.ProductId)
+                    .Where(lineItem => lineItem.OrderId == context.Order.SingleOrDefault(o => o.DateCompleted == null && o.UserId == userId).OrderId && lineItem.ProductId == product.ProductId && lineItem.Product.IsActive == true)
                 select product).ToListAsync();
 
             if (activeProducts == null)
@@ -66,7 +66,7 @@ namespace BangazonWeb.Controllers
                 model.TotalPrice += product.Price;
             }
 
-            model.AvailablePaymentType = 
+            model.AvailablePaymentType =
                 from PaymentType in context.PaymentType
                 orderby PaymentType.Description
                 where PaymentType.UserId == userId
@@ -79,7 +79,6 @@ namespace BangazonWeb.Controllers
         }
         public IActionResult Error()
         {
-            
             return View();
         }
     }

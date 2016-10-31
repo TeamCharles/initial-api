@@ -25,8 +25,7 @@ namespace BangazonWeb.Controllers
      *   Edit(ProductEdit) - executes the edit within the database
      *   New() - allows for users to navigate to form
      *   New(Product product) - updates database with new product information.
-     *   Delete() - deletes product from database and view of customer.
-     *   Index() - returns a view of all products in the database
+     *   Delete() - Marks a product as inactive
      */
     public class ProductsController : Controller
     {
@@ -40,7 +39,7 @@ namespace BangazonWeb.Controllers
         public async Task<IActionResult> Index()
         {
             var model = new ProductList(context);
-            model.Products = await context.Product.OrderBy(s => s.Name).ToListAsync();
+            model.Products = await context.Product.Where(s => s.IsActive == true).OrderBy(s => s.Name).ToListAsync();
             return View(model);
         }
 
@@ -177,10 +176,11 @@ namespace BangazonWeb.Controllers
 
                 try
                 {
-                    context.Remove(originalProduct);
+                    originalProduct.IsActive = false;
+                    context.Update(originalProduct);
                     await context.SaveChangesAsync();
-                    return RedirectToAction("List", new RouteValueDictionary(
-                        new { controller = "ProductSubTypes", action = "List", Id = originalProduct.ProductSubTypeId }));
+                    return RedirectToAction("Products", new RouteValueDictionary(
+                        new { controller = "ProductSubTypes", action = "Products", Id = originalProduct.ProductSubTypeId }));
                 }
                 catch (DbUpdateException)
                 {
@@ -201,7 +201,7 @@ namespace BangazonWeb.Controllers
         {
 
             ProductSubTypeOptions Types = new ProductSubTypeOptions();
-            
+
             Types.SubTypes = context.ProductSubType.OrderBy(s => s.Label).AsEnumerable().Where(t => t.ProductTypeId == id).ToList();
 
             return Json(new {subTypes = Types.SubTypes});

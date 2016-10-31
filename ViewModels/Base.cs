@@ -13,7 +13,7 @@ namespace BangazonWeb.ViewModels
    * Purpose: Base ViewModels for all views to help create a more complex model.
    * Author: Matt Kraatz/Dayne Wright/Matt Hamil
    * Methods:
-   *   Constructor BaseViewModel(ctx)  -  ctx is the current database context that is connected to query for data. 
+   *   Constructor BaseViewModel(ctx)  -  ctx is the current database context that is connected to query for data.
    *      this.Users - Adds all users from database for navbar user selection.
    *      this.CartProducts - Adds all products on the active order for the currently logged in user.
    *      this.TotalCount - Total number of products on the active order for the current user.  Used for cart icon notification.
@@ -25,7 +25,7 @@ namespace BangazonWeb.ViewModels
     protected BangazonContext context;
     private ActiveUser singleton = ActiveUser.Instance;
     public int TotalCount { get;  private set; }
-    public User ChosenUser 
+    public User ChosenUser
     {
       get
       {
@@ -65,7 +65,7 @@ namespace BangazonWeb.ViewModels
         this.Users = context.User
             .OrderBy(l => l.LastName)
             .AsEnumerable()
-            .Select(li => new SelectListItem { 
+            .Select(li => new SelectListItem {
                 Text = $"{li.FirstName} {li.LastName}",
                 Value = li.UserId.ToString()
             });
@@ -80,9 +80,10 @@ namespace BangazonWeb.ViewModels
 
         foreach (Product product in this.CartProducts)
             {
-                this.TotalCount += 1;
+                if (product.IsActive)
+                    this.TotalCount += 1;
             }
-        
+
     }
     public BaseViewModel() { }
   }

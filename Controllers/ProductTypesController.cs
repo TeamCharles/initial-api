@@ -47,7 +47,7 @@ namespace BangazonWeb.Controllers
 
         public void CalculateTypeQuantities(ProductType productType)
         {
-            int quantity = context.Product.Count(p => p.ProductTypeId == productType.ProductTypeId);
+            int quantity = context.Product.Count(p => p.ProductTypeId == productType.ProductTypeId && p.IsActive == true);
             productType.Quantity = quantity;
         }
     }
