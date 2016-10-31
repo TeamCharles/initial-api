@@ -38,7 +38,7 @@ namespace BangazonWeb.Controllers
         /**
          * Purpose: Creates a sorted product type list view
          * Return:
-         *      Redirects user to product type list view
+         *      Product type list view
          */
         public async Task<IActionResult> Buy()
         {
@@ -54,7 +54,7 @@ namespace BangazonWeb.Controllers
          * Arguments:
          *      id - product type id
          * Return:
-         *      Redirects user to product type list view for a specific product type
+         *      Product type list view for a specific product type
          */
         public async Task<IActionResult> List([FromRoute]int? id)
         {
