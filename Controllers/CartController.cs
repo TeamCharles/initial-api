@@ -199,7 +199,7 @@ namespace BangazonWeb.Controllers
             var LineItems = await(
                 from product in context.Product
                 from lineItem in context.LineItem
-                    .Where(lineItem => lineItem.OrderId == id && lineItem.ProductId == product.ProductId)
+                    .Where(lineItem => lineItem.OrderId == id && lineItem.ProductId == product.ProductId && lineItem.Product.IsActive == true)
                 select product).ToListAsync();
 
 
