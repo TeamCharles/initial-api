@@ -31,6 +31,14 @@ namespace BangazonWeb.Controllers
             context = ctx;
         }
 
+/**
+ * Purpose: Retrieve the active products,  the payment types available for the user, and the total price to be 
+    displayed on the Order/Final view
+ * Arguments:
+ *      id - OrderId to get the current Active order
+ * Return:
+ *      Redirects user to Confirmation view
+ */
         public async Task<IActionResult> Final([FromRoute] int id)
         {
 
@@ -40,7 +48,7 @@ namespace BangazonWeb.Controllers
             {
                 return Redirect("ProductTypes");
             }
-
+            //get the active products to show
             var activeProducts = await(
                 from product in context.Product
                 from lineItem in context.LineItem
@@ -52,11 +60,11 @@ namespace BangazonWeb.Controllers
                 // Redirect to ProductTypes
                 return RedirectToAction("Index", "ProductTypes");
             }
-
+            //Instanciate a OrderView  to attach the ActiveProducts to it
             var model = new OrderView(context);
             model.ActiveProducts = activeProducts;
 
-
+            //Looks for a valid PaymentTypeId
             if (id > 0)
             {
                 model.selectedPaymentId = id;
@@ -66,7 +74,7 @@ namespace BangazonWeb.Controllers
             {
                 model.TotalPrice += product.Price;
             }
-
+            //set the model's AvailablePaymentType to feed the dropdown of PaymentTypes  
             model.AvailablePaymentType =
                 from PaymentType in context.PaymentType
                 orderby PaymentType.Description
