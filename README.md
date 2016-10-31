@@ -12,31 +12,46 @@ If you need to download dotnet onto your local machine, visit [Microsoft's Docum
 
 If you need to download bower onto your local machine, visit [Bower's Documentation](https://bower.io/)
 
-## Installation
+## Installation OSX/UNIX
 
-Clone or fork the project. Navigate to where the project is saved on your machine.
-Note that if running the application in OSX/UNIX/Windows that the commands below require for you to manually change the path to your database.
+Clone or fork the project. Navigate to where the project is saved on your machine. For all of the following commands enter them into your bash terminal to ensure that the application is installed correctly
 
-### OSX/UNIX
 
-Run the following commands in your terminal. 
-
+This command sets the environment for your local copy of the application to development mode.
 ```Bash
 export ASPNETCORE_ENVIRONMENT="Development"
+```
+
+On initial installation of the Banagazon web application you must set an environment variable to your local database. This variable must point the application to the database
+```Bash
 export BangazonWeb_Db_Path="/path/to/bangazon.db"
+```
+
+Once your local variables have been set run the following commands to start
+```Bash
 dotnet restore
 dotnet ef database update
 bower install
 dotnet run
 ```
 
-###Windows
+## Installation Windows
 
-Run the following commands in Windows Powershell
+Clone or fork the project. Navigate to where the project is saved on your machine. For all of the following commands enter them into your bash terminal to ensure that the application is installed correctly
 
+
+This command sets the environment for your local copy of the application to development mode.
 ```Bash
 $env:ASPNETCORE_ENVIRONMENT="Development"
+```
+
+On initial installation of the Banagazon web application you must set an environment variable to your local database. This variable must point the application to the database
+```Bash
 $env:BangazonWeb_Db_Path="/path/to/bangazon.db"
+```
+
+Once your local variables have been set run the following commands to start
+```Bash
 dotnet restore
 dotnet ef database update
 bower install
