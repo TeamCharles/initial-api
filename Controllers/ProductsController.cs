@@ -177,8 +177,8 @@ namespace BangazonWeb.Controllers
                     originalProduct.IsActive = false;
                     context.Update(originalProduct);
                     await context.SaveChangesAsync();
-                    return RedirectToAction("List", new RouteValueDictionary(
-                        new { controller = "ProductTypes", action = "List", Id = originalProduct.ProductTypeId }));
+                    return RedirectToAction("Products", new RouteValueDictionary(
+                        new { controller = "ProductSubTypes", action = "Products", Id = originalProduct.ProductSubTypeId }));
                 }
                 catch (DbUpdateException)
                 {
@@ -190,7 +190,7 @@ namespace BangazonWeb.Controllers
         public async Task<IActionResult> Index()
         {
             var model = new ProductList(context);
-            model.Products = await context.Product.OrderBy(s => s.Name).ToListAsync();
+            model.Products = await context.Product.Where(s => s.IsActive == true).OrderBy(s => s.Name).ToListAsync();
             return View(model);
         }
 

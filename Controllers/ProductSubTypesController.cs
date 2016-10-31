@@ -13,7 +13,7 @@ namespace BangazonWeb.Controllers
 {
     /**
      * CLASS: ProductSubTypes
-     * PURPOSE: 
+     * PURPOSE:
      * AUTHOR: Dayne Wright/Garrett Vangilder
      * METHODS:
      *   Task<IActionResult> Index() - Shows all product types and counts
@@ -39,7 +39,7 @@ namespace BangazonWeb.Controllers
             var model = new ProductSubTypeList(context);
             model.ProductSubTypes = ProductSubTypeList;
             model.ProductType = await context.ProductType.SingleAsync(t => t.ProductTypeId == id);
-            
+
             return View(model);
         }
         //list of all products in the subtype
@@ -47,7 +47,7 @@ namespace BangazonWeb.Controllers
         {
             var model = new ProductSubTypeList(context);
 
-            model.Products = await context.Product.OrderBy(s => s.Name).Where(p => p.ProductSubTypeId == id).ToListAsync();
+            model.Products = await context.Product.OrderBy(s => s.Name).Where(p => p.ProductSubTypeId == id && p.IsActive == true).ToListAsync();
             model.ProductSubType = await context.ProductSubType.SingleAsync(p => p.ProductSubTypeId == id);
             model.ProductType = await context.ProductType.SingleAsync(p => p.ProductTypeId == model.ProductSubType.ProductTypeId);
 
@@ -56,7 +56,7 @@ namespace BangazonWeb.Controllers
 
         public void CalculateTypeQuantities(ProductSubType productSubType)
         {
-            int quantity = context.Product.Count(p => p.ProductSubTypeId == productSubType.ProductSubTypeId);
+            int quantity = context.Product.Count(p => p.ProductSubTypeId == productSubType.ProductSubTypeId && p.IsActive == true);
             productSubType.Quantity = quantity;
         }
     }
