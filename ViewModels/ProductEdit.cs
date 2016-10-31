@@ -10,6 +10,7 @@ namespace BangazonWeb.ViewModels
   {
     public Product CurrentProduct { get; set; }
     public IEnumerable<SelectListItem> ProductTypes { get; set; }
+    public IEnumerable<SelectListItem> ProductSubTypes { get; set; }
     public ProductEdit(BangazonContext ctx) : base(ctx)
     {
       ProductTypes = context.ProductType
@@ -21,12 +22,5 @@ namespace BangazonWeb.ViewModels
                     });
     }
     public ProductEdit() { }
-  }
-
-  public class ProductSubTypeForm
-  {
-    public string Name { get; set; }
-    public string Description { get; set; }
-    public float Price { get; set; }
   }
 }
