@@ -131,7 +131,7 @@ namespace BangazonWeb.Controllers
         public async Task<IActionResult> Create(ProductCreate product)
         {
 
-            if (ModelState.IsValid && product.NewProduct.ProductSubTypeId > 0)
+            if (ModelState.IsValid && product.NewProduct.ProductTypeId > 0 && product.NewProduct.ProductSubTypeId > 0)
             {
                 product.NewProduct.UserId = ActiveUser.Instance.User.UserId;
                 product.NewProduct.IsActive = true;
@@ -186,7 +186,7 @@ namespace BangazonWeb.Controllers
         public async Task<IActionResult> Index()
         {
             var model = new ProductList(context);
-            model.Products = await context.Product.OrderBy(s => s.Name).ToListAsync();
+            model.Products = await context.Product.OrderBy(s => s.Name.ToLower()).ToListAsync();
             return View(model);
         }
 
