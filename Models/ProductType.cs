@@ -6,6 +6,11 @@ using System.Collections.Generic;
 
 namespace Bangazon.Models
 {
+  /**
+   * Class: ProductType
+   * Purpose: Represents the ProductType table in the database
+   * Author: Dayne Wright
+   */
   public class ProductType
   {
     [Key]

@@ -6,6 +6,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Bangazon.Models
 {
+  /**
+   * Class: Order
+   * Purpose: Represents the Order table in the database
+   * Author: Matt Kraatz
+   */
   public class Order
   {
     [Key]

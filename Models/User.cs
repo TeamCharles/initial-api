@@ -6,6 +6,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Bangazon.Models
 {
+  /**
+   * Class: User
+   * Purpose: Represents the User table in the database
+   * Author: Garrett Vangilder
+   */
   public class User
   {
     [Key]
