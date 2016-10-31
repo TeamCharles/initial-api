@@ -32,6 +32,7 @@
         <div class="col-md-3"><a class="btn btn-primary btn-xs" asp-controller="Cart" asp-action="AddToCart" asp-route-id="@Model.CurrentProduct.ProductId">Add to Cart</a></div>
     }
     else
+
     {
         <div class="col-md-3">        
             <a asp-controller="Products" asp-action="Delete" asp-route-id="@Model.CurrentProduct.ProductId"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
@@ -45,5 +46,5 @@
 
 
 <div>
-    &lt;&lt; <a asp-controller="ProductTypes" asp-action="List" asp-route-id="@Model.CurrentProduct.ProductTypeId">Back to List</a>
+    &lt;&lt; <a asp-controller="ProductSubTypes" asp-action="Products" asp-route-id="@Model.CurrentProduct.ProductSubTypeId">Back to List</a>
 </div>

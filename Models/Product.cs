@@ -27,11 +27,16 @@ namespace Bangazon.Models
     public decimal Price { get; set; }
 
     [Required]
+    public int ProductSubTypeId { get; set; }
+    public ProductSubType ProductSubType { get; set; }
+
+    [Required]
     public int ProductTypeId { get; set; }
     public ProductType ProductType { get; set; }
 
     [Required]
     public bool IsActive { get; set; }
+    
     [Required]
     public int UserId { get; set; }
     public User User { get; set; }

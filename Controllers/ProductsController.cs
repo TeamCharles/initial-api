@@ -38,6 +38,13 @@ namespace BangazonWeb.Controllers
             context = ctx;
         }
 
+        public async Task<IActionResult> Index()
+        {
+            var model = new ProductList(context);
+            model.Products = await context.Product.OrderBy(s => s.Name).ToListAsync();
+            return View(model);
+        }
+
         public async Task<IActionResult> Detail(int? id)
         {
             // If no id was in the route, return 404
@@ -119,6 +126,7 @@ namespace BangazonWeb.Controllers
                      new { controller = "Products", action = "Detail", Id = originalProduct.ProductId }));
         }
 
+        [HttpGet]
         public IActionResult Create()
         {
             var model = new ProductCreate(context);
@@ -151,7 +159,7 @@ namespace BangazonWeb.Controllers
             if (originalProduct == null)
             {
                 return RedirectToAction("List", new RouteValueDictionary(
-                    new { controller = "ProductTypes", action = "List", Id = originalProduct.ProductTypeId }));
+                    new { controller = "ProductSubTypes", action = "List", Id = originalProduct.ProductSubTypeId }));
             }
             else
             {
@@ -161,7 +169,7 @@ namespace BangazonWeb.Controllers
                     context.Remove(originalProduct);
                     await context.SaveChangesAsync();
                     return RedirectToAction("List", new RouteValueDictionary(
-                        new { controller = "ProductTypes", action = "List", Id = originalProduct.ProductTypeId }));
+                        new { controller = "ProductSubTypes", action = "List", Id = originalProduct.ProductSubTypeId }));
                 }
                 catch (DbUpdateException)
                 {
@@ -170,11 +178,15 @@ namespace BangazonWeb.Controllers
             }
         }
 
-        public async Task<IActionResult> Index()
+        [HttpPost]
+        public IActionResult GetSubTypes([FromRoute] int id)
         {
-            var model = new ProductList(context);
-            model.Products = await context.Product.OrderBy(s => s.Name).ToListAsync();
-            return View(model);
+
+            ProductSubTypeOptions Types = new ProductSubTypeOptions();
+            
+            Types.SubTypes = context.ProductSubType.OrderBy(s => s.Label).AsEnumerable().Where(t => t.ProductTypeId == id).ToList();
+
+            return Json(new {subTypes = Types.SubTypes});
         }
 
         public IActionResult Error()

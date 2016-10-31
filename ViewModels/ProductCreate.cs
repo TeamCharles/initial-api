@@ -9,10 +9,11 @@ namespace BangazonWeb.ViewModels
   public class ProductCreate : BaseViewModel
   {
     public IEnumerable<SelectListItem> ProductTypes { get; set; }
+    public IEnumerable<SelectListItem> ProductSubTypes { get; set; }
     public Product NewProduct { get; set; }
     public ProductCreate(BangazonContext ctx) : base(ctx)
     {
-      ProductTypes = context.ProductType
+      this.ProductTypes = context.ProductType
                 .OrderBy(l => l.Label)
                 .AsEnumerable()
                 .Select(li => new SelectListItem { 
