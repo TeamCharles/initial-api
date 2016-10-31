@@ -4,8 +4,13 @@
 
 To ensure that the Initial Bangazon App works as intended make sure that you have the following dependencies and technologies on your local machine
 
-1. dotnet
+1. dotnet 
+
+If you need to download dotnet on to your local machine, please visit [Microsoft's Documentation](https://www.microsoft.com/en-us/download/details.aspx?id=30653)
+
 2. bower
+
+If you need to download bower on to your local machine, please visit [Bower's Documentation](https://bower.io/)
 
 ## Installation
 
