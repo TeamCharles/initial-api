@@ -3,13 +3,23 @@
 
 <h2>Product SubTypes for @Html.DisplayFor(model => model.ProductType.Label)</h2>
 
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Product Category</th>
+            <th>Amount of Products</th>
+        </tr>
+    </thead>
+    <tbody>
 @foreach (ProductSubType type in Model.ProductSubTypes)
 {
-  <div class="row">
-      <div class="col-md-3"><a asp-action="Products" asp-route-id="@type.ProductSubTypeId">@Html.DisplayFor(model => type.Label)</a></div>
-      <div class="col-md-1">(@Html.DisplayFor(model => type.Quantity))</div>
-  </div>
+  <tr>
+      <td><a asp-action="Products" asp-route-id="@type.ProductSubTypeId">@Html.DisplayFor(model => type.Label)</a></td>
+      <td>(@Html.DisplayFor(model => type.Quantity))</td>
+  </tr>
 }
+    </tbody>
+</table>
 
 <div>
     &lt;&lt; <a asp-controller="ProductTypes" asp-action="Buy">Back to Product Types</a>
