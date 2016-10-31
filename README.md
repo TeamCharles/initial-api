@@ -6,21 +6,20 @@ To ensure that the Initial Bangazon App works as intended make sure that you hav
 
 1. dotnet 
 
-If you need to download dotnet on to your local machine, please visit [Microsoft's Documentation](https://www.microsoft.com/en-us/download/details.aspx?id=30653)
+If you need to download dotnet onto your local machine, visit [Microsoft's Documentation](https://www.microsoft.com/en-us/download/details.aspx?id=30653)
 
 2. bower
 
-If you need to download bower on to your local machine, please visit [Bower's Documentation](https://bower.io/)
+If you need to download bower onto your local machine, visit [Bower's Documentation](https://bower.io/)
 
 ## Installation
 
 Clone or fork the project. Navigate to where the project is saved on your machine.
-Please note that if running the application in OSX/UNIX/Windows that the commands below require for you to manually change the path to your database.
-In other words, if you copy and paste the following commands they will not initially work until you specifically locate your database file and place the path to said file into the following commands. 
+Note that if running the application in OSX/UNIX/Windows that the commands below require for you to manually change the path to your database.
 
 ### OSX/UNIX
 
-Please run the following commands in your terminal. 
+Run the following commands in your terminal. 
 
 ```Bash
 export ASPNETCORE_ENVIRONMENT="Development"
@@ -33,7 +32,7 @@ dotnet run
 
 ###Windows
 
-Please run the following commands in Windows Powershell
+Run the following commands in Windows Powershell
 
 ```Bash
 $env:ASPNETCORE_ENVIRONMENT="Development"
