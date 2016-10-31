@@ -29,12 +29,14 @@ namespace BangazonWeb.Controllers
     public class CartController : Controller
     {
         private BangazonContext context;
-
+        
         public CartController(BangazonContext ctx)
         {
             context = ctx;
         }
 
+
+    /* Adds logged in user and checks view model.  Sends view model to view file. */
         public IActionResult Index()
         {
             var model = new CartView(context);
@@ -54,6 +56,13 @@ namespace BangazonWeb.Controllers
             return View(model);
         }
 
+        /**
+         * Purpose: Adds a product to a user's open order
+         * Arguments: 
+         *      id - product id that creates a line item in an active order 
+         * Return: 
+         *      Redirects user to product detail view
+         */
         public async Task<IActionResult> AddToCart([FromRoute]int id)
         {
             User user = ActiveUser.Instance.User;
