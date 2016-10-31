@@ -111,7 +111,7 @@ namespace BangazonWeb.Controllers
                 select order).SingleOrDefaultAsync();  
             
 
-            LineItem deletedItem = await context.LineItem.SingleAsync(p => p.ProductId == id && p.OrderId == OpenOrder.OrderId);
+            LineItem deletedItem = await context.LineItem.FirstAsync(p => p.ProductId == id && p.OrderId == OpenOrder.OrderId);
 
 
             if (deletedItem == null)
