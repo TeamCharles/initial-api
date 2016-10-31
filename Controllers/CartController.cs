@@ -26,6 +26,13 @@ namespace BangazonWeb.Controllers
     {
         private BangazonContext context;
 
+        /**
+         * Purpose: load the content of BangazonContext into the context variable for further use
+         * Arguments:
+         *      ctx - current database connection
+         * Return:
+         *      CartsController
+         */
         public CartController(BangazonContext ctx)
         {
             context = ctx;
@@ -48,6 +55,7 @@ namespace BangazonWeb.Controllers
                 return RedirectToAction("Index", "ProductTypes");
             }
 
+            //loop to retrieve the total price of the products
             foreach (var product in model.CartProducts)
             {
                 if (product.IsActive)
@@ -160,6 +168,7 @@ namespace BangazonWeb.Controllers
  */
         public async Task<IActionResult> CompleteOrder(OrderView orderView)
         {
+            //Instanciate an ActiveUser into a User user
             User user = ActiveUser.Instance.User;
             int? userId = user.UserId;
             if (userId == null)
@@ -188,6 +197,7 @@ namespace BangazonWeb.Controllers
 
             try
             {
+                //redirects to confirmation page
                 openOrder.DateCompleted = DateTime.Now;
                 context.Order.Update(openOrder);
                 await context.SaveChangesAsync();

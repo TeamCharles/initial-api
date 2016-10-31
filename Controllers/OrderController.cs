@@ -19,7 +19,6 @@ namespace BangazonWeb.Controllers
      * Author: Anulfo Ordaz
      * Methods:
      *   Task<IActionResult> Final(int id) - Queries available PaymentTypes and returns a Checkout view for the current active order.
-     *          - int id: OrderId for the current active order.
      *   IActionResult - Returns an Error view. Currently not in use.
      */
     public class OrderController : Controller
@@ -41,7 +40,7 @@ namespace BangazonWeb.Controllers
  */
         public async Task<IActionResult> Final([FromRoute] int id)
         {
-
+            //Instanciate an ActiveUser into a User user
             User user = ActiveUser.Instance.User;
             int? userId = user.UserId;
             if (userId == null)
