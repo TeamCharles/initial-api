@@ -43,8 +43,17 @@
                  @Html.DropDownList("CurrentProduct.ProductTypeId", @Model.ProductTypes, "SELECT" , new { @class = "dropdown" })
 
             </div>
+        </div>
 
-            @Html.Hidden("CurrentProduct.ProductId", Model.CurrentProduct.ProductId)
+        @Html.Hidden("CurrentProduct.ProductId", Model.CurrentProduct.ProductId)
+
+        <div class="form-group">
+            <label asp-for="CurrentProduct.ProductSubTypeId" class="col-md-2 control-label">Sub Type</label>
+            <div class="col-md-10">
+                @Html.DropDownList("CurrentProduct.ProductSubTypeId",@Model.ProductSubTypes,"Select a Category")
+                <span asp-validation-for="CurrentProduct.ProductSubTypeId" class="text-danger"></span>
+            </div>
+        </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
