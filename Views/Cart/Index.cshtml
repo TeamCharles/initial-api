@@ -4,11 +4,14 @@
 @if (@Model.ChosenUser.FirstName == "LogInRequired")
 {
     <h2>Please Log In to Start Shopping</h2>
-} else
+}
+else
 {
-    <h1>Your Cart</h1>
+<h1>Your Cart</h1>
 
-    @foreach (Product item in Model.CartProducts)
+@foreach (Product item in Model.CartProducts)
+{
+    @if (item.IsActive)
     {
     <div class="row">
         <div class="col-md-10">
@@ -19,12 +22,32 @@
                 <div><strong>@Html.DisplayFor(modelItem => item.Name)</strong></div>
                 <div>@Html.DisplayFor(modelItem => item.Description)</div>
             </div>
+
         </div>
         <div class="col-md-2">
-            <div style="color:red">$@Html.DisplayFor(modelItem => item.Price)</div>
+            <div>$@Html.DisplayFor(modelItem => item.Price)</div>
         </div>
     </div>
     }
+    else
+    {
+    <div class="row">
+        <div class="col-md-10">
+            <div style="display:inline-block">
+                <a asp-controller="Cart" asp-action="DeleteLineItem" asp-route-id="@item.ProductId"><span class="glyphicon glyphicon-remove" aria-hidden="true"><span></a>
+            </div>
+            <div style="display:inline-block">
+                <div><strong><span style="text-decoration:line-through">@Html.DisplayFor(modelItem => item.Name)</span></strong><span style="color:firebrick;margin-left:5px">This item is no longer available.</span></div>
+                <div style="text-decoration:line-through">@Html.DisplayFor(modelItem => item.Description)</div>
+            </div>
+
+        </div>
+        <div class="col-md-2">
+            <div style="text-decoration:line-through">$@Html.DisplayFor(modelItem => item.Price)</div>
+        </div>
+    </div>
+    }
+}
 
     <h2>TOTAL: $@Model.TotalPrice</h2>
     <a asp-controller="Order" asp-action="Final" class="btn btn-primary">Checkout</a>

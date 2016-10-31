@@ -45,7 +45,7 @@ namespace BangazonWeb.Controllers
         public async Task<IActionResult> Index()
         {
             var model = new ProductList(context);
-            model.Products = await context.Product.OrderBy(s => s.Name).ToListAsync();
+            model.Products = await context.Product.Where(s => s.IsActive == true).OrderBy(s => s.Name).ToListAsync();
             return View(model);
         }
 
@@ -182,34 +182,17 @@ namespace BangazonWeb.Controllers
 
                 try
                 {
-                    context.Remove(originalProduct);
+                    originalProduct.IsActive = false;
+                    context.Update(originalProduct);
                     await context.SaveChangesAsync();
-                    return RedirectToAction("List", new RouteValueDictionary(
-                        new { controller = "ProductSubTypes", action = "List", Id = originalProduct.ProductSubTypeId }));
+                    return RedirectToAction("Products", new RouteValueDictionary(
+                        new { controller = "ProductSubTypes", action = "Products", Id = originalProduct.ProductSubTypeId }));
                 }
                 catch (DbUpdateException)
                 {
                     throw;
                 }
             }
-        }
-
-        public async Task<IActionResult> Index()
-        {
-            var model = new ProductList(context);
-            model.Products = await context.Product.OrderBy(s => s.Name.ToLower()).ToListAsync();
-            return View(model);
-        }
-
-        [HttpPost]
-        public IActionResult GetSubTypes([FromRoute] int id)
-        {
-
-            ProductSubTypeOptions Types = new ProductSubTypeOptions();
-            
-            Types.SubTypes = context.ProductSubType.OrderBy(s => s.Label).AsEnumerable().Where(t => t.ProductTypeId == id).ToList();
-
-            return Json(new {subTypes = Types.SubTypes});
         }
 
         public IActionResult Error()
