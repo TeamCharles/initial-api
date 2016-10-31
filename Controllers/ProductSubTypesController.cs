@@ -20,7 +20,7 @@ namespace BangazonWeb.Controllers
      *          - int id: ProductTypeId for the ProductSubTypes being requested to view. 
      *   Task<IActionResult> Products(int id) - Returns a view for all products with a given ProductSubTypeId.
      *          - int id: ProductSubTypeId for the Products being requested to view. 
-     *   CalculateTypeQuantities(ProductSubType productSubType) - Queries the Product table to count the number of Products in a given ProductSubType. Updates the ProductSubType.Quantity property.
+     *   void CalculateTypeQuantities(ProductSubType productSubType) - Queries the Product table to count the number of Products in a given ProductSubType. Updates the ProductSubType.Quantity property.
      *          - ProductSubType productSubType: ProductSubType to be updated with Quantity.
      **/
     public class ProductSubTypesController : Controller
