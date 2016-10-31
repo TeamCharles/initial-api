@@ -363,13 +363,15 @@ namespace BangazonWeb.Data
                   UserId = 1,
               };
 
+            context.Order.Add(carsonOrder);
+            context.SaveChanges();    // Seed orders added
+
+
               Order otherOrder = new Order {
                   UserId = 2,
               };
 
-              context.Order.Add(carsonOrder);
               context.Order.Add(otherOrder);
-
               context.SaveChanges();    // Seed orders added
 
 
@@ -383,6 +385,9 @@ namespace BangazonWeb.Data
               {
                   context.LineItem.Add(item);
               }
+
+              context.SaveChanges();    // Seed order items added
+
 
               // Populating the Other Order with Line Items
               LineItem[] otherOrderLineItems = new LineItem[] {
