@@ -38,6 +38,13 @@ namespace BangazonWeb.Controllers
             context = ctx;
         }
 
+        public async Task<IActionResult> Index()
+        {
+            var model = new ProductList(context);
+            model.Products = await context.Product.OrderBy(s => s.Name).ToListAsync();
+            return View(model);
+        }
+
         public async Task<IActionResult> Detail(int? id)
         {
             // If no id was in the route, return 404
@@ -126,21 +133,6 @@ namespace BangazonWeb.Controllers
             return View(model);
         }
 
-        public IActionResult Create([FromRoute]int id,ProductCreate product)
-        {
-            var model = new ProductCreate(context);
-            model.NewProduct = product.NewProduct;
-            model.ProductSubTypes = context.ProductSubType
-                .OrderBy(l => l.Label)
-                .AsEnumerable()
-                .Where(t => t.ProductTypeId == id)
-                .Select(li => new SelectListItem {
-                  Text = li.Label,
-                  Value = li.ProductSubTypeId.ToString()
-                });
-            return View(model);
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ProductCreate product)
@@ -167,7 +159,7 @@ namespace BangazonWeb.Controllers
             if (originalProduct == null)
             {
                 return RedirectToAction("List", new RouteValueDictionary(
-                    new { controller = "ProductTypes", action = "List", Id = originalProduct.ProductTypeId }));
+                    new { controller = "ProductSubTypes", action = "List", Id = originalProduct.ProductSubTypeId }));
             }
             else
             {
@@ -177,7 +169,7 @@ namespace BangazonWeb.Controllers
                     context.Remove(originalProduct);
                     await context.SaveChangesAsync();
                     return RedirectToAction("List", new RouteValueDictionary(
-                        new { controller = "ProductTypes", action = "List", Id = originalProduct.ProductTypeId }));
+                        new { controller = "ProductSubTypes", action = "List", Id = originalProduct.ProductSubTypeId }));
                 }
                 catch (DbUpdateException)
                 {
@@ -186,26 +178,15 @@ namespace BangazonWeb.Controllers
             }
         }
 
-        public async Task<IActionResult> Index()
-        {
-            var model = new ProductList(context);
-            model.Products = await context.Product.OrderBy(s => s.Name).ToListAsync();
-            return View(model);
-        }
-
         [HttpPost]
-        public IActionResult GetSubTypes(int id, [FromBody] ProductSubTypeForm productCreate)
+        public IActionResult GetSubTypes([FromRoute] int id)
         {
-            ProductEdit model = new ProductEdit(context);
 
-            model.CurrentProduct = new Product();
+            ProductSubTypeOptions Types = new ProductSubTypeOptions();
+            
+            Types.SubTypes = context.ProductSubType.OrderBy(s => s.Label).AsEnumerable().Where(t => t.ProductTypeId == id).ToList();
 
-            model.CurrentProduct.Name = productCreate.Name;
-            model.CurrentProduct.Description = productCreate.Description;
-            model.CurrentProduct.Price = (decimal)productCreate.Price * 10;
-            model.CurrentProduct.ProductTypeId = id;
-
-            return View(model);
+            return Json(new {subTypes = Types.SubTypes});
         }
 
         public IActionResult Error()
