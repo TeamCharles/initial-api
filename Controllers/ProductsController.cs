@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Bangazon.Helpers;
 using BangazonWeb.ViewModels;
 using Bangazon.Models;
 using BangazonWeb.Data;

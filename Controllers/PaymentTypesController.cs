@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using BangazonWeb.Data;
 using Bangazon.Models;
-using Bangazon.Helpers;
 using BangazonWeb.ViewModels;
 using Microsoft.AspNetCore.Routing;
 
