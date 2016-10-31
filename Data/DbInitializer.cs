@@ -118,6 +118,7 @@ namespace BangazonWeb.Data
               {
                   context.ProductSubType.Add(i);
               }
+              context.SaveChanges();
 
             context.SaveChanges();  // Seed sub product types added
 

@@ -46,7 +46,7 @@ namespace BangazonWeb.Controllers
         {
             var model = new ProductSubTypeList(context);
 
-            model.Products = await context.Product.OrderBy(s => s.Name).Where(p => p.ProductSubTypeId == id).ToListAsync();
+            model.Products = await context.Product.OrderBy(s => s.Name.ToLower()).Where(p => p.ProductSubTypeId == id).ToListAsync();
             model.ProductSubType = await context.ProductSubType.SingleAsync(p => p.ProductSubTypeId == id);
             model.ProductType = await context.ProductType.SingleAsync(p => p.ProductTypeId == model.ProductSubType.ProductTypeId);
 
