@@ -38,6 +38,13 @@
                 <span asp-validation-for="NewProduct.ProductTypeId" class="text-danger"></span>
             </div>
         </div>
+        @*<div class="form-group">
+            <label asp-for="NewProduct.ProductSubTypeId" class="col-md-2 control-label">Product Type</label>
+            <div class="col-md-10">
+                @Html.DropDownList("NewProduct.ProductSubTypeId",@Model.ProductSubTypes,"Select a Category")
+                <span asp-validation-for="NewProduct.ProductSubTypeId" class="text-danger"></span>
+            </div>
+        </div>*@
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Add New Product" class="btn btn-default"/>

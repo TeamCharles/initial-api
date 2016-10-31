@@ -1,6 +1,7 @@
-@model BangazonWeb.ViewModels.ProductList
+@model BangazonWeb.ViewModels.ProductSubTypeList
 @using Bangazon.Models;
 
+<h2>@Html.DisplayFor(model => model.ProductSubType.Label) Products</h2>
 
 <table class="table table-striped">
     <thead>
@@ -20,19 +21,18 @@
         <td>$@Html.DisplayFor(modelItem => item.Price)</td>
         <td>@Html.DisplayFor(modelItem => item.DateCreated)</td>
         <td><a class="btn btn-primary btn-xs" asp-controller="Products" asp-action="Detail" asp-route-id="@item.ProductId">Details</a></td>
+
         <td>
             @if (item.UserId == @Model.ChosenUser.UserId)
             {
                 <a asp-controller="Products" asp-action="Delete" asp-route-id="@item.ProductId"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                <a asp-controller="Products" asp-action="Edit" asp-route-id="@item.ProductId"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
+                <a asp-controller="Products" asp-action="EditInfo" asp-route-id="@item.ProductId"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
             }
         </td>
     </tr>
 }
-    </tbody>
-</table>
 <div>
-    &lt;&lt; <a asp-controller="ProductTypes" asp-action="Buy">Back to Product Types</a>
+    &lt;&lt; <a asp-controller="ProductSubTypes" asp-action="List" asp-route-id="@Model.ProductSubType.ProductTypeId">Back to @Html.DisplayFor(model => model.ProductSubType.Label) Products</a>
 </div>

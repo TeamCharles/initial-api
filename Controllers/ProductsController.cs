@@ -119,9 +119,25 @@ namespace BangazonWeb.Controllers
                      new { controller = "Products", action = "Detail", Id = originalProduct.ProductId }));
         }
 
+        [HttpGet]
         public IActionResult Create()
         {
             var model = new ProductCreate(context);
+            return View(model);
+        }
+
+        public IActionResult Create([FromRoute]int id,ProductCreate product)
+        {
+            var model = new ProductCreate(context);
+            model.NewProduct = product.NewProduct;
+            model.ProductSubTypes = context.ProductSubType
+                .OrderBy(l => l.Label)
+                .AsEnumerable()
+                .Where(t => t.ProductTypeId == id)
+                .Select(li => new SelectListItem {
+                  Text = li.Label,
+                  Value = li.ProductSubTypeId.ToString()
+                });
             return View(model);
         }
 
@@ -174,6 +190,21 @@ namespace BangazonWeb.Controllers
         {
             var model = new ProductList(context);
             model.Products = await context.Product.OrderBy(s => s.Name).ToListAsync();
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult GetSubTypes(int id, [FromBody] ProductSubTypeForm productCreate)
+        {
+            ProductEdit model = new ProductEdit(context);
+
+            model.CurrentProduct = new Product();
+
+            model.CurrentProduct.Name = productCreate.Name;
+            model.CurrentProduct.Description = productCreate.Description;
+            model.CurrentProduct.Price = (decimal)productCreate.Price * 10;
+            model.CurrentProduct.ProductTypeId = id;
+
             return View(model);
         }
 
