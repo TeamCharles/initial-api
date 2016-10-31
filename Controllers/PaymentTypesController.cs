@@ -12,8 +12,9 @@ using Microsoft.AspNetCore.Routing;
  * Purpose: Create a new Payment Method for the Logged User 
  * Author: Anulfo Ordaz
  * Methods:
- *   IActionResult Create() - Returns the PaymentType view
- *   Task<IActionResult> Create(PaymentType paymentType) - Post new Payment Type to the database and get the user to the Cart view 
+ *   IActionResult Create() - Returns the PaymentType Creation view.
+ *   Task<IActionResult> Create(PaymentTypeView paymentType) - Posts new Payment Type to the database and redirects user to the Cart view.
+ *          - PaymentTypeView paymentType: ViewModel returned on submission of the Create Payment Type form.
  */
 namespace BangazonWeb.Controllers
 {

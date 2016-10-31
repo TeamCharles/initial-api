@@ -14,12 +14,16 @@ namespace BangazonWeb.Controllers
      * Purpose: Provide methods for adding a new user to the database
      * Author: Matt Kraatz
      * Methods:
-     *   BangazonContext context - store a reference to the database context
-     *   UserController(BangazonContext ctx) - constructor run at setup
-     *   IActionResult New() - returns new user creation form view
-     *   IActionResult New(User user) - posts a new user to the database via form
-     *   IActionResult Error() - returns Error page
-     *   bool UserExists(int id) - checks the database for potential duplicate users
+     *   IActionResult New() - Returns new user creation form view.
+     *   IActionResult New(UserCreate user) - Posts a new user to the database via form. Sets that user to the Active User. Redirects user to the ProductTypes/Buy page.
+     *          - UserCreate user: UserCreate viewmodel provided on submission of the form.
+     *   IActionResult Activate(int id) - Logs in a user via Post.
+     *          - int id: UserId of the user being logged in.
+     *   IActionResult Error() - returns Error page. Currently not in use.
+     *   bool UserExists(int id) - returns false if there is a duplicate user in the database.
+     *          - int id: UserId for the user being queried.
+     *   void ActivateUser(User user) - sets the ActiveUser globally to the provided user object.
+     *          - User user: User object being set as the ActiveUser.
      */
     public class UserController : Controller
     {

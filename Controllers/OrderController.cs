@@ -17,10 +17,11 @@ namespace BangazonWeb.Controllers
     /**
      * Class: OrderController
      * Purpose: Controls logged in user's cart
-     * Author: Anulfo Ordaz / Matt Kraatz / Dayne Writght / Garret Vangilder
+     * Author: Anulfo Ordaz
      * Methods:
-     *   OrderController(BangazonContext ctx) - Bring the context back
-     *   Task<IActionResult> Final() - It retrieves the data for the drop
+     *   Task<IActionResult> Final(int id) - Queries available PaymentTypes and returns a Checkout view for the current active order.
+     *          - int id: OrderId for the current active order.
+     *   IActionResult - Returns an Error view. Currently not in use.
      */
     public class OrderController : Controller
     {   

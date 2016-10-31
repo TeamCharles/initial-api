@@ -16,10 +16,11 @@ namespace BangazonWeb.Controllers
      * PURPOSE: Creates routes for main index view (buy method) and seller view (sell method)
      * AUTHOR: Dayne Wright/Matt Kraatz
      * METHODS:
-     *   Task<IActionResult> Buy() - Shows all product types and counts
-     *   Task<IActionResult> list() - Shows all products that match a specified ProductTypeId
-     *   CalculateTypeQuantities(ProductType) - Queries the Product table to return a new ProductType object...
-     *        ...new ProductType object contains a value for Quantity, based on number of Products with that Type
+     *   Task<IActionResult> Buy() - Returns a View listing all ProductTypes and a count of Products within that type.
+     *   Task<IActionResult> List(int id) - Returns a view listing all Products that match a specified ProductTypeId.
+     *          - int id: ProductTypeId for the Products being returned to the view.
+     *   CalculateTypeQuantities(ProductType productType) - Queries the Product table to count the number of Products in a given ProductType. Updates the ProductType.Quantity property.
+     *          - ProductType productType: ProductType to be updated with Quantity.
      **/
     public class ProductTypesController : Controller
     {

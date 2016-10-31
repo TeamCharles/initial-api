@@ -20,10 +20,11 @@ namespace BangazonWeb.Controllers
      *          - int id: ProductId for the Product that needs added to an order.
      *   Task<IActionResult> DeleteLineItem(int id) - Deletes a LineItem from the current active order. Redirects to Cart view.
      *          - int id: LineItemId for the LineItem that needs to be deleted.
-     *   Task<IActionResult> CompleteOrder(OrderView orderView) - Checks whether a PaymentType has been added to the current active order. If so, adds a DateCompleted to the order and save 
-     *          - OrderView orderView: Order ViewModel 
-     *   Confirmation() - Changes the user's view to a completed order form.
-     *   IActionResult Error() - Renders an error
+     *   Task<IActionResult> CompleteOrder(OrderView orderView) - Checks whether a PaymentType has been added to the current active order. If so, adds a DateCompleted to the order and saves to DB.
+     *          - OrderView orderView: Order ViewModel posted on submission of the form
+     *   Task<IActionResult> Confirmation(int id) - Returns a Confirmation view that lists cart information, the order# and payment method.
+     *          - int id: OrderId for the completed order.
+     *   IActionResult Error() - Returns an Error view. Currently not used.
      */
     public class CartController : Controller
     {   

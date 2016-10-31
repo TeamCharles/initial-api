@@ -16,10 +16,12 @@ namespace BangazonWeb.Controllers
      * PURPOSE: 
      * AUTHOR: Dayne Wright/Garrett Vangilder
      * METHODS:
-     *   Task<IActionResult> Index() - Shows all product types and counts
-     *   Task<IActionResult> list() - Shows all products that match a specified ProductTypeId
-     *   CalculateTypeQuantities(ProductType) - Queries the Product table to return a new ProductType object...
-     *        ...new ProductType object contains a value for Quantity, based on number of Products with that Type
+     *   Task<IActionResult> List(int id) - Returns a view for all ProductSubTypes with a given ProductTypeId.
+     *          - int id: ProductTypeId for the ProductSubTypes being requested to view. 
+     *   Task<IActionResult> Products(int id) - Returns a view for all products with a given ProductSubTypeId.
+     *          - int id: ProductSubTypeId for the Products being requested to view. 
+     *   CalculateTypeQuantities(ProductSubType productSubType) - Queries the Product table to count the number of Products in a given ProductSubType. Updates the ProductSubType.Quantity property.
+     *          - ProductSubType productSubType: ProductSubType to be updated with Quantity.
      **/
     public class ProductSubTypesController : Controller
     {
