@@ -174,7 +174,8 @@ namespace BangazonWeb.Controllers
 
                 try
                 {
-                    context.Remove(originalProduct);
+                    originalProduct.IsActive = false;
+                    context.Update(originalProduct);
                     await context.SaveChangesAsync();
                     return RedirectToAction("List", new RouteValueDictionary(
                         new { controller = "ProductTypes", action = "List", Id = originalProduct.ProductTypeId }));
