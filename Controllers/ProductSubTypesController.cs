@@ -15,8 +15,8 @@ namespace BangazonWeb.Controllers
      * PURPOSE: 
      * AUTHOR: Dayne Wright/Garrett Vangilder
      * METHODS:
-     *   Task<IActionResult> Index() - Shows all product types and counts
-     *   Task<IActionResult> list() - Shows all products that match a specified ProductTypeId
+     *   Task<IActionResult> List() - Shows all products that match a specified ProductTypeId
+     *   Task<IActionResult> Products() - Shows all products of a subtype
      *   CalculateTypeQuantities(ProductType) - Queries the Product table to return a new ProductType object...
      *        ...new ProductType object contains a value for Quantity, based on number of Products with that Type
      **/
@@ -24,11 +24,26 @@ namespace BangazonWeb.Controllers
     {
         private BangazonContext context;
 
+        /**
+         * Purpose: Constructor that initates an instance of the ProductSubTypeController
+         * Arguments:
+         *      ctx - Database context reference 
+         * Returns: 
+         *      instance
+         */
         public ProductSubTypesController(BangazonContext ctx)
         {
             context = ctx;
         }
-        //list of all subtypes with quantity from a main product type (id)
+
+
+        /**
+         * Purpose: List the different subproducts for the user according to producttypes
+         * Arguments:
+         *      id - subtype id
+         * Return:
+         *      View(model) within the model there is a list that holds the different subproducts associated with each product type
+         */
         public async Task<IActionResult> List([FromRoute]int id)
         {
             List<ProductSubType> ProductSubTypeList = await context.ProductSubType.OrderBy(s => s.Label).Where(p => p.ProductTypeId == id).ToListAsync();
@@ -41,7 +56,13 @@ namespace BangazonWeb.Controllers
             
             return View(model);
         }
-        //list of all products in the subtype
+        /**
+         * Purpose: List the different products associated with each subproductType
+         * Arguments:
+         *      id - subtype id
+         * Return:
+         *      Redirects user to a list view of products
+         */
         public async Task<IActionResult> Products([FromRoute]int id)
         {
             var model = new ProductSubTypeList(context);
@@ -53,6 +74,13 @@ namespace BangazonWeb.Controllers
             return View(model);
         }
 
+        /**
+         * Purpose: calculates the quantity of each product subtype
+         * Arguments:
+         *      productSubType to be calculated
+         * Return:
+         *      Void
+         */
         public void CalculateTypeQuantities(ProductSubType productSubType)
         {
             int quantity = context.Product.Count(p => p.ProductSubTypeId == productSubType.ProductSubTypeId);
