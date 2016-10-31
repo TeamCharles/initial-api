@@ -6,20 +6,21 @@ using System.Threading.Tasks;
 using BangazonWeb.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Bangazon.Helpers;
 using BangazonWeb.ViewModels;
 
 namespace BangazonWeb.Controllers
 {
     /**
      * CLASS: ProductSubTypes
-     * PURPOSE: 
+     * PURPOSE:
      * AUTHOR: Dayne Wright/Garrett Vangilder
      * METHODS:
-     *   Task<IActionResult> Index() - Shows all product types and counts
-     *   Task<IActionResult> list() - Shows all products that match a specified ProductTypeId
-     *   CalculateTypeQuantities(ProductType) - Queries the Product table to return a new ProductType object...
-     *        ...new ProductType object contains a value for Quantity, based on number of Products with that Type
+     *   Task<IActionResult> List(int id) - Returns a view for all ProductSubTypes with a given ProductTypeId.
+     *          - int id: ProductTypeId for the ProductSubTypes being requested to view. 
+     *   Task<IActionResult> Products(int id) - Returns a view for all products with a given ProductSubTypeId.
+     *          - int id: ProductSubTypeId for the Products being requested to view. 
+     *   void CalculateTypeQuantities(ProductSubType productSubType) - Queries the Product table to count the number of Products in a given ProductSubType. Updates the ProductSubType.Quantity property.
+     *          - ProductSubType productSubType: ProductSubType to be updated with Quantity.
      **/
     public class ProductSubTypesController : Controller
     {
@@ -39,7 +40,7 @@ namespace BangazonWeb.Controllers
             var model = new ProductSubTypeList(context);
             model.ProductSubTypes = ProductSubTypeList;
             model.ProductType = await context.ProductType.SingleAsync(t => t.ProductTypeId == id);
-            
+
             return View(model);
         }
         //list of all products in the subtype
@@ -47,7 +48,7 @@ namespace BangazonWeb.Controllers
         {
             var model = new ProductSubTypeList(context);
 
-            model.Products = await context.Product.OrderBy(s => s.Name).Where(p => p.ProductSubTypeId == id).ToListAsync();
+            model.Products = await context.Product.OrderBy(s => s.Name).Where(p => p.ProductSubTypeId == id && p.IsActive == true).ToListAsync();
             model.ProductSubType = await context.ProductSubType.SingleAsync(p => p.ProductSubTypeId == id);
             model.ProductType = await context.ProductType.SingleAsync(p => p.ProductTypeId == model.ProductSubType.ProductTypeId);
 
@@ -56,7 +57,7 @@ namespace BangazonWeb.Controllers
 
         public void CalculateTypeQuantities(ProductSubType productSubType)
         {
-            int quantity = context.Product.Count(p => p.ProductSubTypeId == productSubType.ProductSubTypeId);
+            int quantity = context.Product.Count(p => p.ProductSubTypeId == productSubType.ProductSubTypeId && p.IsActive == true);
             productSubType.Quantity = quantity;
         }
     }

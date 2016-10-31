@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using BangazonWeb.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Bangazon.Helpers;
 using Bangazon.Models;
 using Microsoft.AspNetCore.Routing;
 using BangazonWeb.ViewModels;
@@ -17,13 +16,14 @@ namespace BangazonWeb.Controllers
     /**
      * Class: OrderController
      * Purpose: Controls logged in user's cart
-     * Author: Anulfo Ordaz / Matt Kraatz / Dayne Writght / Garret Vangilder
+     * Author: Anulfo Ordaz
      * Methods:
-     *   OrderController(BangazonContext ctx) - Bring the context back
-     *   Task<IActionResult> Final() - It retrieves the data for the drop
+     *   Task<IActionResult> Final(int id) - Queries available PaymentTypes and returns a Checkout view for the current active order.
+     *          - int id: OrderId for the current active order.
+     *   IActionResult - Returns an Error view. Currently not in use.
      */
     public class OrderController : Controller
-    {   
+    {
         private BangazonContext context;
 
         public OrderController(BangazonContext ctx)
@@ -33,7 +33,7 @@ namespace BangazonWeb.Controllers
 
         public async Task<IActionResult> Final([FromRoute] int id)
         {
-            
+
             User user = ActiveUser.Instance.User;
             int? userId = user.UserId;
             if (userId == null)
@@ -44,7 +44,7 @@ namespace BangazonWeb.Controllers
             var activeProducts = await(
                 from product in context.Product
                 from lineItem in context.LineItem
-                    .Where(lineItem => lineItem.OrderId == context.Order.SingleOrDefault(o => o.DateCompleted == null && o.UserId == userId).OrderId && lineItem.ProductId == product.ProductId)
+                    .Where(lineItem => lineItem.OrderId == context.Order.SingleOrDefault(o => o.DateCompleted == null && o.UserId == userId).OrderId && lineItem.ProductId == product.ProductId && lineItem.Product.IsActive == true)
                 select product).ToListAsync();
 
             if (activeProducts == null)
@@ -67,7 +67,7 @@ namespace BangazonWeb.Controllers
                 model.TotalPrice += product.Price;
             }
 
-            model.AvailablePaymentType = 
+            model.AvailablePaymentType =
                 from PaymentType in context.PaymentType
                 orderby PaymentType.Description
                 where PaymentType.UserId == userId
@@ -80,8 +80,6 @@ namespace BangazonWeb.Controllers
         }
         public IActionResult Error()
         {
-            
-            ViewBag.Users = Users.GetAllUsers(context);
             return View();
         }
     }
