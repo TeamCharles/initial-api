@@ -24,7 +24,7 @@ namespace BangazonWeb.ViewModels
      * Arguments:
      *      ctx - Database context.
      * Return:
-     *      Void
+     *      An instance of the class.
      */
     public ProductEdit(BangazonContext ctx) : base(ctx)
     {
