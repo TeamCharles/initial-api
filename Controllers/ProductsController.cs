@@ -136,9 +136,10 @@ namespace BangazonWeb.Controllers
         public async Task<IActionResult> Create(ProductCreate product)
         {
 
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && product.NewProduct.ProductTypeId > 0 && product.NewProduct.ProductSubTypeId > 0)
             {
                 product.NewProduct.UserId = ActiveUser.Instance.User.UserId;
+                product.NewProduct.IsActive = true;
                 context.Add(product.NewProduct);
                 await context.SaveChangesAsync();
                 return RedirectToAction("Detail", new RouteValueDictionary(
@@ -147,6 +148,17 @@ namespace BangazonWeb.Controllers
 
             var model = new ProductCreate(context);
             model.NewProduct = product.NewProduct;
+            if (product.NewProduct.ProductTypeId > 0)
+            {
+                model.ProductSubTypes = context.ProductSubType
+                    .OrderBy(l => l.Label)
+                    .AsEnumerable()
+                    .Where(t => t.ProductTypeId == product.NewProduct.ProductTypeId)
+                    .Select(li => new SelectListItem {
+                        Text = li.Label,
+                        Value = li.ProductSubTypeId.ToString()
+                    });
+            }
             return View(model);
         }
 
@@ -175,6 +187,13 @@ namespace BangazonWeb.Controllers
                     throw;
                 }
             }
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var model = new ProductList(context);
+            model.Products = await context.Product.OrderBy(s => s.Name.ToLower()).ToListAsync();
+            return View(model);
         }
 
         [HttpPost]
