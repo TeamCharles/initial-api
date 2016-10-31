@@ -30,7 +30,9 @@ $(document).ready(function () {
   });
 
   // disable the Checkout button until a PaymentType has been selected
-  $("#checkoutButton").hide();
+  if ($("#selectedPaymentId").val() == 0) {
+    $("#checkoutButton").hide();
+  }
   $("#selectedPaymentId").on("change",function(){
     if ($("#selectedPaymentId").val() > 0) {
       $("#checkoutButton").show();
