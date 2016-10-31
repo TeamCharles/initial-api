@@ -33,12 +33,14 @@ namespace BangazonWeb.Controllers
          * Return:
          *      CartsController
          */
+
         public CartController(BangazonContext ctx)
         {
             context = ctx;
         }
+
         /**
-         * Purpose: Retrieve products to a list the Cart View. If there are no Objects, 
+         * Purpose: Retrieve products to a list the Cart View. If there are no Objects,
          it redirects to ProductTypes/Index, sets TotalPrice for the items in the cart.
          * Arguments:
          *      None.
@@ -65,13 +67,13 @@ namespace BangazonWeb.Controllers
             return View(model);
         }
 
-/**
- * Purpose: Adds a product to a user's open order
- * Arguments:
- *      id - product id that creates a line item in an active order
- * Return:
- *      Redirects user to product detail view
- */
+        /**
+         * Purpose: Adds a product to a user's open order
+         * Arguments:
+         *      id - product id that creates a line item in an active order
+         * Return:
+         *      Redirects user to product detail view
+         */
         public async Task<IActionResult> AddToCart([FromRoute]int id)
         {
             User user = ActiveUser.Instance.User;
@@ -210,13 +212,14 @@ namespace BangazonWeb.Controllers
                 throw;
             }
         }
+
         /**
          * Purpose: get the payment type, the lineItems, and the complete order into CartView model to be displayed
-         by COnfirmation page.
+         by Confirmation page.
          * Arguments:
-         *      int id - Represents the openOrder.OrderId 
+         *      int id - Represents the openOrder.OrderId
          * Return:
-         *      Redirects 
+         *      Order confirmation view if an open order exists
          */
         public async Task<IActionResult> Confirmation(int id)
         {
@@ -231,12 +234,6 @@ namespace BangazonWeb.Controllers
                 return RedirectToAction("Buy", "ProductTypes");
             }
 
-            if (CompleteOrder.UserId != CompleteOrder.UserId)
-            {
-                return Redirect("ProductTypes");
-            }
-
-
             //get the line items for the order
             var LineItems = await(
                 from product in context.Product
@@ -247,15 +244,7 @@ namespace BangazonWeb.Controllers
             //Instanciation of a New CartView Model
             var model = new CartView(context);
 
-            //Mock information, will be removed once payment selector is avaliable
-            if (CompleteOrder.PaymentType == null)
-            {
-                PaymentType Paypal = new PaymentType();
-                Paypal.Description = "Paypal";
-                CompleteOrder.PaymentType = Paypal;
-            };
-            // Attaching PaymentType lineItems and CompleteOrder to the CartView Model
-            model.PaymentType = CompleteOrder.PaymentType;
+            model.PaymentType = await context.PaymentType.SingleAsync(t => t.PaymentTypeId == CompleteOrder.PaymentTypeId);
             model.LineItems = LineItems;
             model.Order = CompleteOrder;
 
@@ -266,11 +255,6 @@ namespace BangazonWeb.Controllers
             }
 
             return View(model);
-        }
-
-        public IActionResult Error()
-        {
-            return View();
         }
     }
 }

@@ -26,13 +26,15 @@
     </div>
 
     
-    @if (@Model.CurrentProduct.UserId != @Model.ChosenUser.UserId)
+    @if (@Model.ChosenUser.UserId == 0)
     {
-   
+        <div class="col-md-3">Please Log In to Start Shopping</div>
+    } else if (@Model.CurrentProduct.UserId != @Model.ChosenUser.UserId)
+    {
         <div class="col-md-3"><a class="btn btn-primary btn-xs" asp-controller="Cart" asp-action="AddToCart" asp-route-id="@Model.CurrentProduct.ProductId">Add to Cart</a></div>
     }
-    else
 
+    @if (@Model.CurrentProduct.UserId == @Model.ChosenUser.UserId)
     {
         <div class="col-md-3">        
             <a asp-controller="Products" asp-action="Delete" asp-route-id="@Model.CurrentProduct.ProductId"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
