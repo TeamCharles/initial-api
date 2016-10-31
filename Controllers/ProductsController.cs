@@ -85,6 +85,15 @@ namespace BangazonWeb.Controllers
                     .Include(s => s.User)
                     .SingleOrDefaultAsync(m => m.ProductId == id);
 
+            var productSubTypes = context.ProductSubType
+                    .OrderBy(l => l.Label)
+                    .AsEnumerable()
+                    .Where(t => t.ProductTypeId == product.ProductTypeId)
+                    .Select(li => new SelectListItem {
+                        Text = li.Label,
+                        Value = li.ProductSubTypeId.ToString()
+                    });
+
             // If product not found, return 404
             if (product == null)
             {
@@ -93,6 +102,7 @@ namespace BangazonWeb.Controllers
 
             var model = new ProductEdit(context);
             model.CurrentProduct = product;
+            model.ProductSubTypes = productSubTypes;
             return View(model);
         }
 
@@ -102,32 +112,38 @@ namespace BangazonWeb.Controllers
         {
             Product originalProduct = await context.Product.SingleAsync(p => p.ProductId == product.CurrentProduct.ProductId);
 
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid && product.CurrentProduct.ProductSubTypeId > 0)
             {
-                var model = new ProductEdit(context);
-                model.CurrentProduct = product.CurrentProduct;
-                return View(model);
-            }
+                originalProduct.ProductId = product.CurrentProduct.ProductId;
+                originalProduct.Price = product.CurrentProduct.Price;
+                originalProduct.Description = product.CurrentProduct.Description;
+                originalProduct.Name = product.CurrentProduct.Name;
+                originalProduct.ProductTypeId = product.CurrentProduct.ProductTypeId;
+                originalProduct.ProductSubTypeId = product.CurrentProduct.ProductSubTypeId;
 
-            originalProduct.ProductId = product.CurrentProduct.ProductId;
-            originalProduct.Price = product.CurrentProduct.Price;
-            originalProduct.Description = product.CurrentProduct.Description;
-            originalProduct.Name = product.CurrentProduct.Name;
-            originalProduct.ProductTypeId = product.CurrentProduct.ProductTypeId;
-            context.Entry(originalProduct).State = EntityState.Modified;
+                context.Entry(originalProduct).State = EntityState.Modified;
 
-            context.Update(originalProduct);
-            try
-            {
+                context.Update(originalProduct);
                 context.SaveChanges();
-            }
-            catch (DbUpdateException)
-            {
-                throw;
+
+                
+                return RedirectToAction("Detail", new RouteValueDictionary(
+                     new { controller = "Products", action = "Detail", Id = originalProduct.ProductId }));
             }
 
-            return RedirectToAction("Detail", new RouteValueDictionary(
-                     new { controller = "Products", action = "Detail", Id = originalProduct.ProductId }));
+            var model = new ProductEdit(context);
+                model.CurrentProduct = product.CurrentProduct;
+
+                model.ProductSubTypes = context.ProductSubType
+                    .OrderBy(l => l.Label)
+                    .AsEnumerable()
+                    .Where(t => t.ProductTypeId == model.CurrentProduct.ProductTypeId)
+                    .Select(li => new SelectListItem {
+                        Text = li.Label,
+                        Value = li.ProductSubTypeId.ToString()
+                    });
+
+            return View(model);
         }
 
         [HttpGet]
@@ -194,7 +210,6 @@ namespace BangazonWeb.Controllers
                 }
             }
         }
-
         public IActionResult Error()
         {
             var model = new BaseViewModel(context);

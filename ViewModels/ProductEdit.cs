@@ -10,6 +10,7 @@ namespace BangazonWeb.ViewModels
   {
     public Product CurrentProduct { get; set; }
     public IEnumerable<SelectListItem> ProductTypes { get; set; }
+    public IEnumerable<SelectListItem> ProductSubTypes { get; set; }
     public ProductEdit(BangazonContext ctx) : base(ctx)
     {
       ProductTypes = context.ProductType
