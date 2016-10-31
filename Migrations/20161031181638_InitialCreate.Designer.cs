@@ -8,7 +8,7 @@ using BangazonWeb.Data;
 namespace initialsite.Migrations
 {
     [DbContext(typeof(BangazonContext))]
-    [Migration("20161031153156_InitialCreate")]
+    [Migration("20161031181638_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
