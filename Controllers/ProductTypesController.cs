@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using BangazonWeb.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Bangazon.Helpers;
 using BangazonWeb.ViewModels;
 
 namespace BangazonWeb.Controllers

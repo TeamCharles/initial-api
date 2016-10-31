@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Bangazon.Helpers;
 using BangazonWeb.ViewModels;
 using Bangazon.Models;
 using BangazonWeb.Data;
@@ -36,6 +35,13 @@ namespace BangazonWeb.Controllers
         public ProductsController(BangazonContext ctx)
         {
             context = ctx;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var model = new ProductList(context);
+            model.Products = await context.Product.OrderBy(s => s.Name).ToListAsync();
+            return View(model);
         }
 
         public async Task<IActionResult> Detail(int? id)
@@ -126,21 +132,6 @@ namespace BangazonWeb.Controllers
             return View(model);
         }
 
-        public IActionResult Create([FromRoute]int id,ProductCreate product)
-        {
-            var model = new ProductCreate(context);
-            model.NewProduct = product.NewProduct;
-            model.ProductSubTypes = context.ProductSubType
-                .OrderBy(l => l.Label)
-                .AsEnumerable()
-                .Where(t => t.ProductTypeId == id)
-                .Select(li => new SelectListItem {
-                  Text = li.Label,
-                  Value = li.ProductSubTypeId.ToString()
-                });
-            return View(model);
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ProductCreate product)
@@ -167,7 +158,7 @@ namespace BangazonWeb.Controllers
             if (originalProduct == null)
             {
                 return RedirectToAction("List", new RouteValueDictionary(
-                    new { controller = "ProductTypes", action = "List", Id = originalProduct.ProductTypeId }));
+                    new { controller = "ProductSubTypes", action = "List", Id = originalProduct.ProductSubTypeId }));
             }
             else
             {
@@ -195,18 +186,14 @@ namespace BangazonWeb.Controllers
         }
 
         [HttpPost]
-        public IActionResult GetSubTypes(int id, [FromBody] ProductSubTypeForm productCreate)
+        public IActionResult GetSubTypes([FromRoute] int id)
         {
-            ProductEdit model = new ProductEdit(context);
 
-            model.CurrentProduct = new Product();
+            ProductSubTypeOptions Types = new ProductSubTypeOptions();
 
-            model.CurrentProduct.Name = productCreate.Name;
-            model.CurrentProduct.Description = productCreate.Description;
-            model.CurrentProduct.Price = (decimal)productCreate.Price * 10;
-            model.CurrentProduct.ProductTypeId = id;
+            Types.SubTypes = context.ProductSubType.OrderBy(s => s.Label).AsEnumerable().Where(t => t.ProductTypeId == id).ToList();
 
-            return View(model);
+            return Json(new {subTypes = Types.SubTypes});
         }
 
         public IActionResult Error()

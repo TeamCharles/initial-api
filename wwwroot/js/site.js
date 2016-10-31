@@ -13,20 +13,33 @@ $(document).ready(function () {
 
   $("#NewProduct_ProductTypeId").on("change", function () {
 
-    var formData = {
-      name: $('#NewProduct_Name').val(),
-      description: $('#NewProduct_Description').val(),
-      price: parseFloat($('#NewProduct_Price').val())   
-    };
-
-    console.log($('#NewProduct_Price').val())
-
     $.ajax({
       url: `/Products/GetSubTypes/${$(this).val()}`,
       method: "POST",
       dataType: "json",
-      data: JSON.stringify(formData),
       contentType: 'application/json; charset=utf-8'
+    }).done((data)=> {
+
+      $('#sub-select').remove();
+
+      var productSelect = $('.form-group:nth-last-child(2)');
+      var htmlSelect = ``;
+
+      htmlSelect = `<div class="form-group" id="sub-select">`;
+      htmlSelect += `<label class="col-md-2 control-label" for="NewProduct_ProductSubTypeId">Product Sub Type</label>`;
+      htmlSelect += `<div class="col-md-10">`;
+      htmlSelect += `<select id="NewProduct_ProductSubTypeId" name="NewProduct.ProductSubTypeId">`;
+      htmlSelect += `<option value="">Select Product Sub Type</option>`;
+      
+      data.subTypes.forEach((subType) => {
+        htmlSelect += `<option value = "${subType.productSubTypeId}">${subType.label}</option>`;
+      });
+
+      htmlSelect += `</select>`;
+      htmlSelect += `</div></div>`;
+
+      $(productSelect).after(htmlSelect);
+
     });
   });
 });
