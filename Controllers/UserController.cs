@@ -4,7 +4,6 @@ using Bangazon.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Bangazon.Helpers;
 using BangazonWeb.ViewModels;
 
 namespace BangazonWeb.Controllers

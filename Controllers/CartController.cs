@@ -37,13 +37,6 @@ namespace BangazonWeb.Controllers
 
         public IActionResult Index()
         {            
-            int? userId = ActiveUser.Instance.User.UserId;
-            
-            if (userId == null)
-            {
-                return Redirect("ProductTypes");
-            }
-
             var model = new CartView(context);
 
             if (model.CartProducts == null)

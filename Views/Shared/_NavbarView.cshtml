@@ -14,7 +14,10 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li><a asp-area="" asp-controller="User" asp-action="New">Create an Account</a></li>
-                <li><a asp-area="" asp-controller="Products" asp-action="Create">Sell a Product</a></li>
+                @if (@Model.ChosenUser.FirstName != "LogInRequired")
+                {
+                    <li><a asp-area="" asp-controller="Products" asp-action="Create">Sell a Product</a></li>
+                }
                 <li>
                   <a asp-area="" asp-controller="Cart" asp-action="Index">
                     <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true">
