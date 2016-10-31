@@ -215,14 +215,7 @@ namespace BangazonWeb.Controllers
 
             var model = new CartView(context);
 
-            //Mock information, will be removed once payment selector is avaliable
-            if (CompleteOrder.PaymentType == null)
-            {
-                PaymentType Paypal = new PaymentType();
-                Paypal.Description = "Paypal";
-                CompleteOrder.PaymentType = Paypal;
-            };
-            model.PaymentType = CompleteOrder.PaymentType;
+            model.PaymentType = await context.PaymentType.SingleAsync(t => t.PaymentTypeId == CompleteOrder.PaymentTypeId);
             model.LineItems = LineItems;
             model.Order = CompleteOrder;
 
