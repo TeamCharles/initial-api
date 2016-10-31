@@ -134,6 +134,7 @@ namespace BangazonWeb.Controllers
             if (ModelState.IsValid && product.NewProduct.ProductSubTypeId > 0)
             {
                 product.NewProduct.UserId = ActiveUser.Instance.User.UserId;
+                product.NewProduct.IsActive = true;
                 context.Add(product.NewProduct);
                 await context.SaveChangesAsync();
                 return RedirectToAction("Detail", new RouteValueDictionary(
