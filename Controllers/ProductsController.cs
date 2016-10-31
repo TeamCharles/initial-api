@@ -40,7 +40,7 @@ namespace BangazonWeb.Controllers
         public async Task<IActionResult> Index()
         {
             var model = new ProductList(context);
-            model.Products = await context.Product.OrderBy(s => s.Name).ToListAsync();
+            model.Products = await context.Product.Where(s => s.IsActive == true).OrderBy(s => s.Name).ToListAsync();
             return View(model);
         }
 
@@ -176,13 +176,6 @@ namespace BangazonWeb.Controllers
                     throw;
                 }
             }
-        }
-
-        public async Task<IActionResult> Index()
-        {
-            var model = new ProductList(context);
-            model.Products = await context.Product.Where(s => s.IsActive == true).OrderBy(s => s.Name).ToListAsync();
-            return View(model);
         }
 
         [HttpPost]
