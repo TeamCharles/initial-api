@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using BangazonWeb.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Bangazon.Helpers;
 using Bangazon.Models;
 using Microsoft.AspNetCore.Routing;
 using BangazonWeb.ViewModels;
@@ -81,7 +80,6 @@ namespace BangazonWeb.Controllers
         public IActionResult Error()
         {
             
-            ViewBag.Users = Users.GetAllUsers(context);
             return View();
         }
     }
