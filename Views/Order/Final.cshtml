@@ -22,5 +22,5 @@
 @Html.DropDownList("selectedPaymentId", @Model.AvailablePaymentType, "SELECT" , new { @class = "dropdown" })
 
 <a  class="btn btn-primary" asp-controller="PaymentTypes" asp-action="Create">Create Payment Type</a>
-<input type="submit" value="Complete Order" asp-controller="Cart" asp-action="CompleteOrder" class="btn btn-primary" />
+<input type="submit" value="Complete Order" id="checkoutButton" asp-controller="Cart" asp-action="CompleteOrder" class="btn btn-primary" />
 </form>
