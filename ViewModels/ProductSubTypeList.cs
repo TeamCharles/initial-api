@@ -12,4 +12,8 @@ namespace BangazonWeb.ViewModels
     public ProductSubType ProductSubType { get; set; }
     public ProductSubTypeList(BangazonContext ctx) : base(ctx) { }
   }
+  public class ProductSubTypeOptions
+  {
+    public IEnumerable<ProductSubType> SubTypes { get; set; }
+  }
 }
