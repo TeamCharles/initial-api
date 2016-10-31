@@ -5,6 +5,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Bangazon.Models
 {
+  /**
+   * Class: LineItem
+   * Purpose: Represents the LineItem table in the database
+   * Author: Matt Hamil
+   */
   public class LineItem
   {
     [Key]

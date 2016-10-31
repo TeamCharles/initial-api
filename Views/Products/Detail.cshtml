@@ -32,6 +32,9 @@
     } else if (@Model.CurrentProduct.UserId != @Model.ChosenUser.UserId)
     {
         <div class="col-md-3"><a class="btn btn-primary btn-xs" asp-controller="Cart" asp-action="AddToCart" asp-route-id="@Model.CurrentProduct.ProductId">Add to Cart</a></div>
+    } else
+    {
+        <div class="col-md-3">Please Log In to Start Shopping</div>
     }
 
     @if (@Model.CurrentProduct.UserId == @Model.ChosenUser.UserId)

@@ -5,6 +5,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Bangazon.Models
 {
+  /**
+   * Class: Product
+   * Purpose: Represents the Product table in the database
+   * Author: Matt Kraatz
+   */
   public class Product
   {
     [Key]

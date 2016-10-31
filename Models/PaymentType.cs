@@ -5,6 +5,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Bangazon.Models
 {
+  /**
+   * Class: PaymentType
+   * Purpose: Represents the PaymentType table in the database
+   * Author: Garrett Vangilder
+   */
   public class PaymentType
   {
     [Key]
