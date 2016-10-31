@@ -51,7 +51,9 @@ namespace BangazonWeb.Data
               {
                   context.User.Add(c);
               }
-              context.SaveChanges();
+
+            context.SaveChanges();  // Seed users added
+
 
               var productTypes = new ProductType[]
               {
@@ -70,7 +72,8 @@ namespace BangazonWeb.Data
               {
                   context.ProductType.Add(i);
               }
-              context.SaveChanges();
+
+            context.SaveChanges();  // Seed product types added
 
               var productSubTypes =  new ProductSubType[]
               {
@@ -115,6 +118,8 @@ namespace BangazonWeb.Data
               {
                   context.ProductSubType.Add(i);
               }
+
+            context.SaveChanges();  // Seed sub product types added
 
               var products = new Product[]
               {
@@ -350,6 +355,9 @@ namespace BangazonWeb.Data
                   context.Product.Add(i);
               }
 
+            context.SaveChanges();  // Seed products added
+
+
               // Creating a new Order for Carson Alexander
               Order carsonOrder = new Order {
                   UserId = 1,
@@ -360,10 +368,10 @@ namespace BangazonWeb.Data
               };
 
               context.Order.Add(carsonOrder);
-              context.SaveChanges();
-
               context.Order.Add(otherOrder);
-              context.SaveChanges();
+
+              context.SaveChanges();    // Seed orders added
+
 
               // Populating the Order with Line Items
               LineItem[] carsonOrderLineItems = new LineItem[] {
@@ -376,8 +384,6 @@ namespace BangazonWeb.Data
                   context.LineItem.Add(item);
               }
 
-              context.SaveChanges();
-
               // Populating the Other Order with Line Items
               LineItem[] otherOrderLineItems = new LineItem[] {
                   new LineItem(){ OrderId = 2, ProductId = 3 }
@@ -388,7 +394,7 @@ namespace BangazonWeb.Data
                   context.LineItem.Add(item);
               }
 
-              context.SaveChanges();
+              context.SaveChanges();    // Seed order items added
           }
        }
     }
