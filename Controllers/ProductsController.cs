@@ -16,16 +16,22 @@ namespace BangazonWeb.Controllers
 {
     /**
      * Class: ProductsController
-     * Purpose: Currently allows for users to view and edit different products
+     * Purpose: Allows users to view, create and edit products
      * Author: Garrett/Anulfo
      * Methods:
-     *   Index() - shows index view of products
-     *   Detail() - shows detailed view of individual product
-     *   Edit() - allows users to fill form to change product information
-     *   Edit(ProductEdit) - executes the edit within the database
-     *   New() - allows for users to navigate to form
-     *   New(Product product) - updates database with new product information.
-     *   Delete() - Marks a product as inactive
+     *   Task<IActionResult> Detail(int id) - Returns Detail view for an individual product.
+     *          - int id: ProductId for the Product being viewed.
+     *   Task<IActionResult> Edit(int id) - Returns a form view that allows you to edit an existing Product.
+     *          - int id: ProductId for the Product being edited.
+     *   Task<IActionResult> Edit(ProductEdit) - Executes a Product edit within the database and returns that Product's Detail view.
+     *          - ProductEdit product: ProductEdit viewmodel posted on form submission. 
+     *   Task<IActionResult> Create() - Returns a form view that allows a user to create a new product.
+     *   Task<IActionResult> Create(Product product) - Posts a new product to the database and returns the Detail view for that Product.
+     *          - ProductCreate product: ProductCreate viewmodel posted on form submission.
+     *   Task<IActionResult> Delete(int id) - Sets the IsActive property on a Product to false and commits to the database. Redirects a user to the ProductTypes List page.
+     *          - int id: ProductId of the Product being updated.
+     *   Task<IActionResult> Index() - Returns a view of all active products in the database.
+     *   IActionResult Error() - Returns an Error view. Currently not in use.
      */
     public class ProductsController : Controller
     {
@@ -187,24 +193,6 @@ namespace BangazonWeb.Controllers
                     throw;
                 }
             }
-        }
-
-        public async Task<IActionResult> Index()
-        {
-            var model = new ProductList(context);
-            model.Products = await context.Product.OrderBy(s => s.Name.ToLower()).ToListAsync();
-            return View(model);
-        }
-
-        [HttpPost]
-        public IActionResult GetSubTypes([FromRoute] int id)
-        {
-
-            ProductSubTypeOptions Types = new ProductSubTypeOptions();
-
-            Types.SubTypes = context.ProductSubType.OrderBy(s => s.Label).AsEnumerable().Where(t => t.ProductTypeId == id).ToList();
-
-            return Json(new {subTypes = Types.SubTypes});
         }
 
         public IActionResult Error()
