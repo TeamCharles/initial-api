@@ -31,13 +31,18 @@ $(document).ready(function () {
 
   // disable the Checkout button until a PaymentType has been selected
   if ($("#selectedPaymentId").val() == 0) {
-    $("#checkoutButton").hide();
+      $("#checkoutButton").prop("disabled", true);
+  }
+  else {
+      $("#checkoutButton").removeAttr("disabled");
   }
   $("#selectedPaymentId").on("change",function(){
     if ($("#selectedPaymentId").val() > 0) {
-      $("#checkoutButton").show();
-    } else {
-      $("#checkoutButton").hide();
+      $("#checkoutButton").removeAttr("disabled");
+    } 
+    else if ($("#selectedPaymentId").val() == 0)
+    {
+      $("#checkoutButton").prop("disabled", true);
     }
   })
 
