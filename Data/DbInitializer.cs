@@ -375,9 +375,19 @@ namespace BangazonWeb.Data
               context.Order.Add(otherOrder);
               context.SaveChanges();    // Seed orders added
 
+                Order completedOrder = new Order
+                {
+                    UserId = 1,
+                    DateCompleted = new DateTime(2016, 10, 15),
+                    PaymentTypeId = 2
+                };
 
-              // Populating the Order with Line Items
-              LineItem[] carsonOrderLineItems = new LineItem[] {
+                context.Order.Add(completedOrder);
+                context.SaveChanges();    // Seed orders added
+
+
+                // Populating the Order with Line Items
+                LineItem[] carsonOrderLineItems = new LineItem[] {
                   new LineItem(){ OrderId = 1, ProductId = 1 },
                   new LineItem(){ OrderId = 1, ProductId = 2 },
               };
