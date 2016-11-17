@@ -375,11 +375,21 @@ namespace BangazonWeb.Data
               context.Order.Add(otherOrder);
               context.SaveChanges();    // Seed orders added
 
+                PaymentType PayPal = new PaymentType
+                {
+                    Description = "Paypal",
+                    AccountNumber = "12345",
+                    UserId = 1
+                };
+
+                context.PaymentType.Add(PayPal);
+                context.SaveChanges();
+
                 Order completedOrder = new Order
                 {
                     UserId = 1,
                     DateCompleted = new DateTime(2016, 10, 15),
-                    PaymentTypeId = 2
+                    PaymentTypeId = 1
                 };
 
                 context.Order.Add(completedOrder);
