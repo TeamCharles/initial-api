@@ -375,9 +375,29 @@ namespace BangazonWeb.Data
               context.Order.Add(otherOrder);
               context.SaveChanges();    // Seed orders added
 
+                PaymentType PayPal = new PaymentType
+                {
+                    Description = "Paypal",
+                    AccountNumber = "12345",
+                    UserId = 1
+                };
 
-              // Populating the Order with Line Items
-              LineItem[] carsonOrderLineItems = new LineItem[] {
+                context.PaymentType.Add(PayPal);
+                context.SaveChanges();
+
+                Order completedOrder = new Order
+                {
+                    UserId = 1,
+                    DateCompleted = new DateTime(2016, 10, 15),
+                    PaymentTypeId = 1
+                };
+
+                context.Order.Add(completedOrder);
+                context.SaveChanges();    // Seed orders added
+
+
+                // Populating the Order with Line Items
+                LineItem[] carsonOrderLineItems = new LineItem[] {
                   new LineItem(){ OrderId = 1, ProductId = 1 },
                   new LineItem(){ OrderId = 1, ProductId = 2 },
               };
